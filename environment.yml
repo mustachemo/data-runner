@@ -1,0 +1,14 @@
+name: data_cleanup_env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python
+  - numpy # for scientific computing (standard feature) [maybe]
+  - pandas # for data analysis and manipulation (standard feature)
+  - matplotlib # for plotting and visualization (bonus feature)
+  - beautifulsoup4 # for parsing html and xml files (standard feature)
+  - SQLAlchemy # for database management (standard feature) [maybe]
+  # - re # for regular expressions (standard feature)
+  - fuzzywuzzy # for fuzzy string matching (standard feature)
+  - dateutil # for parsing dates (standard feature)
