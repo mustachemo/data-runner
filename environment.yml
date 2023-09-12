@@ -9,6 +9,11 @@ dependencies:
   - matplotlib # for plotting and visualization (bonus feature)
   - beautifulsoup4 # for parsing html and xml files (standard feature)
   - SQLAlchemy # for database management (standard feature) [maybe]
-  # - re # for regular expressions (standard feature)
+  # - re # for regular expressions (standard feature) [this is a pythons standard module]
   - fuzzywuzzy # for fuzzy string matching (standard feature)
-  - dateutil # for parsing dates (standard feature)
+  - python-dateutil # for parsing dates (standard feature)
+
+# to create the environment, run the following command in the terminal:
+# conda env create -f environment.yml
+# to activate the environment, run the following command in the terminal:
+# conda activate data_cleanup_env
