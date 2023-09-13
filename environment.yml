@@ -12,6 +12,7 @@ dependencies:
   # - re # for regular expressions (standard feature) [this is a pythons standard module]
   - fuzzywuzzy # for fuzzy string matching (standard feature)
   - python-dateutil # for parsing dates (standard feature)
+  - flask # frontend/backend interaction
 
 # to create the environment, run the following command in the terminal:
 # conda env create -f environment.yml
