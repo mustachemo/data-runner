@@ -4,7 +4,7 @@ from flask import render_template, request, redirect, url_for
 
 @app.route('/')
 def interface():
-    return render_template('base.html')
+    return render_template('home.html')
 
 
 @app.errorhandler(404)

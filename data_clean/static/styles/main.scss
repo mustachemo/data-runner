@@ -1,13 +1,12 @@
 @import url('https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css');
 
 /* UTILS START */
-$background-color: #ccfbf1;
-
-:root {
-  --background-color: #{$background-color};
-}
+$background-color: #46ffd7;
+$navbar-color: #a5a5a5;
+/* UTILS END */
 
 body {
-  background-color: var(--background-color);
+  background-color: $background-color;
 }
+
 @import './navbar.scss';
