@@ -4,6 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - python
+  - flask # for web development (standard feature)
   - numpy # for scientific computing (standard feature) [maybe]
   - pandas # for data analysis and manipulation (standard feature)
   - matplotlib # for plotting and visualization (bonus feature)
