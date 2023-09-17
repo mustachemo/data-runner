@@ -1,6 +1,4 @@
-from flask import Flask
-
-app = Flask(__name__)
+from data_clean import app
 
 
 @app.route('/')
@@ -11,7 +9,3 @@ def interface():
 @app.errorhandler(404)
 def page_not_found(error):
     return "<p>Sorry, this page was not found.</p>", 404
-
-
-if __name__ == '__main__':
-    app.run()
