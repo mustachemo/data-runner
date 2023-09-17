@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Library App</title>
+    <title>Data Cleaning</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,81 +16,7 @@
   </head>
   <body>
     <nav class="navbar">
-      <div class="brand-title">Library App</div>
-      <a href="#" class="navbar-toggle">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </a>
-      <div class="navbar-links">
-        <ul>
-          <li>
-            <a href="https://www.linkedin.com/in/mohamed-hasan-4b850418a/"
-              >Connect</a
-            >
-          </li>
-          <li><a href="https://github.com/momoproblems">Github</a></li>
-          <li>
-            <a
-              href="https://www.youtube.com/watch?v=RlKJDwViNKs&ab_channel=EpicHistoryTV"
-              >:)</a
-            >
-          </li>
-        </ul>
-      </div>
+      <div class="brand-title">Data Cleaning Tool</div>
     </nav>
-
-    <main id="blur">
-      <div class="books-grid" id="bookGrid">
-        <div class="book-card">
-          <div class="book-image">
-            <img src="assets/imgs/book-card-image.jpg" />
-          </div>
-          <div class="book-info">
-            <h1>The Lord of the Rings</h1>
-            <h2>J.R.R. Tolkien</h2>
-            <p>716</p>
-          </div>
-          <div class="book-buttons">
-            <div class="book-button-edit">Edit</div>
-            <div class="book-button-read">Read</div>
-            <div class="book-button-remove">Remove</div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <form class="book-card-wrapper" id="book-card-wrapper">
-      <div class="book-card-form">
-        <div style="font-family: Oswald, sans-serif">Add a Book :)</div>
-        <input type="text" placeholder="Title" id="form-title" required />
-        <input type="text" placeholder="Author" id="form-author" required />
-        <input type="number" placeholder="Pages" id="form-pages" required />
-        <div class="book-buttons">
-          <div
-            class="book-form-button book-form-button-read"
-            id="form-read-yes">
-            Read
-          </div>
-          <div
-            class="book-form-button book-form-button-not-read"
-            id="form-read-no">
-            Not Read
-          </div>
-        </div>
-        <input
-          type="submit"
-          class="book-form-button book-form-button-submit"
-          value="Submit" />
-      </div>
-    </form>
-
-    <img
-      src="assets/imgs/add-icon-2.png"
-      class="add-book-button"
-      id="add-book-button" />
-    <div id="overlay"></div>
-
-    <script src="script.js"></script>
   </body>
 </html>
