@@ -1,18 +1,23 @@
+@import url('https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css');
 :root {
-  --background-color: #ccfbf1; }
+  --background-color: #ccfbf1;
+}
 
-  body {
-    background-color: var("--background-color"); }
+body {
+  background-color: var('--background-color');
+}
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: var("--background-color");
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2); }
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var('--background-color');
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
 
-      .brand-title {
-        font-size: 2rem;
-        margin: 1rem;
-        color: black;
-        font-family: 'Lobster', cursive; }
+.brand-title {
+  font-size: 2rem;
+  margin: 1rem;
+  color: black;
+  font-family: 'Lobster', cursive;
+}
