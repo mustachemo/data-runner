@@ -12,7 +12,9 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
       rel="stylesheet" />
-    {{ assets.css('scss_all')}}
+    {% assets "scss_all" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %}
   </head>
   <body>
     <nav class="navbar">
