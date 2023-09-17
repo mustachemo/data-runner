@@ -1,0 +1,11 @@
+/* UTILS START */
+$background-color: #ccfbf1;
+
+:root {
+  --background-color: #{$background-color};
+}
+
+body {
+  background-color: var(--background-color);
+}
+@import './navbar.scss';
