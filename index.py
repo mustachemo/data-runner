@@ -18,7 +18,7 @@ def index():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
-            return redirect(request.url)
+            return render_template('index.html', message=message, table=table)
         file = request.files['file']
         rawData = pd.read_csv(file)
         table = rawData.to_html(index=False)
