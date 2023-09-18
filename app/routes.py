@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash
 from app.middleware.allowed_file import allowed_file
+from app.middleware.pandas_cleaning import checkFileContents
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -8,6 +9,11 @@ def interface():
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('No file part in request object', 'warning')
+            return render_template('home.html')
+        else:
+            file = request.files['file']
+            checkFileContents(file)
+            flash('Uploaded file successfully!', 'success')
             return render_template('home.html')
         
 
