@@ -2,15 +2,50 @@
   body {
     background-color: #46ffd7; }
 
-    .navbar {
+    .alerts-container {
+      position: fixed;
+      top: 0;
+      right: 0;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #a5a5a5;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2); }
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end; }
 
-      .brand-title {
-        font-size: 2rem;
-        margin: 1rem;
-        color: black;
-        font-family: 'Lobster', cursive; }
+      .alert {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 5px;
+        padding-left: 1rem; }
+        .alert .closebtn-container {
+          padding: 0 1rem;
+          margin-left: 0.5rem; }
+          .alert .closebtn-container:hover {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.2);
+            transition: background-color 0.1s ease-in-out; }
+            .alert .closebtn-container span {
+              font-size: 2.5rem;
+              color: black;
+              font-family: 'Lobster', cursive; }
+        .alert-success {
+          background-color: #c0f3b9; }
+          .alert-danger {
+            background-color: #f5c1c1; }
+            .alert-info {
+              background-color: #afd7f3; }
+              .alert-warning {
+                background-color: #fcebaa; }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a5a5a5;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2); }
+
+    .brand-title {
+      font-size: 2rem;
+      margin: 1rem;
+      color: black;
+      font-family: 'Lobster', cursive; }

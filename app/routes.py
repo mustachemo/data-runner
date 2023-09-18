@@ -1,9 +1,13 @@
-from data_clean import app
-from flask import render_template, request, redirect, url_for
+from app import app
+from flask import render_template, request, redirect, url_for, flash
 
 
 @app.route('/')
 def interface():
+    flash('This is a flash message', 'info')
+    flash('This is another flash message', 'warning')
+    flash('This is a third flash message', 'danger')
+    flash('This is a fourth flash message', 'success')
     return render_template('home.html')
 
 

@@ -1,12 +1,71 @@
 @import url('https://cdn.jsdelivr.net/gh/jgthms/minireset.css@master/minireset.min.css');
 
-/* UTILS START */
+/****** UTILS START ******/
 $background-color: #46ffd7;
 $navbar-color: #a5a5a5;
-/* UTILS END */
+$flash-success-color: #c0f3b9;
+$flash-danger-color: #f5c1c1;
+$flash-info-color: #afd7f3;
+$flash-warning-color: #fcebaa;
+/****** UTILS END ******/
 
 body {
   background-color: $background-color;
 }
+
+/****** FLASH START ******/
+.alerts-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  padding-left: 1rem;
+
+  .closebtn-container {
+    padding: 0 1rem;
+    margin-left: 0.5rem;
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.2);
+
+      transition: background-color 0.1s ease-in-out;
+    }
+
+    span {
+      font-size: 2.5rem;
+      color: black;
+      font-family: 'Lobster', cursive;
+    }
+  }
+
+  &-success {
+    background-color: $flash-success-color;
+  }
+
+  &-danger {
+    background-color: $flash-danger-color;
+  }
+
+  &-info {
+    background-color: $flash-info-color;
+  }
+
+  &-warning {
+    background-color: $flash-warning-color;
+  }
+}
+
+/****** FLASH END ******/
 
 @import './navbar.scss';
