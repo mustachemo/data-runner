@@ -1,0 +1,62 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato';
+}
+
+nav {
+    background-color: #0251A4;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    color: white;
+    font-size: 20px;
+}
+
+.container {
+    margin: 20px auto;
+    display: block;
+    text-align: center;
+}
+
+button {
+    width: 90px;
+    height: 30px;
+    flex-shrink: 0;
+    border: none;
+    background-color: #D21F37;
+    color: white;
+    border-radius: 4px;
+}
+
+.clean{
+    margin-top: 50px;
+    margin-right: 200px;
+    margin-left: auto;
+}
+
+.import {
+    margin-top: 50px;
+    margin-left: 200px;
+}
+
+.tools {
+    margin: 370px auto;
+    display: block;
+    text-align: center;
+ }
+
+ .tools button {
+    margin: 0 77px; 
+ }
