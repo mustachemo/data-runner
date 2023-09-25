@@ -55,29 +55,25 @@
   .form-container {
     background-color: #fff;
     padding: 1rem;
-    width: 100%;
+    width: 20rem;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; }
-
-    form {
-      margin-top: 20px; }
-
-      label {
+    text-align: center; }
+    .form-container form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; }
+      .form-container label {
         display: block;
         font-weight: bold;
         margin-bottom: 10px; }
-
-        input[type='file'] {
+        .form-container input[type='file'] {
           border: 1px solid #ccc;
-          padding: 10px;
           border-radius: 5px;
           max-width: 100%; }
-
-          input[type='submit'] {
+          .form-container input[type='submit'] {
+            margin-top: 1rem;
             background-color: #007bff;
             color: #fff;
             border: none;
@@ -85,6 +81,5 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s; }
-
-            input[type='submit']:hover {
+            .form-container input[type='submit']:hover {
               background-color: #0056b3; }

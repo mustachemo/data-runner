@@ -1,6 +1,6 @@
 {% extends 'base.html'%} 
 
-{% block content %}
+{% block form %}
     <div class="form-container">
         <form method="POST" enctype="multipart/form-data" action"/">
             <label for="file">Upload a file:</label>
@@ -8,4 +8,10 @@
             <input type="submit" value="Upload">
         </form>
     </div>
+{% endblock %}
+
+{% block content %}
+<button hx-post="/clicked" hx-swap="outerHTML">
+    Click Me
+  </button>
 {% endblock %}
