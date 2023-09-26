@@ -14,15 +14,18 @@ app.layout = html.Div([
     dcc.Upload(
         id='upload-data',
         children=html.Button('Upload File'),
-        style={},
          # Allow multiple files to be uploaded
         multiple=True),
         
     dash_table.DataTable(
         id='editable-table',  # Assign an ID to the DataTable component
         editable=True,  # Enable editing
+        filter_action='native',
         style_table={'height': '70vh', 'overflowX': 'auto'},  # Add horizontal scroll if needed
     ),
+
+    html.Button('Export to HTML', id='export-button'),
+    dcc.Download(id='download-dataframe-html'),  # Component to trigger download
 ])
 
 
