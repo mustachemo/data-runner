@@ -8,6 +8,7 @@ dependencies:
   - flask-assets # to manage web assets (standard feature)
   - pyscss # for scss to css conversion
   - dash # for table manipulation
+  - dash-bootstrap-components
 
   - numpy # for scientific computing (standard feature) [maybe]
   - pandas # for data analysis and manipulation (standard feature)
