@@ -1,4 +1,4 @@
-from dash import Dash, dcc, html, dash_table, Input, Output, State, callback, dash_table
+from dash import Dash, dcc, html, dash_table, Input, Output, State, callback, dash_table, callback_context
 import dash_bootstrap_components as dbc
 
 import base64
@@ -41,6 +41,9 @@ app.layout = html.Div([
         id='editable-table',  # Assign an ID to the DataTable component
         editable=True,  # Enable editing,
         column_selectable="multi",
+        row_selectable='multi',
+        # selected_columns=[],
+        # selected_rowss=[],
         sort_action='native',
         filter_action='native',
         row_deletable=True,
@@ -51,15 +54,35 @@ app.layout = html.Div([
     ),
 ])
 
-@callback(
+@app.callback(
     Output('editable-table', 'style_data_conditional'),
-    Input('editable-table', 'selected_columns')
+    Input('editable-table', 'selected_columns'),
+    Input('editable-table', 'selected_rows')
 )
-def update_styles(selected_columns):
-    return [{
-        'if': { 'column_id': i },
-        'background_color': '#D2F3FF'
-    } for i in selected_columns]
+def update_styles(selected_columns, selected_rows):
+    # Determine the callback context to decide which style to apply
+    ctx = callback_context
+
+    if not ctx.triggered:
+        return []
+
+    trigger_id = ctx.triggered[0]['prop_id'].split('.')[0]
+
+    if trigger_id == 'editable-table.selected_columns':
+        # Style for selected columns
+        return [{
+            'if': {'column_id': i},
+            'background_color': '#D2F3FF'
+        } for i in selected_columns]
+
+    elif trigger_id == 'editable-table.selected_rows':
+        # Style for selected rows
+        return [{
+            'if': {'row_id': i},
+            'background_color': '#D2F3FF'
+        } for i in selected_rows]
+
+    return []  # Default, no style changes
 
 
 
