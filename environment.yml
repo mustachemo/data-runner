@@ -4,6 +4,13 @@ channels:
   - conda-forge
 dependencies:
   - python
+  - flask # for web development (standard feature)
+  - flask-assets # to manage web assets (standard feature)
+  - pyscss # for scss to css conversion
+  - dash # for table manipulation
+  - dash-bootstrap-components
+  - openpyxl
+
   - numpy # for scientific computing (standard feature) [maybe]
   - pandas # for data analysis and manipulation (standard feature)
   - matplotlib # for plotting and visualization (bonus feature)
@@ -12,7 +19,6 @@ dependencies:
   # - re # for regular expressions (standard feature) [this is a pythons standard module]
   - fuzzywuzzy # for fuzzy string matching (standard feature)
   - python-dateutil # for parsing dates (standard feature)
-  - flask # frontend/backend interaction
   - pytest # testing lib
 
 # to create the environment, run the following command in the terminal:
