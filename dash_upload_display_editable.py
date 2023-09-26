@@ -41,6 +41,7 @@ app.layout = html.Div([
         editable=True,  # Enable editing,
         sort_action='native',
         filter_action='native',
+        row_deletable=True,
         style_table={'height': '70vh', 'overflowX': 'auto'},  # Add horizontal scroll if needed
         # style_margin={'top': '10px', 'right': '20px', 'bottom': '10px', 'left': '20px'},
         style_cell={'textAlign': 'left'} # left align text in columns for readability
