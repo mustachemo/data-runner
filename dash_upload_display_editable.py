@@ -20,7 +20,7 @@ app.layout = html.Div([
     dash_table.DataTable(
         id='editable-table',  # Assign an ID to the DataTable component
         editable=True,  # Enable editing
-        style_table={'overflowX': 'scroll'},  # Add horizontal scroll if needed
+        style_table={'height': '70vh', 'overflowX': 'auto'},  # Add horizontal scroll if needed
     ),
 ])
 
@@ -54,13 +54,15 @@ def parse_contents(contents, filename, date):
     State('upload-data', 'last_modified')
 )
 def update_output(list_of_contents, list_of_names, list_of_dates):
-    if list_of_contents is not None:
-        df = parse_contents(list_of_contents[0], list_of_names[0], list_of_dates[0])
+    if list_of_contents is None:
+        return [], []  # Return empty data and columns if no contents are uploaded
 
-        # Create columns for the DataTable
-        columns = [{'name': col, 'id': col} for col in df.columns]
+    df = parse_contents(list_of_contents[0], list_of_names[0], list_of_dates[0])
 
-        return df.to_dict('records'), columns
+    # Create columns for the DataTable
+    columns = [{'name': col, 'id': col} for col in df.columns]
+
+    return df.to_dict('records'), columns
 
 if __name__ == '__main__':
     app.run(debug=True)
