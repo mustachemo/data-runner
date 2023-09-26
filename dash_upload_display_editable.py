@@ -51,6 +51,17 @@ app.layout = html.Div([
     ),
 ])
 
+@callback(
+    Output('editable-table', 'style_data_conditional'),
+    Input('editable-table', 'selected_columns')
+)
+def update_styles(selected_columns):
+    return [{
+        'if': { 'column_id': i },
+        'background_color': '#D2F3FF'
+    } for i in selected_columns]
+
+
 
 def parse_contents(contents, filename, date):
     content_type, content_string = contents.split(',')
