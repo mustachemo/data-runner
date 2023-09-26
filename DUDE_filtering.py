@@ -24,6 +24,8 @@ app.layout = html.Div([
         style_table={'height': '70vh', 'overflowX': 'auto'},  # Add horizontal scroll if needed
     ),
 
+
+
     html.Button('Export to HTML', id='export-button'),
     dcc.Download(id='download-dataframe-html'),  # Component to trigger download
 ])
