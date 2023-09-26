@@ -9,7 +9,8 @@ dependencies:
   - pyscss # for scss to css conversion
   - dash # for table manipulation
   - dash-bootstrap-components
-  - openpyxl
+  - openpyxl # for xls
+  - lxml # for xml
 
   - numpy # for scientific computing (standard feature) [maybe]
   - pandas # for data analysis and manipulation (standard feature)

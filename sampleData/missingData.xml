@@ -1,63 +1,118 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<root>
-  <row>
-    <Column A>A1</Column A>
-    <Column B>B1</Column B>
-    <Column C>C1</Column C>
-    <Column D>1</Column D>
-  </row>
-  <row>
-    <Column A>A2</Column A>
-    <Column B>B2</Column B>
-    <Column C>C2</Column C>
-    <Column D>2</Column D>
-  </row>
-  <row>
-    <Column A>A3</Column A>
-    <Column B>B3</Column B>
-    <Column C>C3</Column C>
-    <Column D>3</Column D>
-  </row>
-  <row>
-    <Column A></Column A>
-    <Column B>B4</Column B>
-    <Column C>C4</Column C>
-    <Column D>four</Column D>
-  </row>
-  <row>
-    <Column A></Column A>
-    <Column B>B5</Column B>
-    <Column C>C5</Column C>
-    <Column D>5</Column D>
-  </row>
-  <row>
-    <Column A></Column A>
-    <Column B></Column B>
-    <Column C>C6</Column C>
-    <Column D>6</Column D>
-  </row>
-  <row>
-    <Column A>A7</Column A>
-    <Column B>B7</Column B>
-    <Column C>C7</Column C>
-    <Column D>7</Column D>
-  </row>
-  <row>
-    <Column A></Column A>
-    <Column B></Column B>
-    <Column C></Column C>
-    <Column D></Column D>
-  </row>
-  <row>
-    <Column A>A9</Column A>
-    <Column B>B9</Column B>
-    <Column C>C9</Column C>
-    <Column D>9</Column D>
-  </row>
-  <row>
-    <Column A>A10</Column A>
-    <Column B>B10</Column B>
-    <Column C>C10</Column C>
-    <Column D>10</Column D>
-  </row>
-</root>
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Author>Tom Le</Author>
+  <LastAuthor>Tom Le</LastAuthor>
+  <LastPrinted>2023-09-26T17:58:39Z</LastPrinted>
+  <Created>2023-09-26T17:58:56Z</Created>
+  <Version>16.00</Version>
+ </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>5616</WindowHeight>
+  <WindowWidth>17256</WindowWidth>
+  <WindowTopX>32767</WindowTopX>
+  <WindowTopY>32767</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="missingData">
+  <Table ss:ExpandedColumnCount="4" ss:ExpandedRowCount="11" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultRowHeight="14.4">
+   <Row>
+    <Cell><Data ss:Type="String">Column_A</Data></Cell>
+    <Cell><Data ss:Type="String">Column_B</Data></Cell>
+    <Cell><Data ss:Type="String">Column_C</Data></Cell>
+    <Cell><Data ss:Type="String">Column_D</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A1</Data></Cell>
+    <Cell><Data ss:Type="String">B1</Data></Cell>
+    <Cell><Data ss:Type="String">C1</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A2</Data></Cell>
+    <Cell><Data ss:Type="String">B2</Data></Cell>
+    <Cell><Data ss:Type="String">C2</Data></Cell>
+    <Cell><Data ss:Type="Number">2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A3</Data></Cell>
+    <Cell><Data ss:Type="String">B3</Data></Cell>
+    <Cell><Data ss:Type="String">C3</Data></Cell>
+    <Cell><Data ss:Type="Number">3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">B4</Data></Cell>
+    <Cell><Data ss:Type="String">C4</Data></Cell>
+    <Cell><Data ss:Type="String">four</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">B5</Data></Cell>
+    <Cell><Data ss:Type="String">C5</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="3"><Data ss:Type="String">C6</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A7</Data></Cell>
+    <Cell><Data ss:Type="String">B7</Data></Cell>
+    <Cell><Data ss:Type="String">C7</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+   </Row>
+   <Row ss:Index="10">
+    <Cell><Data ss:Type="String">A9</Data></Cell>
+    <Cell><Data ss:Type="String">B9</Data></Cell>
+    <Cell><Data ss:Type="String">C9</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">A10</Data></Cell>
+    <Cell><Data ss:Type="String">B10</Data></Cell>
+    <Cell><Data ss:Type="String">C10</Data></Cell>
+    <Cell><Data ss:Type="Number">10</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <Print>
+    <ValidPrinterInfo/>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <RangeSelection>R1C1:R1C4</RangeSelection>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>
