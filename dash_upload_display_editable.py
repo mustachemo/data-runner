@@ -34,17 +34,20 @@ app.layout = html.Div([
         children=html.Button('Upload File'),
         style={},
          # Allow multiple files to be uploaded
-        multiple=True),
+        multiple=True
+    ),
         
     dash_table.DataTable(
         id='editable-table',  # Assign an ID to the DataTable component
         editable=True,  # Enable editing,
+        column_selectable="multi",
         sort_action='native',
         filter_action='native',
         row_deletable=True,
-        style_table={'height': '70vh', 'overflowX': 'auto'},  # Add horizontal scroll if needed
+        style_table={'height': '70vh', 'overflowX': 'auto', 'overflowY': 'scroll'},  # Add horizontal scroll if needed
         # style_margin={'top': '10px', 'right': '20px', 'bottom': '10px', 'left': '20px'},
-        style_cell={'textAlign': 'left'} # left align text in columns for readability
+        style_cell={'textAlign': 'left'}, # left align text in columns for readability
+        # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
     ),
 ])
 
@@ -84,7 +87,7 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
     df = parse_contents(list_of_contents[0], list_of_names[0], list_of_dates[0])
 
     # Create columns for the DataTable
-    columns = [{'name': col, 'id': col} for col in df.columns]
+    columns = [{'name': col, 'id': col, "selectable": True} for col in df.columns]
 
     return df.to_dict('records'), columns
 
