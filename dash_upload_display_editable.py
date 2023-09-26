@@ -12,29 +12,29 @@ app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = html.Div([
     dbc.NavbarSimple(
     children=[
-        dbc.NavItem(dbc.NavLink("Page 1", href="#")),
         dbc.DropdownMenu(
             children=[
-                dbc.DropdownMenuItem("More pages", header=True),
+                dbc.DropdownMenuItem("Check the Columns you want to display", header=True),
                 dbc.DropdownMenuItem("Page 2", href="#"),
                 dbc.DropdownMenuItem("Page 3", href="#"),
             ],
-            nav=True,
+            # nav=True,
             in_navbar=True,
-            label="More",
+            label="Columns Selection",
         ),
+        dbc.NavItem(dbc.NavLink("Page 1", href="#"))
     ],
     brand="NavbarSimple",
     brand_href="#",
     color="primary",
     dark=True,
     ),
+    
     dcc.Upload(
         id='upload-data',
         children=html.Button('Upload File'),
         style={},
-         # Allow multiple files to be uploaded
-        multiple=True
+        multiple=True # Allow multiple files to be uploaded
     ),
         
     dash_table.DataTable(
@@ -47,8 +47,7 @@ app.layout = html.Div([
         sort_action='native',
         filter_action='native',
         row_deletable=True,
-        style_table={'height': '70vh', 'width': '90%', 'overflowX': 'auto', 'overflowY': 'scroll', 'margin': '1rem auto 0 auto'},  # Add horizontal scroll if needed
-        # style_margin={'top': '10px', 'right': '20px', 'bottom': '10px', 'left': '20px'},
+        style_table={'height': '70vh', 'width': '90%', 'overflowX': 'auto', 'margin': '1rem auto 0 auto'},
         style_cell={'textAlign': 'left'}, # left align text in columns for readability
         # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
     ),
