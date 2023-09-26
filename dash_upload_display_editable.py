@@ -56,34 +56,20 @@ app.layout = html.Div([
 
 @app.callback(
     Output('editable-table', 'style_data_conditional'),
-    Input('editable-table', 'selected_columns'),
-    Input('editable-table', 'selected_rows')
+    Input('editable-table', 'selected_columns')
+    # Input('editable-table', 'selected_rows')
 )
-def update_styles(selected_columns, selected_rows):
-    # Determine the callback context to decide which style to apply
-    ctx = callback_context
+# def update_styles(selected_columns, selected_rows):
+def update_styles(selected_columns):
+    styles = []
 
-    if not ctx.triggered:
-        return []
+    if selected_columns:
+        styles.extend([{'if': {'column_id': col}, 'background_color': '#D2F3FF'} for col in selected_columns])
 
-    trigger_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    # if selected_rows:
+    #     styles.extend([{'if': {'row_index': row}, 'background_color': '#7FFF7F'} for row in selected_rows])
 
-    if trigger_id == 'editable-table.selected_columns':
-        # Style for selected columns
-        return [{
-            'if': {'column_id': i},
-            'background_color': '#D2F3FF'
-        } for i in selected_columns]
-
-    elif trigger_id == 'editable-table.selected_rows':
-        # Style for selected rows
-        return [{
-            'if': {'row_id': i},
-            'background_color': '#D2F3FF'
-        } for i in selected_rows]
-
-    return []  # Default, no style changes
-
+    return styles
 
 
 def parse_contents(contents, filename, date):
