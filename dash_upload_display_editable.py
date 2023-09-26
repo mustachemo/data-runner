@@ -1,4 +1,5 @@
 from dash import Dash, dcc, html, dash_table, Input, Output, State, callback, dash_table
+import dash_bootstrap_components as dbc
 
 import base64
 import datetime
@@ -6,11 +7,28 @@ import io
 
 import pandas as pd
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-app = Dash(__name__, external_stylesheets=external_stylesheets)
+app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.layout = html.Div([
+    dbc.NavbarSimple(
+    children=[
+        dbc.NavItem(dbc.NavLink("Page 1", href="#")),
+        dbc.DropdownMenu(
+            children=[
+                dbc.DropdownMenuItem("More pages", header=True),
+                dbc.DropdownMenuItem("Page 2", href="#"),
+                dbc.DropdownMenuItem("Page 3", href="#"),
+            ],
+            nav=True,
+            in_navbar=True,
+            label="More",
+        ),
+    ],
+    brand="NavbarSimple",
+    brand_href="#",
+    color="primary",
+    dark=True,
+    ),
     dcc.Upload(
         id='upload-data',
         children=html.Button('Upload File'),
@@ -20,8 +38,13 @@ app.layout = html.Div([
         
     dash_table.DataTable(
         id='editable-table',  # Assign an ID to the DataTable component
-        editable=True,  # Enable editing
+        editable=True,  # Enable editing,
+        sort_action='native',
+        filter_action='native',
+        row_deletable=True,
         style_table={'height': '70vh', 'overflowX': 'auto'},  # Add horizontal scroll if needed
+        # style_margin={'top': '10px', 'right': '20px', 'bottom': '10px', 'left': '20px'},
+        style_cell={'textAlign': 'left'} # left align text in columns for readability
     ),
 ])
 
