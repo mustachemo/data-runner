@@ -14,9 +14,9 @@ To set up and run the Data Clean-up Tool, follow these steps:
 
 1. Clone this repository to your local machine:
 
-   ```bash
-   git clone https://github.com/mustachemo/data-runners.git
-   ```
+  ```bash
+  git clone https://github.com/mustachemo/data-runners.git
+  ```
 
 2. Change to the project directory:
 
@@ -46,11 +46,11 @@ To set up and run the Data Clean-up Tool, follow these steps:
 
    - **OR**
 
-   - Open the command palette by pressing `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac).
+     - Open the command palette by pressing `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac).
 
-   - Type "Run Task" and select "Tasks: Run Task" from the dropdown list.
+     - Type "Run Task" and select "Tasks: Run Task" from the dropdown list.
 
-   - Alternatively, you can use the keyboard shortcut `Ctrl+Shift+B` (Windows/Linux) or `Cmd+Shift+B` (Mac).
+     - Alternatively, you can use the keyboard shortcut `Ctrl+Shift+B` (Windows/Linux) or `Cmd+Shift+B` (Mac).
 
 ## Features
 
