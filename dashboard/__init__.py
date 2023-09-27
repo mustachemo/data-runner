@@ -7,6 +7,7 @@ from .layout import layout
 
 dc = DataCleaner()
 app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app.config.suppress_callback_exceptions = True # Improves load time by not loading all callbacks at once. 5-10% improvement
 
 app.layout = layout
 
