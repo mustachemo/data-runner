@@ -59,9 +59,11 @@ To set up and run the Data Clean-up Tool, follow these steps:
   - [x] Display the data in a table
   - [x] All columns are displayed and are scrollable
   - [x] Up to 259 rows are displayed and are scrollable. Rest of data is cycled through pages system
-  - [ ] Export data into various forms
-    - [ ] We are able to export the data, but not the modified data. Must fix that
-    - [ ] Also need to make a button that exports the data into the format specified by the radio buttons
+  - [x] Export data into various forms
+    - [x] We are able to export the data, but not the modified data. Must fix that
+    - [x] Also need to make a button that exports the data into the format specified by the radio buttons
+    - [ ] Style export button!
+  - [ ] Make the columns/first row/headers sticky. Meaning they stay when scrolling
 ## Problem
 
 The presence of large amounts of bad data which does not comply with the required format, currently not relevant and that has been entered into the warehouse management system (WMS) incorrectly and cannot be utilized for any purpose. This data always causes hinderance in many daily activities, become hurdles when the company transitions to a new WMS and most importantly occupies huge amounts of memory in the server systems. A tool which can help identify this bad data, modify it to required format and delete gaps, if necessary, can help resolve many of the forementioned issues.
