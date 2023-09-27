@@ -4,20 +4,23 @@ channels:
   - conda-forge
 dependencies:
   - python
-  - flask # for web development (standard feature)
-  - flask-assets # to manage web assets (standard feature)
-  - pyscss # for scss to css conversion
-
-  - numpy # for scientific computing (standard feature) [maybe]
   - pandas # for data analysis and manipulation (standard feature)
-  - matplotlib # for plotting and visualization (bonus feature)
-  - beautifulsoup4 # for parsing html and xml files (standard feature)
-  - SQLAlchemy # for database management (standard feature) [maybe]
-  # - re # for regular expressions (standard feature) [this is a pythons standard module]
-  - fuzzywuzzy # for fuzzy string matching (standard feature)
-  - python-dateutil # for parsing dates (standard feature)
+  - dash # for table manipulation
+  - dash-bootstrap-components
+  - openpyxl
+  - lxml
+  - xlsxwriter
 
-# to create the environment, run the following command in the terminal:
-# conda env create -f environment.yml
-# to activate the environment, run the following command in the terminal:
-# conda activate data_cleanup_env
+  # - numpy # for scientific computing (standard feature) [maybe]
+  # - pyscss # for scss to css conversion
+  # - matplotlib # for plotting and visualization (bonus feature)
+  # - flask # for web development (standard feature)
+  # - flask-assets # to manage web assets (standard feature)
+  # - beautifulsoup4 # for parsing html and xml files (standard feature)
+  # - re # for regular expressions (standard feature) [this is a pythons standard module]
+  # - fuzzywuzzy # for fuzzy string matching (standard feature)
+  # - python-dateutil # for parsing dates (standard feature)
+#* to create the environment, run the following command in the terminal:
+#* conda env create -f environment.yml
+#* to activate the environment, run the following command in the terminal:
+#* conda activate data_cleanup_env
