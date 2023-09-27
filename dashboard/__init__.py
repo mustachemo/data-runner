@@ -50,21 +50,23 @@ app.layout = html.Div([
         style_cell={'textAlign': 'left'}, # left align text in columns for readability
         # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
     ),
-    dcc.RadioItems(['csv', 'xsls','pdf', 'html', 'xml'],  id='radio-items'), 
-    dcc.Download(id="download-text")
+    dcc.RadioItems(['csv', 'xsls','pdf', 'html', 'xml'],  id='radio-items', value='csv'), 
+    html.Button("Download", id="btn-download"),
+    dcc.Download(id="download-file"),
 ])
 
 @callback(
-    Output("download-text", "data"),
-    Input('radio-items', 'value'),
+    Output("download-file", "data"),
+    State('radio-items', 'value'),
+    Input("btn-download", "n_clicks"),
     prevent_initial_call=True,
 )
-def download_specific_file(value):
-    if value == 'csv':
+def download_specific_file(fileType, _):
+    if fileType == 'csv':
         return dict(content=df.to_csv(index=False), filename="data.csv")
-    if value == 'xml':
+    if fileType == 'xml':
         return dict(content=df.to_xml(index=False), filename="data.xml")
-    if value == 'html':
+    if fileType == 'html':
         return dict(content=df.to_html(index=False), filename="data.html")
 
 
