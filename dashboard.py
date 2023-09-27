@@ -1,11 +1,10 @@
 from dash import Dash, dcc, html, dash_table, Input, Output, State, callback, dash_table, callback_context
 import dash_bootstrap_components as dbc
-
 import base64
-import datetime
 import io
-
 import pandas as pd
+
+df = pd.DataFrame() 
 
 app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -29,7 +28,7 @@ app.layout = html.Div([
     color="primary",
     dark=True,
     ),
-    
+
     dcc.Upload(
         id='upload-data',
         children=html.Button('Upload File'),
@@ -51,7 +50,24 @@ app.layout = html.Div([
         style_cell={'textAlign': 'left'}, # left align text in columns for readability
         # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
     ),
+    dcc.RadioItems(['csv', 'xsls','pdf', 'html', 'xml'],  id='radio-items'), 
+    dcc.Download(id="download-text")
 ])
+
+@callback(
+    Output("download-text", "data"),
+    Input('radio-items', 'value'),
+    prevent_initial_call=True,
+)
+def download_specific_file(value):
+    if value == 'csv':
+        return dict(content=df.to_csv(index=False), filename="data.csv")
+    if value == 'xml':
+        return dict(content=df.to_xml(index=False), filename="data.xml")
+    if value == 'html':
+        return dict(content=df.to_html(index=False), filename="data.html")
+
+
 
 @app.callback(
     Output('editable-table', 'style_data_conditional'),
@@ -73,6 +89,8 @@ def update_styles(selected_columns):
 
 def parse_contents(contents, filename, date):
     content_type, content_string = contents.split(',')
+
+    global df
 
     decoded = base64.b64decode(content_string)
     try:
