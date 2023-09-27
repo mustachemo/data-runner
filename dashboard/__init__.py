@@ -1,4 +1,4 @@
-from dash import Dash, dcc, html, dash_table, Input, Output, State, callback, dash_table, callback_context
+from dash import Dash, dcc, html, dash_table, Input, Output, State, callback, dash_table, callback_context, exceptions
 import dash_bootstrap_components as dbc
 import base64
 import io
@@ -7,6 +7,7 @@ import pandas as pd
 app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.layout = html.Div([
+    dcc.Store(id='df-store'), # This will hold the data uploaded by the user
     dbc.NavbarSimple(
     children=[
         dbc.DropdownMenu(
@@ -40,6 +41,7 @@ app.layout = html.Div([
         column_selectable="multi",
         row_selectable='multi',
         virtualization=True, # This enables virtualization, which allows large data sets to be rendered efficiently
+    
         # selected_columns=[],
         # selected_rowss=[],
         sort_action='native',
@@ -53,6 +55,7 @@ app.layout = html.Div([
     html.Button("Download", id="btn-download"),
     dcc.Download(id="download-file"),
 ])
+
 
 @callback(
     Output("download-file", "data"),
@@ -77,8 +80,8 @@ def download_specific_file(fileType, dataTableData, _):
     Input('editable-table', 'selected_columns')
     # Input('editable-table', 'selected_rows')
 )
-# def update_styles(selected_columns, selected_rows):
-def update_styles(selected_columns):
+# def highlight_column_and_row(selected_columns, selected_rows):
+def highlight_column(selected_columns):
     styles = []
 
     if selected_columns:
@@ -88,6 +91,21 @@ def update_styles(selected_columns):
     #     styles.extend([{'if': {'row_index': row}, 'background_color': '#7FFF7F'} for row in selected_rows])
 
     return styles
+
+
+@app.callback(
+    Output('df-store', 'data'),
+    Input('upload-data', 'contents'),
+    State('upload-data', 'filename'),
+    State('upload-data', 'last_modified')
+)
+def cache_df(list_of_contents, list_of_names, list_of_dates):
+    if list_of_contents is None:
+        raise exceptions.PreventUpdate
+
+    df = parse_contents(list_of_contents[0], list_of_names[0], list_of_dates[0])
+    return df.to_dict('records')
+
 
 
 def parse_contents(contents, filename, date):
@@ -110,22 +128,34 @@ def parse_contents(contents, filename, date):
 
     return df
 
-
 @app.callback(
     Output('editable-table', 'data'),
     Output('editable-table', 'columns'),
-    Input('upload-data', 'contents'),
-    State('upload-data', 'filename'),
-    State('upload-data', 'last_modified')
+    Input('df-store', 'data')
 )
-def update_output(list_of_contents, list_of_names, list_of_dates):
-    if list_of_contents is None:
-        return [], []  # Return empty data and columns if no contents are uploaded
+def update_table(data):
+    if data is None:
+        raise exceptions.PreventUpdate
 
-    df = parse_contents(list_of_contents[0], list_of_names[0], list_of_dates[0])
-
-    # Create columns for the DataTable
+    df = pd.DataFrame.from_records(data)
     columns = [{'name': col, 'id': col, "selectable": True} for col in df.columns]
+    return df.to_dict('records'), columns
+
+# @app.callback(
+#     Output('editable-table', 'data'),
+#     Output('editable-table', 'columns'),
+#     Input('upload-data', 'contents'),
+#     State('upload-data', 'filename'),
+#     State('upload-data', 'last_modified')
+# )
+# def upload_file(list_of_contents, list_of_names, list_of_dates):
+#     if list_of_contents is None:
+#         return [], []  # Return empty data and columns if no contents are uploaded
+
+#     df = parse_contents(list_of_contents[0], list_of_names[0], list_of_dates[0])
+
+#     # Create columns for the DataTable
+#     columns = [{'name': col, 'id': col, "selectable": True} for col in df.columns]
 
     return df.to_dict('records'), columns
 
