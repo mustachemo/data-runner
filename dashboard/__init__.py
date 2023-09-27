@@ -4,8 +4,6 @@ import base64
 import io
 import pandas as pd
 
-df = pd.DataFrame() 
-
 app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.layout = html.Div([
@@ -58,10 +56,12 @@ app.layout = html.Div([
 @callback(
     Output("download-file", "data"),
     State('radio-items', 'value'),
+    State('editable-table', 'data'),
     Input("btn-download", "n_clicks"),
     prevent_initial_call=True,
 )
-def download_specific_file(fileType, _):
+def download_specific_file(fileType, dataTableData, _):
+    df = pd.DataFrame.from_dict(data=dataTableData)
     if fileType == 'csv':
         return dict(content=df.to_csv(index=False), filename="data.csv")
     if fileType == 'xml':
@@ -91,9 +91,7 @@ def update_styles(selected_columns):
 
 def parse_contents(contents, filename, date):
     content_type, content_string = contents.split(',')
-
-    global df
-
+    df = None
     decoded = base64.b64decode(content_string)
     try:
         if 'csv' in filename:
