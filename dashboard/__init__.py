@@ -39,6 +39,7 @@ app.layout = html.Div([
         editable=True,  # Enable editing,
         column_selectable="multi",
         row_selectable='multi',
+        virtualization=True, # This enables virtualization, which allows large data sets to be rendered efficiently
         # selected_columns=[],
         # selected_rowss=[],
         sort_action='native',
