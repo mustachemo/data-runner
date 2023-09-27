@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Setup](#setup)
-- [Featires](#features)
+- [Features](#features)
 - [Problem(s)](#problem)
 - [Objectives](#objectives)
 
