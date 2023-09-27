@@ -1,9 +1,8 @@
-from dash import Dash, dcc, html, dash_table, Input, Output, State, callback, dash_table, callback_context, exceptions
+from dash import Dash, Input, Output, State, callback, callback_context, exceptions
 import dash_bootstrap_components as dbc
-import base64
-import io
 import pandas as pd
-from dashboard.utils.parse import DataCleaner
+
+from dashboard.utils.datacleaner import DataCleaner
 from .layout import layout
 
 dc = DataCleaner()
