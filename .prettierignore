@@ -2,3 +2,6 @@
 *.md
 *.markdown
 *.mdx
+
+*.html
+*.yml
