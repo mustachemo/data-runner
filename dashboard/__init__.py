@@ -5,13 +5,13 @@ import pandas as pd
 from dashboard.utils.datacleaner import DataCleaner
 from .layout import layout
 
-dc = DataCleaner()
-app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+dc = DataCleaner() # This is a class that contains the parse_contents method
+app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP]) # This is the main app object
 app.config.suppress_callback_exceptions = True # Improves load time by not loading all callbacks at once. 5-10% improvement
 
 app.layout = layout
 
-@callback(
+@callback( # This is a callback that will download the file
     Output("download-file", "data"),
     State('radio-items', 'value'),
     State('editable-table', 'data'),
@@ -29,7 +29,7 @@ def download_specific_file(fileType, dataTableData, _):
 
 
 
-@app.callback(
+@app.callback( # This is a callback that will highlight the selected columns
     Output('editable-table', 'style_data_conditional'),
     Input('editable-table', 'selected_columns')
     # Input('editable-table', 'selected_rows')
@@ -47,7 +47,7 @@ def highlight_column(selected_columns):
     return styles
 
 
-@callback(
+@callback( # This is a callback that will upload the file and cache it
     Output('df-store', 'data'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
@@ -61,7 +61,7 @@ def upload_file_and_cache(list_of_contents, list_of_names, list_of_dates):
     return df.to_dict('records')
 
 
-@callback(
+@callback( # This is a callback that will update the table with the data from the cache
     Output('editable-table', 'data'),
     Output('editable-table', 'columns'),
     Input('df-store', 'data')
