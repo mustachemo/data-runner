@@ -21,7 +21,6 @@ app.layout = layout
 )
 def download_specific_file(_, fileType, dataTableData, current_columns):
     df = pd.DataFrame.from_dict(data=dataTableData)
-    print(f'current_columns: {current_columns}')
     
     # Renaming columns based on current columns in DataTable
     renaming_dict = {col['id']: col['name'] for col in current_columns}
