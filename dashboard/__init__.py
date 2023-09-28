@@ -78,7 +78,8 @@ def update_table(data):
         raise exceptions.PreventUpdate
 
     df = pd.DataFrame.from_records(data)
-    columns = [{'name': col, 'id': col, "selectable": True, "renamable": True,} for col in df.columns]
+    columns = [{'name': col, 'id': col, "selectable": True, "renamable": True,
+                "clearable": True, "hideable": True, "deletable": True } for col in df.columns]
     return df.to_dict('records'), columns
 
 if __name__ == '__main__':
