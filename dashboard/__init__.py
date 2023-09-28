@@ -13,13 +13,20 @@ app.layout = layout
 
 @callback( # This is a callback that will download the file
     Output("download-file", "data"),
-    State('radio-items', 'value'),
-    State('editable-table', 'data'),
-    Input("btn-download", "n_clicks"),
+    [Input("btn-download", "n_clicks")],
+    [State('radio-items', 'value'),
+     State('editable-table', 'data'),
+     State('editable-table', 'columns')],
     prevent_initial_call=True,
 )
-def download_specific_file(fileType, dataTableData, _):
+def download_specific_file(_, fileType, dataTableData, current_columns):
     df = pd.DataFrame.from_dict(data=dataTableData)
+    print(f'current_columns: {current_columns}')
+    
+    # Renaming columns based on current columns in DataTable
+    renaming_dict = {col['id']: col['name'] for col in current_columns}
+    df.rename(columns=renaming_dict, inplace=True)
+    
     if fileType == 'csv':
         return dict(content=df.to_csv(index=False), filename="data.csv")
     if fileType == 'xml':
@@ -71,7 +78,7 @@ def update_table(data):
         raise exceptions.PreventUpdate
 
     df = pd.DataFrame.from_records(data)
-    columns = [{'name': col, 'id': col, "selectable": True} for col in df.columns]
+    columns = [{'name': col, 'id': col, "selectable": True, "renamable": True,} for col in df.columns]
     return df.to_dict('records'), columns
 
 if __name__ == '__main__':
