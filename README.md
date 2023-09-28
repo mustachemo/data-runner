@@ -64,6 +64,8 @@ To set up and run the Data Clean-up Tool, follow these steps:
     - [x] Also need to make a button that exports the data into the format specified by the radio buttons
     - [ ] Style export button!
   - [ ] Make the columns/first row/headers sticky. Meaning they stay when scrolling
+  - [ ] Add loading when uploading a file, or an action needs time (https://dash.plotly.com/dash-core-components/loading)
+  - [ ] Make a tab option for graphs (bonus feature) (https://dash.plotly.com/dash-core-components/tab)
 ## Problem
 
 The presence of large amounts of bad data which does not comply with the required format, currently not relevant and that has been entered into the warehouse management system (WMS) incorrectly and cannot be utilized for any purpose. This data always causes hinderance in many daily activities, become hurdles when the company transitions to a new WMS and most importantly occupies huge amounts of memory in the server systems. A tool which can help identify this bad data, modify it to required format and delete gaps, if necessary, can help resolve many of the forementioned issues.
