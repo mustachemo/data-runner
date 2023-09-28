@@ -45,7 +45,9 @@ layout = html.Div([ # This is the main layout of the app
         style_cell={'textAlign': 'left'}, # left align text in columns for readability
         # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
     ),
-    dcc.RadioItems(['csv', 'xsls','pdf', 'html', 'xml'],  id='radio-items', value='csv'), # This is the radio button that will allow the user to select the file type to download
-    html.Button("Download", id="btn-download"), # This is the download button
-    dcc.Download(id="download-file"), # This is the download action
+    html.Div([
+        dcc.RadioItems(['csv', 'xsls','pdf', 'html', 'xml'],  id='radio-items', value='csv'), # This is the radio button that will allow the user to select the file type to download
+        html.Button("Download", id="btn-download"), # This is the download button
+        dcc.Download(id="download-file"), # This is the download action
+    ], style={'margin': '1rem auto 0 auto', 'width': '90%'})
 ])
