@@ -1,0 +1,14 @@
+Here is another sample data from one of our sites in the Midwest.
+ 
+Currently these are the minimum required data for this file:
+ 
+Commodity Code
+Ti / Hi
+Unit Gross Weight
+Tare
+Length
+Width
+Height
+Inventory Type
+Storage Type
+Temp to Freeze
