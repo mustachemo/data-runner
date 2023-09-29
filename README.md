@@ -71,6 +71,8 @@ To set up and run the Data Clean-up Tool, follow these steps:
   - [ ] Add a formatting setting that formats columns to a specified prefereance. For example, cost column will show $ sign and number type enforcement along with commas when needed (https://dash.plotly.com/datatable/typing)
   - [ ] Adding or removing columns
   - [x] Make columns selection through a checkbox (https://dash.plotly.com/datatable/editable)
+=======
+
 ## Problem
 
 The presence of large amounts of bad data which does not comply with the required format, currently not relevant and that has been entered into the warehouse management system (WMS) incorrectly and cannot be utilized for any purpose. This data always causes hinderance in many daily activities, become hurdles when the company transitions to a new WMS and most importantly occupies huge amounts of memory in the server systems. A tool which can help identify this bad data, modify it to required format and delete gaps, if necessary, can help resolve many of the forementioned issues.
