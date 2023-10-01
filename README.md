@@ -30,6 +30,12 @@ To set up and run the Data Clean-up Tool, follow these steps:
   conda env create -f environment.yml
   ```
 
+  Optionally, to update conda environment using existing file:
+  
+  ```bash
+  conda env update --file environment.yml --prune
+  ```
+
 4. Activate the newly created conda environment:
 
   ```bash
