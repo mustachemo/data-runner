@@ -7,7 +7,9 @@ dependencies:
   - pandas # for data analysis and manipulation (standard feature)
   - dash # for table manipulation
   - dash-bootstrap-components
-  - dash-mantine-components
+  - pip
+  - pip:
+    - dash-mantine-components
   - openpyxl
   - lxml
   - xlsxwriter

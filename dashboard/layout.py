@@ -57,7 +57,7 @@ layout = html.Div([ # This is the main layout of the app
             value="csv",
             size="sm",
             mt=10,
-        ),      
+        ),
         dcc.Download(id="download-file"), # This is the download action
     ], style={'margin': '1rem auto 0 auto', 'width': '90%'})
 ])
