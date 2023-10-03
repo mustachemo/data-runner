@@ -78,7 +78,12 @@ To set up and run the Data Clean-up Tool, follow these steps:
   - [ ] Adding or removing columns
   - [x] Make columns selection through a checkbox (https://dash.plotly.com/datatable/editable)
   - [ ] Update parse_content function to include 'xslx, xml, html" and "pdf" if we can (pdf is a bonus feature)
-=======
+  - [ ] Combine two or more data of the same format into one file
+  - [ ] Add loading animation (see dash documentation)
+
+## Optimization
+
+- [ ] Get rid of df-store, no need to store in memory as we have the df stored as a variable in the instance of DataHandler
 
 ## Problem
 
