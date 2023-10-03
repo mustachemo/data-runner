@@ -10,6 +10,7 @@ dependencies:
   - openpyxl
   - lxml
   - xlsxwriter
+  - pytest
 
   # - numpy # for scientific computing (standard feature) [maybe]
   # - pyscss # for scss to css conversion
