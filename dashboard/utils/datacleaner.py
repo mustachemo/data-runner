@@ -16,11 +16,14 @@ class DataCleaner:
                     io.StringIO(decoded.decode('utf-8')))
             elif 'xls' in filename:
                 # Assume that the user uploaded an excel file
+                print(f'filename: {filename}')
                 df = pd.read_excel(io.BytesIO(decoded))
+                print(f'df: {df}')
         except Exception as e:
             print(e)
             return html.Div([
                 'There was an error processing this file.'
             ])
 
+        print(f'df: {df}')
         return df
