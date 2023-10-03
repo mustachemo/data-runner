@@ -16,6 +16,7 @@ class DataCleaner:
                     io.StringIO(decoded.decode('utf-8')))
             elif 'xls' in filename:
                 # Assume that the user uploaded an excel file
+                print(f'filename: {filename}')
                 df = pd.read_excel(io.BytesIO(decoded))
         except Exception as e:
             print(e)
