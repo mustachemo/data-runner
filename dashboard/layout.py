@@ -1,5 +1,8 @@
 from dash import html, dcc, dash_table
+import dash_mantine_components as dmc
 import dash_bootstrap_components as dbc
+
+data = [["csv", "csv"], ["xsls", "xsls"], ["pdf", "pdf"], ["html", "html"], ["xml", "xml"]]
 
 layout = html.Div([ # This is the main layout of the app
     dcc.Store(id='df-store'), # This will hold the data uploaded by the user in memory
@@ -45,9 +48,16 @@ layout = html.Div([ # This is the main layout of the app
         style_cell={'textAlign': 'left'}, # left align text in columns for readability
         # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
     ),
-    html.Div([
-        dcc.RadioItems(['csv', 'xsls','pdf', 'html', 'xml'],  id='radio-items', value='csv'), # This is the radio button that will allow the user to select the file type to download
-        html.Button("Download", id="btn-download"), # This is the download button
+    html.Div(
+        [
+        dmc.Button("Download", id="btn-download", style={"backgroundColor": "#0C7FDA"}),
+        dmc.RadioGroup(
+            [dmc.Radio(l, value=k) for k, l in data],
+            id="radio-items",
+            value="csv",
+            size="sm",
+            mt=10,
+        ),      
         dcc.Download(id="download-file"), # This is the download action
     ], style={'margin': '1rem auto 0 auto', 'width': '90%'})
 ])
