@@ -1,0 +1,99 @@
+/*Style the body */
+body{
+
+    background-color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0; /* Remove default margin and padding */
+    
+}
+
+/*Style the header */
+header {
+    background-color: #2f38e6;
+    color: white;
+    font-size: large;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+    padding: 30px;
+}
+
+/* Style the button container to center its contents */
+.button_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Add spacing between header and buttons */
+    
+}
+
+/* Style the space between buttons */
+/*
+.space {
+    height: 50px;  Adjust the height as needed to create space 
+} */
+
+/*Style the button*/
+button {
+    border: none;
+    border-radius: 10px; /* Rounded edges */
+    color: red;
+    padding: 16px 0;
+    width: 150px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: Calibri, sans-serif; /* Calibri font */
+    margin: 0 200px; /* 10px spacing between buttons */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+/* text-align: center; */
+
+/*Style the auto button*/
+.auto_button {
+    background-color: red; 
+    color: white; 
+    border: 2px solid red;
+}
+
+/*Hover effect on auto button*/
+.auto_button:hover {
+    background-color: white;
+    color: black;
+}
+
+/*Style the import button*/
+.import_button {
+    background-color: #008CBA; 
+    color: white; 
+    border: 2px solid #008CBA;
+}
+
+/*Hover effect on auto button*/
+.import_button:hover {
+    background-color: white;
+    color: black;
+}
+
+/* Style the table */
+table {
+    border-collapse: collapse;
+    width: 80%; /* Adjust the width as needed */
+}
+
+/* Style table headers */
+th {
+    background-color: #2f38e6;
+    color: white;
+    padding: 10px;
+}
+
+/* Style table cells */
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
