@@ -28,12 +28,12 @@ def upload_file(list_of_contents, list_of_names, list_of_dates):
     if list_of_contents is None:
         raise exceptions.PreventUpdate
 
-    df.df = dc.parse_contents(
+    df = dc.parse_contents(
         list_of_contents[0], list_of_names[0], list_of_dates[0])
     columns = [{'name': col, 'id': col, "selectable": True, "renamable": True,
-                "clearable": True, "hideable": True, "deletable": True} for col in df.df.columns]
+                "clearable": True, "hideable": True, "deletable": True} for col in df.columns]
 
-    return df.df.to_dict('records'), columns
+    return df.to_dict('records'), columns
 
 
 ###################### DOWNLOAD FILE ######################
@@ -45,19 +45,19 @@ def upload_file(list_of_contents, list_of_names, list_of_dates):
      State('editable-table', 'columns')],
     prevent_initial_call=True,
 )
-def download_specific_files(self, _, fileType, dataTableData, current_columns):
-    self.df = pd.DataFrame.from_dict(data=dataTableData)
+def download_specific_files(_, fileType, dataTableData, current_columns):
+    df = pd.DataFrame.from_dict(data=dataTableData)
 
     # Renaming columns based on current columns in DataTable
     renaming_dict = {col['id']: col['name'] for col in current_columns}
-    self.df.rename(columns=renaming_dict, inplace=True)
+    df.rename(columns=renaming_dict, inplace=True)
 
     if fileType == 'csv':
-        return dict(content=self.df.to_csv(index=False), filename="data.csv")
+        return dict(content=df.to_csv(index=False), filename="data.csv")
     if fileType == 'xml':
-        return dict(content=self.df.to_xml(index=False), filename="data.xml")
+        return dict(content=df.to_xml(index=False), filename="data.xml")
     if fileType == 'html':
-        return dict(content=self.df.to_html(index=False), filename="data.html")
+        return dict(content=df.to_html(index=False), filename="data.html")
 
 
 ###################### HIGHLIGHT COLUMNS ######################

@@ -36,7 +36,7 @@ layout = html.Div([  # This is the main layout of the app
 
     dcc.Loading(
         id="loading-table",
-        type="cube",
+        type="default",
         fullscreen=False,
         children=dash_table.DataTable(  # This is the table that will display the data
             id='editable-table',  # Assign an ID to the DataTable component
