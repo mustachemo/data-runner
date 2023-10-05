@@ -6,23 +6,18 @@ data = [["csv", "csv"], ["xsls", "xsls"], [
     "pdf", "pdf"], ["html", "html"], ["xml", "xml"]]
 
 layout = html.Div([  # This is the main layout of the app
-    # This will hold the data uploaded by the user in memory
-    dcc.Store(id='df-store'),
+    dcc.Store(id='df-store'),  # This is the store that will cache the data
     dcc.Download(id="download-file"),
 
     html.Div([
         dcc.Upload(  # This is the upload button
             id='upload-data',
-            # This is the button that will be displayed
-            children=html.Button('Import'),
-            style={"display": "inline-block"},
+            children=dmc.Button("Upload File",
+                                style={"backgroundColor": "#0C7FDA"}),
             multiple=True  # Allow multiple files to be uploaded
         ),
-        html.Div([
-            dmc.Button("Export", id="btn-download",
-                       style={"backgroundColor": "#0C7FDA"}),
+        html.Div([  # This is the dropdown and download button
             dmc.Select(
-                # placeholder="Select one",
                 id="framework-select",
                 data=[
                     {"value": "csv", "label": "csv"},
@@ -32,10 +27,12 @@ layout = html.Div([  # This is the main layout of the app
                     {"value": "pdf", "label": "pdf"},
                 ],
             ),
-        ], style={"display": "flex", "justifyContent": "flex-end", "alignItems": "center", "gap": "1rem", "border": "1px solid black"}
+            dmc.Button("Export",
+                       id="btn-download",
+                       style={"backgroundColor": "#0C7FDA"}),
+        ], style={"display": "flex", "justifyContent": "flex-end", "alignItems": "center", "gap": "1rem"}
         ),
-
-    ], style={'margin': '1rem auto 0 auto', 'width': '90%', "display": "flex", "justifyContent": "flex-end", "alignItems": "center", "gap": "1rem", "border": "1px solid black"}
+    ], style={'margin': '1rem auto 0 auto', 'width': '90%', "display": "flex", "justifyContent": "space-between", "alignItems": "center"}
     ),
 
 
