@@ -45,3 +45,19 @@
   width: 70%;
   padding: 1rem;
 }
+
+/********* IMPORT-EXPORT-GROUP *********/
+.import-export-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto 0 auto;
+}
+/********* EXPORT BUTTON *********/
+.export-group {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}

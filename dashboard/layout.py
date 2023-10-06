@@ -10,7 +10,7 @@ layout = html.Div([  # This is the main layout of the app
             dmc.Image(
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
-        ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "8rem"}),
+        ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem"}),
         dmc.Button("Button 2", id="btn-2",
                    style={"display": "block", "marginBottom": "10px"}),
         dmc.Button("Button 3", id="btn-3",
@@ -45,14 +45,12 @@ layout = html.Div([  # This is the main layout of the app
                            style={"backgroundColor": "#0C7FDA"}
                            ),
                 dcc.Download(id="download-file")
-            ], style={"display": "flex", "justifyContent": "flex-end", "alignItems": "center", "gap": "1rem"}
-            ),
-        ], style={'margin': '0 auto 0 auto', 'width': '100%', "display": "flex", "justifyContent": "space-between", "alignItems": "center"}
-        ),
+            ], className="export-group"),
+        ], className="import-export-group"),
 
         dcc.Loading(
             id="loading-table",
-            type="default",
+            type="cube",
             fullscreen=False,
             children=dash_table.DataTable(  # This is the table that will display the data
                 id='editable-table',  # Assign an ID to the DataTable component
