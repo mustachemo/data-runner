@@ -62,7 +62,7 @@ layout = html.Div([  # This is the main layout of the app
                 sort_action='native',  # This enables data to be sorted by the user
                 filter_action='native',  # This enables data to be filtered by the user
                 row_deletable=True,  # This enables users to delete rows
-                style_table={'minHeight': '700px', 'height': '800px', 'max-width': '100%',
+                style_table={'minHeight': '70vh', 'height': '70vh', 'max-width': '100%',
                              'overflowY': 'auto', 'overflowX': 'auto', 'border': '1px solid blue'},
                 style_cell={'textAlign': 'left'},
                 # style_header={
@@ -74,7 +74,7 @@ layout = html.Div([  # This is the main layout of the app
                 #     'color': 'white'
                 # },
                 # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
-            ), parent_style={'border': '1px solid red', 'width': '100%', 'height': '800px'}
+            ), parent_style={'border': '1px solid red', 'width': '100%', 'maxHeight': '100%'}
         )
 
     ], style={'border': '1px solid black', 'width': '80%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem'})
