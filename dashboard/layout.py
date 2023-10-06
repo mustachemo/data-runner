@@ -2,9 +2,6 @@ from dash import html, dcc, dash_table
 import dash_mantine_components as dmc
 # import dash_bootstrap_components as dbc
 
-data = [["csv", "csv"], ["xsls", "xsls"], [
-    "pdf", "pdf"], ["html", "html"], ["xml", "xml"]]
-
 layout = html.Div([  # This is the main layout of the app
 
     # Sidebar
@@ -30,6 +27,7 @@ layout = html.Div([  # This is the main layout of the app
             html.Div([  # This is the dropdown and download button
                 dmc.Select(
                     id="framework-select",
+                    style={"width": "80px"},
                     data=[
                         {"value": "csv", "label": "csv"},
                         {"value": "xsls", "label": "xsls"},
@@ -64,10 +62,21 @@ layout = html.Div([  # This is the main layout of the app
                 sort_action='native',  # This enables data to be sorted by the user
                 filter_action='native',  # This enables data to be filtered by the user
                 row_deletable=True,  # This enables users to delete rows
-                style_table={'overflowX': 'auto', 'overflowY': 'auto',
-                             'height': '80vh', 'max-width': '100%'},
+                style_table={'minHeight': '700px', 'height': '800px', 'max-width': '100%',
+                             'overflowY': 'auto', 'overflowX': 'auto', 'border': '1px solid blue'},
                 style_cell={'textAlign': 'left'},
+                # style_header={
+                #     'backgroundColor': 'rgb(30, 30, 30)',
+                #     'color': 'white'
+                # },
+                # style_data={
+                #     'backgroundColor': 'rgb(50, 50, 50)',
+                #     'color': 'white'
+                # },
                 # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
-            )
-        )], style={'border': '1px solid black', 'width': '80%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem'})
+            ), parent_style={'border': '1px solid red', 'width': '100%', 'height': '800px'}
+        )
+
+    ], style={'border': '1px solid black', 'width': '80%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem'})
+
 ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'})

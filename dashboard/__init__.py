@@ -9,7 +9,7 @@ from .layout import layout
 dc = dc()
 df = pd.DataFrame()
 # This is the main app object
-app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__)
 # Improves load time by not loading all callbacks at once. 5-10% improvement
 app.config.suppress_callback_exceptions = True
 

@@ -26,5 +26,9 @@ dependencies:
 
 #* to create the environment, run the following command in the terminal:
   #* conda env create -f environment.yml
+#* to update the environment, run the following command in the terminal:
+  #* conda env update -f environment.yml
+  #* or
+  #* conda env update --prune -f environment.yml
 #* to activate the environment, run the following command in the terminal:
   #* conda activate data_cleanup_env
