@@ -6,14 +6,18 @@ layout = html.Div([  # This is the main layout of the app
 
     # Sidebar
     html.Div([
-        dmc.Button("Button 1", id="btn-1",
-                   style={"display": "block", "marginBottom": "10px"}),
+        html.Div([
+            dmc.Image(
+                src="./static/images/logo.jpeg", alt="USCS", width=40),
+            dmc.Title(f"United States Cold Storage", order=5,),
+        ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem"}),
         dmc.Button("Button 2", id="btn-2",
                    style={"display": "block", "marginBottom": "10px"}),
         dmc.Button("Button 3", id="btn-3",
                    style={"display": "block", "marginBottom": "10px"}),
         # Add more buttons or other components here as needed
-    ], style={'border': '1px solid black', 'width': '20%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem', 'borderRadius': '10px'}),
+    ], style={'border': '1px solid black', 'width': '20%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem', 'borderRadius': '10px',
+              "display": "flex", "flexDirection": "column", "justifyContent": "flex-start", "alignItems": "center"}),
 
 
     html.Div([
@@ -63,7 +67,7 @@ layout = html.Div([  # This is the main layout of the app
                 filter_action='native',  # This enables data to be filtered by the user
                 row_deletable=True,  # This enables users to delete rows
                 style_table={'minHeight': '70vh', 'height': '70vh', 'max-width': '100%',
-                             'overflowY': 'auto', 'overflowX': 'auto', 'border': '1px solid blue'},
+                             'overflowY': 'auto', 'overflowX': 'auto'},
                 style_cell={'textAlign': 'left'},
                 # style_header={
                 #     'backgroundColor': 'rgb(30, 30, 30)',
@@ -74,7 +78,7 @@ layout = html.Div([  # This is the main layout of the app
                 #     'color': 'white'
                 # },
                 # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
-            ), parent_style={'border': '1px solid red', 'width': '100%', 'maxHeight': '100%'}
+            ), parent_style={'width': '100%', 'maxHeight': '100%'}
         )
 
     ], style={'border': '1px solid black', 'width': '80%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem'})
