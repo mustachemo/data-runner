@@ -16,7 +16,7 @@ layout = html.Div([  # This is the main layout of the app
         dmc.Button("Button 3", id="btn-3",
                    style={"display": "block", "marginBottom": "10px"}),
         # Add more buttons or other components here as needed
-    ], style={'border': '1px solid black', 'width': '20%', 'height': '70vh', 'margin': '5rem auto 0 auto', 'padding': '1rem', 'borderRadius': '10px'}),
+    ], style={'border': '1px solid black', 'width': '20%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem', 'borderRadius': '10px'}),
 
 
     html.Div([
@@ -45,7 +45,7 @@ layout = html.Div([  # This is the main layout of the app
                 dcc.Download(id="download-file")
             ], style={"display": "flex", "justifyContent": "flex-end", "alignItems": "center", "gap": "1rem"}
             ),
-        ], style={'margin': '1rem auto 0 auto', 'width': '90%', "display": "flex", "justifyContent": "space-between", "alignItems": "center"}
+        ], style={'margin': '1rem auto 0 auto', 'width': '100%', "display": "flex", "justifyContent": "space-between", "alignItems": "center"}
         ),
 
         dcc.Loading(
@@ -64,9 +64,10 @@ layout = html.Div([  # This is the main layout of the app
                 sort_action='native',  # This enables data to be sorted by the user
                 filter_action='native',  # This enables data to be filtered by the user
                 row_deletable=True,  # This enables users to delete rows
-                style_table={'overflowX': 'auto'},
+                style_table={'overflowX': 'auto', 'overflowY': 'auto',
+                             'height': '80vh', 'max-width': '100%'},
                 style_cell={'textAlign': 'left'},
                 # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
             )
-        )], style={'border': '1px solid black', 'width': '80%', 'height': '70vh', 'margin': '5rem auto 0 auto', 'padding': '1rem', 'borderRadius': '10px'})
+        )], style={'border': '1px solid black', 'width': '80%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem'})
 ], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'})
