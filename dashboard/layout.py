@@ -8,18 +8,18 @@ layout = html.Div([  # This is the main layout of the app
     html.Div([
         html.Div([
             dmc.Image(
-                src="./static/images/logo.jpeg", alt="USCS", width=40),
+                src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
-        ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem"}),
+        ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "8rem"}),
         dmc.Button("Button 2", id="btn-2",
                    style={"display": "block", "marginBottom": "10px"}),
         dmc.Button("Button 3", id="btn-3",
                    style={"display": "block", "marginBottom": "10px"}),
         # Add more buttons or other components here as needed
-    ], style={'border': '1px solid black', 'width': '20%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem', 'borderRadius': '10px',
-              "display": "flex", "flexDirection": "column", "justifyContent": "flex-start", "alignItems": "center"}),
+    ], className="sidebar"),
 
 
+    # Main content
     html.Div([
         html.Div([
             dcc.Upload(  # This is the upload button
@@ -47,7 +47,7 @@ layout = html.Div([  # This is the main layout of the app
                 dcc.Download(id="download-file")
             ], style={"display": "flex", "justifyContent": "flex-end", "alignItems": "center", "gap": "1rem"}
             ),
-        ], style={'margin': '1rem auto 0 auto', 'width': '100%', "display": "flex", "justifyContent": "space-between", "alignItems": "center"}
+        ], style={'margin': '0 auto 0 auto', 'width': '100%', "display": "flex", "justifyContent": "space-between", "alignItems": "center"}
         ),
 
         dcc.Loading(
@@ -66,7 +66,7 @@ layout = html.Div([  # This is the main layout of the app
                 sort_action='native',  # This enables data to be sorted by the user
                 filter_action='native',  # This enables data to be filtered by the user
                 row_deletable=True,  # This enables users to delete rows
-                style_table={'minHeight': '70vh', 'height': '70vh', 'max-width': '100%',
+                style_table={'minHeight': '75vh', 'height': '75vh', 'maxWidth': '100%',
                              'overflowY': 'auto', 'overflowX': 'auto'},
                 style_cell={'textAlign': 'left'},
                 # style_header={
@@ -78,9 +78,9 @@ layout = html.Div([  # This is the main layout of the app
                 #     'color': 'white'
                 # },
                 # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
-            ), parent_style={'width': '100%', 'maxHeight': '100%'}
+            ), parent_style={'maxWidth': '100%', 'maxHeight': '100%'}
         )
 
-    ], style={'border': '1px solid black', 'width': '80%', 'height': '90vh', 'margin': '1rem auto 0 auto', 'padding': '1rem'})
+    ], className="main-content")
 
-], style={'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'})
+], className="app-container")
