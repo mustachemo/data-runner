@@ -1,5 +1,3 @@
-#import pytest
- 
 from dashboard.utils.datacleaner import DataCleaner
 
 def test():

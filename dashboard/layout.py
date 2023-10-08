@@ -30,15 +30,16 @@ layout = html.Div([  # This is the main layout of the app
             ),
             html.Div([  # This is the dropdown and download button
                 dmc.Select(
-                    id="framework-select",
+                    id="file-type-select",
                     style={"width": "80px"},
                     data=[
                         {"value": "csv", "label": "csv"},
-                        {"value": "xsls", "label": "xsls"},
-                        {"value": "html", "label": "html"},
                         {"value": "xml", "label": "xml"},
+                        {"value": "html", "label": "html"},
+                        {"value": "xlsx", "label": "xlsx"},
                         {"value": "pdf", "label": "pdf"},
                     ],
+                    value = "csv"
                 ),
                 dmc.Button("Export",
                            id="btn-download",
