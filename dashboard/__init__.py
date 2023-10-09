@@ -1,12 +1,10 @@
 from dash import Dash, Input, Output, State, callback, exceptions
 import pandas as pd
 
-from dashboard.utils.datacleaner import DataCleaner as dc
+import dashboard.utils.datacleaner as DataCleaner
 import dashboard.utils.handleFile as HandleFile
 from .layout import layout
 
-# This is the data handler object (see dashboard/utils/datahandler.py)
-dc = dc()
 # This is the main app object
 app = Dash(__name__)
 # Improves load time by not loading all callbacks at once. 5-10% improvement
