@@ -10,9 +10,13 @@ layout = html.Div([  # This is the main layout of the app
             dmc.Image(
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
-
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
 
+        dmc.Button("Clean Data", id="clean-data-button"),
+        dmc.Button("Cancel", id="cancel-button", disabled=True),
+        dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
+        dmc.Text(id="log-textbox")
+  
         dmc.Tooltip(
             multiline=True,
             width=220,
@@ -49,6 +53,7 @@ layout = html.Div([  # This is the main layout of the app
         ),
 
 
+
     ], className="sidebar"),
 
 
@@ -63,16 +68,17 @@ layout = html.Div([  # This is the main layout of the app
             ),
             html.Div([  # This is the dropdown and download button
                 dmc.Select(
-                    id="framework-select",
+                    id="file-type-select",
                     style={"width": "80px"},
                     value="csv",
                     data=[
                         {"value": "csv", "label": "csv"},
-                        # {"value": "xsls", "label": "xsls"},
-                        {"value": "html", "label": "html"},
                         {"value": "xml", "label": "xml"},
+                        {"value": "html", "label": "html"},
+                        # {"value": "xlsx", "label": "xlsx"},
                         # {"value": "pdf", "label": "pdf"},
                     ],
+                    value = "csv"
                 ),
                 dmc.Button("Export",
                            id="btn-download",

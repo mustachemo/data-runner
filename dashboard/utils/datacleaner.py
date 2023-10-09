@@ -1,27 +1,50 @@
-import base64
-import io
 import pandas as pd
-from dash import html
+from dash.exceptions import PreventUpdate
 
 
-class DataCleaner:
+def cleanDataAuto(data, columns, preferences):
+    if (data == None or columns == None):
+        print("Nothing to clean")
+        raise PreventUpdate
+    message = ""
+    changedCells = []
+    emptyCells = []
+    needsAttention = []
 
-    @staticmethod
-    def parse_contents(contents, filename, date):
-        content_type, content_string = contents.split(',')
-        decoded = base64.b64decode(content_string)
-        try:
-            if 'csv' in filename:
-                # Assume that the user uploaded a CSV file
-                df = pd.read_csv(
-                    io.StringIO(decoded.decode('utf-8')))
-            elif 'xls' in filename:
-                # Assume that the user uploaded an excel file
-                df = pd.read_excel(io.BytesIO(decoded))
-        except Exception as e:
-            print(e)
-            return html.Div([
-                'There was an error processing this file.'
-            ])
+    df = pd.DataFrame.from_dict(data)
 
-        return df
+    for column in columns:
+        columnId = column["id"]
+        columnData = df[columnId]
+        dataType = None
+        if (columnId in preferences):
+            dataType = preferences[columnId]
+        else:
+            dataType = preferences["*"]
+        for rowIndex, cellValue in enumerate(columnData):
+            if (cellValue is None):
+                needsAttention.append((columnId, rowIndex))
+                emptyCells.append((columnId, rowIndex))
+            else:
+                newCellValue, isCleaned = cleanCell(cellValue, dataType)
+                if (not isCleaned):
+                    needsAttention.append((columnId, rowIndex))
+                elif (newCellValue != cellValue):
+                    df[columnId].iloc[rowIndex] = newCellValue
+                    changedCells.append((columnId, rowIndex))
+                    
+    newData = df.to_dict("records")
+    return newData, message, changedCells, emptyCells, needsAttention
+
+def cleanCell(cellValue, dataType, format = None):
+    #todo add to logic
+    # returns newCellValue, isCleaned
+    try:
+        match dataType:
+            case "int":
+                return int(cellValue), True
+            case _:
+                return cellValue, False
+    except Exception as e:
+        print("unable to convert", e)
+        return cellValue, False

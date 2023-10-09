@@ -1,64 +1,55 @@
-from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html
+from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager
 import dash_bootstrap_components as dbc
 import pandas as pd
+import diskcache
 
-from dashboard.utils.datacleaner import DataCleaner as dc
+import dashboard.utils.datacleaner as DataCleaner
+import dashboard.utils.handleFile as HandleFile
 from .layout import layout
 
-# This is the data handler object (see dashboard/utils/datahandler.py)
-dc = dc()
-df = pd.DataFrame()
+cache = diskcache.Cache("./cache")
+long_callback_manager = DiskcacheManager(cache)
+
 # This is the main app object
 app = Dash(__name__)
 # Improves load time by not loading all callbacks at once. 5-10% improvement
-app.config.suppress_callback_exceptions = True
+# app.config.suppress_callback_exceptions = True
 
 app.layout = layout
 
+# region handleFile
 
 ###################### UPLOAD FILE ######################
 @callback(
-    Output('editable-table', 'data'),
-    Output('editable-table', 'columns'),
+    Output('editable-table', 'data', allow_duplicate=True),
+    Output('editable-table', 'columns', allow_duplicate=True),
+    State('editable-table', 'data'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
-    State('upload-data', 'last_modified')
+    prevent_initial_call=True,
 )
-def upload_file(list_of_contents, list_of_names, list_of_dates):
-    if list_of_contents is None:
+def upload_file(prevData, files, fileNames):
+    if files is None:
         raise exceptions.PreventUpdate
 
-    df = dc.parse_contents(
-        list_of_contents[0], list_of_names[0], list_of_dates[0])
-    columns = [{'name': col, 'id': col, "selectable": True, "renamable": True,
-                "clearable": True, "hideable": True, "deletable": True} for col in df.columns]
-
-    return df.to_dict('records'), columns
+    return HandleFile.importFiles(prevData, files, fileNames)
 
 
 ###################### DOWNLOAD FILE ######################
 @callback(
     Output("download-file", "data"),
-    [Input("btn-download", "n_clicks")],
-    [State('framework-select', 'value'),
-     State('editable-table', 'data'),
-     State('editable-table', 'columns')],
+    Input("btn-download", "n_clicks"),
+    State('editable-table', 'data'),
+    State('editable-table', 'columns'),
+    State('file-type-select', 'value'),
     prevent_initial_call=True,
 )
-def download_specific_files(_, fileType, dataTableData, current_columns):
-    df = pd.DataFrame.from_dict(data=dataTableData)
+def download_file(_, data, columns, fileType):
+    return HandleFile.exportFile(data, columns, fileType)
 
-    # Renaming columns based on current columns in DataTable
-    renaming_dict = {col['id']: col['name'] for col in current_columns}
-    df.rename(columns=renaming_dict, inplace=True)
+# endregion
 
-    if fileType == 'csv':
-        return dict(content=df.to_csv(index=False), filename="data.csv")
-    if fileType == 'xml':
-        return dict(content=df.to_xml(index=False), filename="data.xml")
-    if fileType == 'html':
-        return dict(content=df.to_html(index=False), filename="data.html")
-
+# region design
 
 ###################### HIGHLIGHT COLUMNS ######################
 @callback(
@@ -77,6 +68,41 @@ def highlight_column(selected_columns):
     #     styles.extend([{'if': {'row_index': row}, 'background_color': '#7FFF7F'} for row in selected_rows])
 
     return styles
+
+
+# endregion
+# region datacleaner
+
+@app.long_callback(
+    Output("editable-table", "data"),
+    Output("log-textbox", "children"),
+    Input("clean-data-button", "n_clicks"),
+    State("editable-table", "data"),
+    State("editable-table", "columns"),
+    State("auto-clean-checkbox", "checked"),
+    running=[(Output("clean-data-button", "disabled"), True, False),
+             (Output("cancel-button", "disabled"), False, True)
+             ],
+    cancel=[Input("cancel-button", "n_clicks")],
+    manager=long_callback_manager,
+    prevent_initial_call=True,
+)
+def cleanData(_, data, columns, isAutoClean):
+    # todo manual clean
+    # todo get and use user preferences
+    # todo clean up logging
+    # reconsider what to report based on frontend needs
+    userPreferences = { "*" : "int"}
+    if (isAutoClean):
+        data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(data, columns, userPreferences)
+        message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
+        print(message)
+        return data, message
+    
+    print("Not implemented")
+    raise exceptions.NonExistentEventException
+
+# endregion
 
 
 ###################### ENFORCE DATATYPES (OPEN MODAL) ######################
