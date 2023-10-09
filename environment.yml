@@ -6,14 +6,15 @@ dependencies:
   - python
   - pandas # for data analysis and manipulation (standard feature)
   - dash # for table manipulation
-  - dash-bootstrap-components
   - pip
   - pip:
     - dash-mantine-components
-  - openpyxl
-  - lxml
-  - xlsxwriter
+    - dash[diskcache]
+  - openpyxl # unused
+  - lxml # unused
+  - xlsxwriter # unused
   - pytest
+  - diskcache
 
   # - numpy # for scientific computing (standard feature) [maybe]
   # - pyscss # for scss to css conversion

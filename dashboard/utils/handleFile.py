@@ -54,6 +54,7 @@ def combineDf(prevDf, df):
 
 def exportFile(data, columns, fileType = "csv"):
     if (data == None or columns == None):
+        print("Nothing to export")
         raise PreventUpdate
     message = ""
     df = pd.DataFrame.from_dict(data)

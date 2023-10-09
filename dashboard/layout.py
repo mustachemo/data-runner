@@ -11,11 +11,10 @@ layout = html.Div([  # This is the main layout of the app
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem"}),
-        dmc.Button("Button 2", id="btn-2",
-                   style={"display": "block", "marginBottom": "10px"}),
-        dmc.Button("Button 3", id="btn-3",
-                   style={"display": "block", "marginBottom": "10px"}),
-        # Add more buttons or other components here as needed
+        dmc.Button("Clean Data", id="clean-data-button"),
+        dmc.Button("Cancel", id="cancel-button", disabled=True),
+        dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
+        dmc.Text(id="log-textbox")
     ], className="sidebar"),
 
 
