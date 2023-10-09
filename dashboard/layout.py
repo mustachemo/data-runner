@@ -10,7 +10,7 @@ layout = html.Div([  # This is the main layout of the app
             dmc.Image(
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
-        ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem"}),
+        ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
         dmc.Button("Button 2", id="btn-2",
                    style={"display": "block", "marginBottom": "10px"}),
         dmc.Button("Button 3", id="btn-3",
