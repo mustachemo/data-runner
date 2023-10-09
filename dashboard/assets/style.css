@@ -39,6 +39,10 @@
   align-items: center;
 }
 
+.sidebar > * {
+  margin-bottom: 0.5rem;
+}
+
 /********* MAIN CONTENT *********/
 .main-content {
   height: 90vh;

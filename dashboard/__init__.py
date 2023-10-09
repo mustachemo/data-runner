@@ -20,6 +20,8 @@ app.layout = layout
 # region handleFile
 
 ###################### UPLOAD FILE ######################
+
+
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
     Output('editable-table', 'columns', allow_duplicate=True),
@@ -52,6 +54,8 @@ def download_file(_, data, columns, fileType):
 # region design
 
 ###################### HIGHLIGHT COLUMNS ######################
+
+
 @callback(
     Output('editable-table', 'style_data_conditional'),
     Input('editable-table', 'selected_columns')
@@ -71,6 +75,7 @@ def highlight_column(selected_columns):
 
 
 # endregion
+
 # region datacleaner
 
 @app.long_callback(
@@ -92,13 +97,14 @@ def cleanData(_, data, columns, isAutoClean):
     # todo get and use user preferences
     # todo clean up logging
     # reconsider what to report based on frontend needs
-    userPreferences = { "*" : "int"}
+    userPreferences = {"*": "int"}
     if (isAutoClean):
-        data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(data, columns, userPreferences)
+        data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(
+            data, columns, userPreferences)
         message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
         print(message)
         return data, message
-    
+
     print("Not implemented")
     raise exceptions.NonExistentEventException
 
