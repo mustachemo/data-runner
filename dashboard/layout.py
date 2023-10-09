@@ -10,6 +10,7 @@ layout = html.Div([  # This is the main layout of the app
             dmc.Image(
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
+
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
 
         dmc.Tooltip(
@@ -47,6 +48,7 @@ layout = html.Div([  # This is the main layout of the app
             ],
         ),
 
+
     ], className="sidebar"),
 
 
@@ -63,12 +65,13 @@ layout = html.Div([  # This is the main layout of the app
                 dmc.Select(
                     id="framework-select",
                     style={"width": "80px"},
+                    value="csv",
                     data=[
                         {"value": "csv", "label": "csv"},
-                        {"value": "xsls", "label": "xsls"},
+                        # {"value": "xsls", "label": "xsls"},
                         {"value": "html", "label": "html"},
                         {"value": "xml", "label": "xml"},
-                        {"value": "pdf", "label": "pdf"},
+                        # {"value": "pdf", "label": "pdf"},
                     ],
                 ),
                 dmc.Button("Export",
