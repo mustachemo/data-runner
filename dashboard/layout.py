@@ -11,8 +11,19 @@ layout = html.Div([  # This is the main layout of the app
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
-        dmc.Button("Enforce datatypes", id="btn-enforce-dtypes",
-                   style={"marginBottom": "10px"}),
+
+        dmc.Tooltip(
+            multiline=True,
+            width=220,
+            withArrow=True,
+            position="right",
+            transition="fade",
+            transitionDuration=300,
+            # transitionTimingFunction="ease",
+            label="Enforce datatypes for columns in the table. This will convert the data in the column to the selected datatype. Furthermore, it will prevent the user from entering data that is not of the selected datatype.",
+            children=dmc.Button("Enforce datatypes", id="btn-enforce-dtypes",
+                                style={"marginBottom": "10px"}),
+        ),
         dmc.Modal(
             title="Select a column to enforce a datatype",
             id="enforce-dtypes-modal",
