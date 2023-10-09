@@ -15,7 +15,7 @@ layout = html.Div([  # This is the main layout of the app
         dmc.Button("Clean Data", id="clean-data-button"),
         dmc.Button("Cancel", id="cancel-button", disabled=True),
         dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
-        dmc.Text(id="log-textbox")
+        dmc.Text(id="log-textbox"),
   
         dmc.Tooltip(
             multiline=True,
@@ -78,7 +78,6 @@ layout = html.Div([  # This is the main layout of the app
                         # {"value": "xlsx", "label": "xlsx"},
                         # {"value": "pdf", "label": "pdf"},
                     ],
-                    value = "csv"
                 ),
                 dmc.Button("Export",
                            id="btn-download",
