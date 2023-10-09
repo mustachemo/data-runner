@@ -11,11 +11,31 @@ layout = html.Div([  # This is the main layout of the app
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
-        dmc.Button("Button 2", id="btn-2",
-                   style={"display": "block", "marginBottom": "10px"}),
-        dmc.Button("Button 3", id="btn-3",
-                   style={"display": "block", "marginBottom": "10px"}),
-        # Add more buttons or other components here as needed
+        dmc.Button("Enforce datatypes", id="btn-enforce-dtypes",
+                   style={"marginBottom": "10px"}),
+        dmc.Modal(
+            title="Select a column to enforce a datatype",
+            id="enforce-dtypes-modal",
+            zIndex=10000,
+            children=[
+                dmc.Space(h=20),
+                html.Div(id='column-type-selector'),
+                dmc.Space(h=20),
+                dmc.Group(
+                    [
+                        dmc.Button("Submit", id="modal-submit-button"),
+                        dmc.Button(
+                            "Close",
+                            color="red",
+                            variant="outline",
+                            id="modal-close-button",
+                        ),
+                    ],
+                    position="right",
+                ),
+            ],
+        ),
+
     ], className="sidebar"),
 
 
