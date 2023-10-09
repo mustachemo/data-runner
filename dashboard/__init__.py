@@ -1,6 +1,7 @@
-from dash import Dash, Input, Output, State, callback, exceptions, DiskcacheManager
-import diskcache
+from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager
+import dash_bootstrap_components as dbc
 import pandas as pd
+import diskcache
 
 import dashboard.utils.datacleaner as DataCleaner
 import dashboard.utils.handleFile as HandleFile
@@ -35,7 +36,7 @@ def upload_file(prevData, files, fileNames):
 
 
 ###################### DOWNLOAD FILE ######################
-@callback(  # This is a callback that will download the file
+@callback(
     Output("download-file", "data"),
     Input("btn-download", "n_clicks"),
     State('editable-table', 'data'),
@@ -51,7 +52,7 @@ def download_file(_, data, columns, fileType):
 # region design
 
 ###################### HIGHLIGHT COLUMNS ######################
-@callback(  # This is a callback that will highlight the selected columns
+@callback(
     Output('editable-table', 'style_data_conditional'),
     Input('editable-table', 'selected_columns')
     # Input('editable-table', 'selected_rows')
@@ -68,8 +69,8 @@ def highlight_column(selected_columns):
 
     return styles
 
-# endregion
 
+# endregion
 # region datacleaner
 
 @app.long_callback(
@@ -102,5 +103,51 @@ def cleanData(_, data, columns, isAutoClean):
     raise exceptions.NonExistentEventException
 
 # endregion
+
+
+###################### ENFORCE DATATYPES (OPEN MODAL) ######################
+@callback(
+    Output("enforce-dtypes-modal", "opened"),
+    Input("btn-enforce-dtypes", "n_clicks"),
+    Input("modal-close-button", "n_clicks"),
+    Input("modal-submit-button", "n_clicks"),
+    State("enforce-dtypes-modal", "opened"),
+    prevent_initial_call=True,
+)
+def modal_demo(nc1, nc2, nc3, opened):
+    return not opened
+
+
+###################### ENFORCE DATATYPES (FILL MODAL WITH COLUMNS) ######################
+@callback(
+    Output("column-type-selector", "children"),
+    Input("enforce-dtypes-modal", "opened"),
+    State("editable-table", "columns"),
+    prevent_initial_call=True,
+)
+def populate_datatype_selection(opened, columns):
+    if not opened or not columns:
+        raise exceptions.PreventUpdate
+
+    column_list = [col['name']
+                   for col in columns]  # Get column names from DataTable
+    data_type_options = ["numeric", "text",
+                         "any", "datetime"]  # Data type options
+
+    children = []  # This is the list of children that will be returned, each child is a row in the modal
+    for col in column_list:
+        dropdown = dcc.Dropdown(  # This is the dropdown for each column
+            id={'type': 'datatype-dropdown', 'index': col},
+            options=[{'label': dt, 'value': dt} for dt in data_type_options],
+            value=None,
+            placeholder="Select data type",
+            style={'width': '9rem'}
+        )
+        children.append(html.Div([html.Label(col), dropdown], style={
+                        "display": "flex", "justifyContent": "space-between", "alignItems": "center", "padding": "0.5rem", "borderBottom": "1px solid #000"}))
+
+    return children
+
+
 if __name__ == '__main__':
     app.run(debug=True)
