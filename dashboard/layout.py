@@ -11,10 +11,6 @@ layout = html.Div([  # This is the main layout of the app
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem"}),
-        dmc.Button("Button 2", id="btn-2",
-                   style={"display": "block", "marginBottom": "10px"}),
-        dmc.Button("Button 3", id="btn-3",
-                   style={"display": "block", "marginBottom": "10px"}),
         # Add more buttons or other components here as needed
     ], className="sidebar"),
 
@@ -32,12 +28,13 @@ layout = html.Div([  # This is the main layout of the app
                 dmc.Select(
                     id="framework-select",
                     style={"width": "80px"},
+                    value="csv",
                     data=[
                         {"value": "csv", "label": "csv"},
-                        {"value": "xsls", "label": "xsls"},
+                        # {"value": "xsls", "label": "xsls"},
                         {"value": "html", "label": "html"},
                         {"value": "xml", "label": "xml"},
-                        {"value": "pdf", "label": "pdf"},
+                        # {"value": "pdf", "label": "pdf"},
                     ],
                 ),
                 dmc.Button("Export",
