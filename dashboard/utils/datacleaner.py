@@ -3,6 +3,7 @@ import io
 import pandas as pd
 from dash import html
 
+
 class DataCleaner:
 
     @staticmethod

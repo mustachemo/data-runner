@@ -70,14 +70,19 @@ To set up and run the Data Clean-up Tool, follow these steps:
     - [x] Also need to make a button that exports the data into the format specified by the radio buttons
     - [ ] Style export button!
   - [ ] Make the columns/first row/headers sticky. Meaning they stay when scrolling
-  - [ ] Add loading when uploading a file, or an action needs time (https://dash.plotly.com/dash-core-components/loading)
   - [ ] Make a tab option for graphs (bonus feature) (https://dash.plotly.com/dash-core-components/tab)
   - [ ] Could style the table to make it nicer (bonus feature)
   - [ ] Add enforcement of types. Say a column shows only numbers, let's say money. Enforce that you can't edit a text into there, only numeric values are allowed (https://dash.plotly.com/datatable/typing)
   - [ ] Add a formatting setting that formats columns to a specified prefereance. For example, cost column will show $ sign and number type enforcement along with commas when needed (https://dash.plotly.com/datatable/typing)
   - [ ] Adding or removing columns
   - [x] Make columns selection through a checkbox (https://dash.plotly.com/datatable/editable)
-=======
+  - [ ] Update parse_content function to include 'xslx, xml, html" and "pdf" if we can (pdf is a bonus feature)
+  - [ ] Combine two or more data of the same format into one file
+  - [x] Add loading animation (https://dash.plotly.com/dash-core-components/loading)
+
+## Optimization
+
+- [ ] Get rid of df-store, no need to store in memory as we have the df stored as a variable in the instance of DataHandler
 
 ## Problem
 
