@@ -31,12 +31,13 @@ layout = html.Div([  # This is the main layout of the app
                 dmc.Select(
                     id="file-type-select",
                     style={"width": "80px"},
+                    value="csv",
                     data=[
                         {"value": "csv", "label": "csv"},
                         {"value": "xml", "label": "xml"},
                         {"value": "html", "label": "html"},
-                        {"value": "xlsx", "label": "xlsx"},
-                        {"value": "pdf", "label": "pdf"},
+                        # {"value": "xlsx", "label": "xlsx"},
+                        # {"value": "pdf", "label": "pdf"},
                     ],
                     value = "csv"
                 ),
