@@ -1,5 +1,5 @@
 from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager
-import dash_bootstrap_components as dbc
+import dash_mantine_components as dmc
 import pandas as pd
 import diskcache
 
@@ -133,27 +133,32 @@ def enforce_dtypes_modal(nc1, nc2, nc3, opened):
 )
 def populate_datatype_selection(opened, columns):
     if not opened or not columns:
-        raise exceptions.PreventUpdate
+        # raise exceptions.PreventUpdate
+        return dmc.Text("Upload a file to enforce datatypes!", style={"color": "black", "fontWeight": "bold", "textAlign": "center"})
 
-    column_list = [col['name']
-                   for col in columns]  # Get column names from DataTable
-    data_type_options = ["numeric", "text",
-                         "any", "datetime"]  # Data type options
+    data_type_options = ["numeric", "text", "any", "datetime"]
+    children = []
 
-    children = []  # This is the list of children that will be returned, each child is a row in the modal
-    for col in column_list:
-        col_details = next((c for c in columns if c['name'] == col), None)
-        dropdown_value = col_details['type'] if col_details and 'type' in col_details else None
+    for col_details in columns:
+        col_name = col_details['name']
+        dropdown_value = col_details.get('type', None)
 
-        dropdown = dcc.Dropdown(  # This is the dropdown for each column
-            id={'type': 'datatype-dropdown', 'index': col},
-            options=[{'label': dt, 'value': dt} for dt in data_type_options],
+        dropdown = dcc.Dropdown(
+            id={'type': 'datatype-dropdown', 'index': col_name},
+            options=[{'label': dt, 'value': dt}
+                     for dt in data_type_options],
             value=dropdown_value,
             placeholder="Select data type",
             style={'width': '9rem'}
         )
-        children.append(html.Div([html.Label(col), dropdown], style={
-                        "display": "flex", "justifyContent": "space-between", "alignItems": "center", "padding": "0.5rem", "borderBottom": "1px solid #000"}))
+
+        children.append(
+            html.Div(
+                [html.Label(col_name), dropdown],
+                style={"display": "flex", "justifyContent": "space-between",
+                       "alignItems": "center", "padding": "0.5rem", "borderBottom": "1px solid #000"}
+            )
+        )
 
     return children
 
@@ -167,19 +172,8 @@ def populate_datatype_selection(opened, columns):
     prevent_initial_call=True
 )
 def update_column_datatypes(_, modal_children, columns):
-    print(modal_children)
-    print("Callback Triggered!")
-    ctx = callback_context
-    triggered_component = ctx.triggered[0]['prop_id'].split('.')[0]
-    triggered_value = ctx.triggered[0]['value']
-
-    print("Triggered Component:", triggered_component)
-    print("Triggered Value:", triggered_value)
-
-    if triggered_component == 'modal-submit-button':
-        dropdown_values = [child['props']['value']
-                           for child in modal_children if isinstance(child, dcc.Dropdown)]
-        print("Dropdown Values:", dropdown_values)
+    if not columns:
+        raise exceptions.PreventUpdate
 
     dropdown_values = []
     for child in modal_children:
@@ -187,13 +181,10 @@ def update_column_datatypes(_, modal_children, columns):
             for inner_child in child['props']['children']:
                 if inner_child['type'] == 'Dropdown':
                     dropdown_values.append(inner_child['props']['value'])
-    print("Dropdown Values:", dropdown_values)
-    # Iterate through columns and modify the 'type' attribute based on the dropdown value
+
     for col, dtype in zip(columns, dropdown_values):
         if dtype:
             col['type'] = dtype
-
-    # print("Updated Columns:", columns)
 
     return columns
 
