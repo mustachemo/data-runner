@@ -189,10 +189,10 @@ layout = html.Div([  # This is the main layout of the app
                 style_table={'minHeight': '75vh', 'height': '75vh', 'maxWidth': '100%',
                              'overflowY': 'auto', 'overflowX': 'auto'},
                 style_cell={'textAlign': 'left'},
-                # style_header={
-                #     'backgroundColor': 'rgb(30, 30, 30)',
-                #     'color': 'white'
-                # },
+                style_header={
+                    'backgroundColor': 'rgb(224,241,255)',
+                    'color': 'rgb(12,127,218)'
+                },
                 # style_data={
                 #     'backgroundColor': 'rgb(50, 50, 50)',
                 #     'color': 'white'
