@@ -66,11 +66,6 @@ layout = html.Div([  # This is the main layout of the app
         ),
 
 
-
-        # dmc.Button("Clean Data", id="clean-data-button"),
-        # dmc.Button("Cancel", id="cancel-button", disabled=True),
-        # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
-        # dmc.Text(id="log-textbox"),
         dmc.Text("Cleaning Operations", variant="subtle", style={
                  "borderBottom": "1px dashed black", "paddingBottom": "5px"}),
         dmc.Tooltip(
