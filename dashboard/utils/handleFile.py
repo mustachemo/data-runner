@@ -1,5 +1,9 @@
-import pandas as pd, os, io, base64
+import pandas as pd
+import os
+import io
+import base64
 from dash.exceptions import PreventUpdate
+
 
 def importFiles(prevData, files, fileNames):
     df = pd.DataFrame.from_dict(data=prevData)
@@ -36,11 +40,12 @@ def importFiles(prevData, files, fileNames):
     data = df.to_dict("records")
     columns = [{"name": col, "id": col, "selectable": True, "renamable": True,
                 "clearable": True, "hideable": True, "deletable": True} for col in df.columns]
-    
+
     print(message)
 
     # todo return message
     return data, columns
+
 
 def combineDf(prevDf, df):
     # todo prompt user to select specific columns to join on, may improve performance
@@ -52,7 +57,8 @@ def combineDf(prevDf, df):
     # todo resolve bug ^
     return newDf
 
-def exportFile(data, columns, fileType = "csv"):
+
+def exportFile(data, columns, fileType="csv"):
     if (data == None or columns == None):
         print("Nothing to export")
         raise PreventUpdate

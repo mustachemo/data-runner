@@ -78,35 +78,35 @@ def highlight_column(selected_columns):
 
 # region datacleaner
 
-@app.long_callback(
-    Output("editable-table", "data"),
-    Output("log-textbox", "children"),
-    Input("clean-data-button", "n_clicks"),
-    State("editable-table", "data"),
-    State("editable-table", "columns"),
-    State("auto-clean-checkbox", "checked"),
-    running=[(Output("clean-data-button", "disabled"), True, False),
-             (Output("cancel-button", "disabled"), False, True)
-             ],
-    cancel=[Input("cancel-button", "n_clicks")],
-    manager=long_callback_manager,
-    prevent_initial_call=True,
-)
-def cleanData(_, data, columns, isAutoClean):
-    # todo manual clean
-    # todo get and use user preferences
-    # todo clean up logging
-    # reconsider what to report based on frontend needs
-    userPreferences = {"*": "int"}
-    if (isAutoClean):
-        data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(
-            data, columns, userPreferences)
-        message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
-        print(message)
-        return data, message
+# @app.long_callback(
+#     Output("editable-table", "data"),
+#     Output("log-textbox", "children"),
+#     Input("clean-data-button", "n_clicks"),
+#     State("editable-table", "data"),
+#     State("editable-table", "columns"),
+#     State("auto-clean-checkbox", "checked"),
+#     running=[(Output("clean-data-button", "disabled"), True, False),
+#              (Output("cancel-button", "disabled"), False, True)
+#              ],
+#     cancel=[Input("cancel-button", "n_clicks")],
+#     manager=long_callback_manager,
+#     prevent_initial_call=True,
+# )
+# def cleanData(_, data, columns, isAutoClean):
+#     # todo manual clean
+#     # todo get and use user preferences
+#     # todo clean up logging
+#     # reconsider what to report based on frontend needs
+#     userPreferences = {"*": "int"}
+#     if (isAutoClean):
+#         data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(
+#             data, columns, userPreferences)
+#         message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
+#         print(message)
+#         return data, message
 
-    print("Not implemented")
-    raise exceptions.NonExistentEventException
+#     print("Not implemented")
+#     raise exceptions.NonExistentEventException
 
 # endregion
 
@@ -120,7 +120,7 @@ def cleanData(_, data, columns, isAutoClean):
     State("enforce-dtypes-modal", "opened"),
     prevent_initial_call=True,
 )
-def modal_demo(nc1, nc2, nc3, opened):
+def enforce_dtypes_modal(nc1, nc2, nc3, opened):
     return not opened
 
 
@@ -142,10 +142,13 @@ def populate_datatype_selection(opened, columns):
 
     children = []  # This is the list of children that will be returned, each child is a row in the modal
     for col in column_list:
+        col_details = next((c for c in columns if c['name'] == col), None)
+        dropdown_value = col_details['type'] if col_details and 'type' in col_details else None
+
         dropdown = dcc.Dropdown(  # This is the dropdown for each column
             id={'type': 'datatype-dropdown', 'index': col},
             options=[{'label': dt, 'value': dt} for dt in data_type_options],
-            value=None,
+            value=dropdown_value,
             placeholder="Select data type",
             style={'width': '9rem'}
         )
@@ -153,6 +156,31 @@ def populate_datatype_selection(opened, columns):
                         "display": "flex", "justifyContent": "space-between", "alignItems": "center", "padding": "0.5rem", "borderBottom": "1px solid #000"}))
 
     return children
+
+
+###################### ENFORCE DATATYPES (SUBMIT MODAL) ######################
+@callback(
+    Output('editable-table', 'columns'),
+    Input('modal-submit-button', 'n_clicks'),
+    State('column-type-selector', 'children'),
+    State('editable-table', 'columns'),
+    prevent_initial_call=True
+)
+def update_column_datatypes(_, modal_children, columns):
+    print("Callback Triggered!")
+
+    dropdown_values = [div_child['props']['children'][1]['props']['value']
+                       for div_child in modal_children if 'props' in div_child and isinstance(div_child['props']['children'][1], dcc.Dropdown)]
+
+    print("Dropdown Values:", dropdown_values)
+    # Iterate through columns and modify the 'type' attribute based on the dropdown value
+    for col, dtype in zip(columns, dropdown_values):
+        if dtype:
+            col['type'] = dtype
+
+    print("Updated Columns:", columns)
+
+    return columns
 
 
 if __name__ == '__main__':
