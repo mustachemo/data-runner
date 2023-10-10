@@ -7,14 +7,16 @@ layout = html.Div([  # This is the main layout of the app
     # Sidebar
     html.Div([
         html.Div([
-            dmc.Image( # This is the logo
+            dmc.Image(  # This is the logo
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
 
-        dmc.Text("Preferences", variant="subtle", style={"borderBottom": "1px dashed black", "paddingBottom": "5px"}), # This is the preferences header
+        dmc.Text("User Preferences", variant="subtle", style={
+                 "borderBottom": "1px dashed black", "paddingBottom": "5px"}),  # This is the preferences header
 
-        dmc.Tooltip( # This is enforce formatting button
+
+        dmc.Tooltip(  # This is enforce datatypes button
             multiline=True,
             width=220,
             withArrow=True,
@@ -22,24 +24,12 @@ layout = html.Div([  # This is the main layout of the app
             transition="fade",
             transitionDuration=300,
             # transitionTimingFunction="ease",
-            label="Enforce formatting for cells in the table. This will inform the cleaning function of specific formatting for selected columns. The cleaning function will be able to pick up on these formats and clean the data accordingly.",
-            children=dmc.Button("Enforce Formatting", id="btn-enforce-format",
-                                style={"marginBottom": "10px"}),
-        ),
-        dmc.Tooltip( # This is enforce datatypes button
-            multiline=True,
-            width=220,
-            withArrow=True,
-            position="right",
-            transition="fade",
-            transitionDuration=300,
-            # transitionTimingFunction="ease",
-            label="Enforce datatypes for columns in the table. This will convert the data in the column to the selected datatype. Furthermore, it will prevent the user from entering data that is not of the selected datatype.",
+            label="Enforce datatypes for columns in the table. This informs the cleaning function of the datatype for each column. The cleaning function will be able to distinguish between cells who don't match the specified datatype for a specific column.",
             children=dmc.Button("Enforce DataTypes", id="btn-enforce-dtypes",
                                 style={"marginBottom": "10px"}),
         ),
 
-        dmc.Modal( # This is the modal that will open when the enforce datatypes button is clicked
+        dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
             title="Select a column to enforce a datatype",
             id="enforce-dtypes-modal",
             zIndex=10000,
@@ -62,56 +52,68 @@ layout = html.Div([  # This is the main layout of the app
             ],
         ),
 
+        dmc.Tooltip(  # This is enforce formatting button
+            multiline=True,
+            width=220,
+            withArrow=True,
+            position="right",
+            transition="fade",
+            transitionDuration=300,
+            # transitionTimingFunction="ease",
+            label="Enforce formatting for cells in the table. This informs the cleaning function of specific formatting for selected columns. The cleaning function will be able to pick up on these formats and clean the data accordingly.",
+            children=dmc.Button("Enforce Formatting", id="btn-enforce-format",
+                                style={"marginBottom": "10px"}),
+        ),
+
 
 
         # dmc.Button("Clean Data", id="clean-data-button"),
         # dmc.Button("Cancel", id="cancel-button", disabled=True),
         # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
         # dmc.Text(id="log-textbox"),
-        dmc.Text("Cleanings", variant="subtle", style={"borderBottom": "1px dashed black", "paddingBottom": "5px"}),
-        dmc.Group(
-            [
-                dmc.Tooltip(
-                    withArrow=True,
-                    position="right",
-                    transition="fade",
-                    transitionDuration=300,
-                    label="Cleans the imported data",
-                    children=dmc.Button("Clean Data", id="clean-data-button", style={"marginBottom": "10px"}),
-                ),
-            ],
+        dmc.Text("Cleaning Operations", variant="subtle", style={
+                 "borderBottom": "1px dashed black", "paddingBottom": "5px"}),
+        dmc.Tooltip(
+            withArrow=True,
+            width=220,
+            multiline=True,
+            position="right",
+            transition="fade",
+            transitionDuration=300,
+            label="Main cleaning process. This will distinguish between empty cells, corrupt cells, and cells that don't match their columns enforced datatype, set in user preferences.",
+            children=dmc.Button(
+                "Clean Data", id="clean-data-button", style={"marginBottom": "10px"}),
         ),
-
-        dmc.Group(
-            [
-                dmc.Tooltip(
-                    withArrow=True,
-                    position="right",
-                    transition="fade",
-                    transitionDuration=300,
-                    label="Cleans the format of the imported data",
-                    children=dmc.Button("Clean Format", id="clean-format-button", style={"marginBottom": "10px"}),
-                ),
-            ],
-        ),
-        
-        dmc.Group(
-            [
-                dmc.Tooltip(
-                    withArrow=True,
-                    position="right",
-                    transition="fade",
-                    transitionDuration=300,
-                    label="Removes duplicates from the imported data",
-                    children=dmc.Button("Remove Duplicates", id="remove-duplicate-button", style={"marginBottom": "10px"}),
-                ),
-            ],
-        ),
-
-        dmc.Button("Clean Data", id="clean-data-button"),
         # dmc.Button("Cancel", id="cancel-button", disabled=True),
         # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
         # dmc.Text(id="log-textbox"),
+
+        dmc.Tooltip(
+            withArrow=True,
+            width=220,
+            multiline=True,
+            position="right",
+            transition="fade",
+            transitionDuration=300,
+            label="Secondary cleaning process. This will distinguish cells that don't match their columns enforced formatting, set in user preferences.",
+            children=dmc.Button(
+                "Clean Format", id="clean-format-button", style={"marginBottom": "10px"}),
+        ),
+        dmc.Tooltip(
+            withArrow=True,
+            width=220,
+            multiline=True,
+            position="right",
+            transition="fade",
+            transitionDuration=300,
+            label="Removes duplicate rows from the imported data",
+            children=dmc.Button(
+                "Remove Duplicates", id="remove-duplicate-button", style={"marginBottom": "10px"}),
+        ),
+
+
+
+
 
 
 
