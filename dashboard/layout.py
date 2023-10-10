@@ -125,13 +125,14 @@ layout = html.Div([  # This is the main layout of the app
             transitionDuration=300,
             label="Check all cells for any issues",
             children=dmc.Button(
-                "Clean All", id="btn-clean-all", style={"marginBottom": "5px"}, color="red"),
+                "Clean All", id="btn-clean-all", style={"marginBottom": "20px"}, color="red"),
         ),
         # dmc.Button("Cancel", id="cancel-button", disabled=True),
         # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
         # dmc.Text(id="log-textbox"),
 
-
+        dmc.Text("Messages", variant="subtle", style={"borderBottom": "1px dashed black", "paddingBottom": "5px"}),
+        dmc.Alert("You have 50 empty cells and 23 corrupt cells", title="Warning!", color="yellow", style={"padding": "20px", "margin":"15px", "height": "150px", "borderRadius":"10px"}),
 
 
 
