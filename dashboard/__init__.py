@@ -167,18 +167,33 @@ def populate_datatype_selection(opened, columns):
     prevent_initial_call=True
 )
 def update_column_datatypes(_, modal_children, columns):
+    print(modal_children)
     print("Callback Triggered!")
+    ctx = callback_context
+    triggered_component = ctx.triggered[0]['prop_id'].split('.')[0]
+    triggered_value = ctx.triggered[0]['value']
 
-    dropdown_values = [div_child['props']['children'][1]['props']['value']
-                       for div_child in modal_children if 'props' in div_child and isinstance(div_child['props']['children'][1], dcc.Dropdown)]
+    print("Triggered Component:", triggered_component)
+    print("Triggered Value:", triggered_value)
 
+    if triggered_component == 'modal-submit-button':
+        dropdown_values = [child['props']['value']
+                           for child in modal_children if isinstance(child, dcc.Dropdown)]
+        print("Dropdown Values:", dropdown_values)
+
+    dropdown_values = []
+    for child in modal_children:
+        if isinstance(child, dict) and child.get('type') == 'Div':
+            for inner_child in child['props']['children']:
+                if inner_child['type'] == 'Dropdown':
+                    dropdown_values.append(inner_child['props']['value'])
     print("Dropdown Values:", dropdown_values)
     # Iterate through columns and modify the 'type' attribute based on the dropdown value
     for col, dtype in zip(columns, dropdown_values):
         if dtype:
             col['type'] = dtype
 
-    print("Updated Columns:", columns)
+    # print("Updated Columns:", columns)
 
     return columns
 
