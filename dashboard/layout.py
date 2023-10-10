@@ -26,8 +26,8 @@ layout = html.Div([  # This is the main layout of the app
             transition="fade",
             transitionDuration=300,
             # transitionTimingFunction="ease",
-            label="Enforce datatypes for columns in the table. This will convert the data in the column to the selected datatype. Furthermore, it will prevent the user from entering data that is not of the selected datatype.",
-            children=dmc.Button("Set Datatypes", id="btn-enforce-format",
+            label="Enforce formatting for cells in the table. This will inform the cleaning function of specific formatting for selected columns. The cleaning function will be able to pick up on these formats and clean the data accordingly.",
+            children=dmc.Button("Enforce Formatting", id="btn-enforce-format",
                                 style={"marginBottom": "10px"}),
         ),
         dmc.Tooltip(
@@ -38,8 +38,8 @@ layout = html.Div([  # This is the main layout of the app
             transition="fade",
             transitionDuration=300,
             # transitionTimingFunction="ease",
-            label="Set formatting",
-            children=dmc.Button("Set Format", id="btn-enforce-dtypes",
+            label="Enforce datatypes for columns in the table. This will convert the data in the column to the selected datatype. Furthermore, it will prevent the user from entering data that is not of the selected datatype.",
+            children=dmc.Button("Enforce DataTypes", id="btn-enforce-dtypes",
                                 style={"marginBottom": "10px"}),
         ),
         dmc.Modal(
