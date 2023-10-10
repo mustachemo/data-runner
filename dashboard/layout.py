@@ -18,13 +18,13 @@ layout = html.Div([  # This is the main layout of the app
 
         dmc.Tooltip(  # This is enforce datatypes button
             multiline=True,
-            width=220,
+            width=200,
             withArrow=True,
             position="right",
             transition="fade",
             transitionDuration=300,
             # transitionTimingFunction="ease",
-            label="Enforce datatypes for columns in the table. This informs the cleaning function of the datatype for each column. The cleaning function will be able to distinguish between cells who don't match the specified datatype for a specific column.",
+            label="Enforce datatypes for each column in the table",
             children=dmc.Button("Enforce DataTypes", id="btn-enforce-dtypes",
                                 style={"marginBottom": "10px"}),
         ),
@@ -54,7 +54,7 @@ layout = html.Div([  # This is the main layout of the app
 
         dmc.Tooltip(  # This is enforce formatting button
             multiline=True,
-            width=220,
+            width=200,
             withArrow=True,
             position="right",
             transition="fade",
@@ -70,7 +70,7 @@ layout = html.Div([  # This is the main layout of the app
                  "borderBottom": "1px dashed black", "paddingBottom": "5px"}),
         dmc.Tooltip(
             withArrow=True,
-            width=220,
+            width=200,
             multiline=True,
             position="right",
             transition="fade",
@@ -85,7 +85,7 @@ layout = html.Div([  # This is the main layout of the app
 
         dmc.Tooltip(
             withArrow=True,
-            width=220,
+            width=200,
             multiline=True,
             position="right",
             transition="fade",
@@ -96,7 +96,7 @@ layout = html.Div([  # This is the main layout of the app
         ),
         dmc.Tooltip(
             withArrow=True,
-            width=220,
+            width=200,
             multiline=True,
             position="right",
             transition="fade",
@@ -133,7 +133,7 @@ layout = html.Div([  # This is the main layout of the app
                         {"value": "csv", "label": "csv"},
                         {"value": "xml", "label": "xml"},
                         {"value": "html", "label": "html"},
-                        # {"value": "xlsx", "label": "xlsx"},
+                        {"value": "xlsx", "label": "xlsx"},
                         # {"value": "pdf", "label": "pdf"},
                     ],
                 ),
