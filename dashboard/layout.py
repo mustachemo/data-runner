@@ -63,10 +63,56 @@ layout = html.Div([  # This is the main layout of the app
         ),
 
 
+
+        # dmc.Button("Clean Data", id="clean-data-button"),
+        # dmc.Button("Cancel", id="cancel-button", disabled=True),
+        # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
+        # dmc.Text(id="log-textbox"),
+        dmc.Text("Cleanings", variant="subtle", style={"borderBottom": "1px dashed black", "paddingBottom": "5px"}),
+        dmc.Group(
+            [
+                dmc.Tooltip(
+                    withArrow=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Cleans the imported data",
+                    children=dmc.Button("Clean Data", id="clean-data-button", style={"marginBottom": "10px"}),
+                ),
+            ],
+        ),
+
+        dmc.Group(
+            [
+                dmc.Tooltip(
+                    withArrow=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Cleans the format of the imported data",
+                    children=dmc.Button("Clean Format", id="clean-format-button", style={"marginBottom": "10px"}),
+                ),
+            ],
+        ),
+        
+        dmc.Group(
+            [
+                dmc.Tooltip(
+                    withArrow=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Removes duplicates from the imported data",
+                    children=dmc.Button("Remove Duplicates", id="remove-duplicate-button", style={"marginBottom": "10px"}),
+                ),
+            ],
+        ),
+
         dmc.Button("Clean Data", id="clean-data-button"),
         # dmc.Button("Cancel", id="cancel-button", disabled=True),
         # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
         # dmc.Text(id="log-textbox"),
+
 
 
     ], className="sidebar"),
