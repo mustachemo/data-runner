@@ -5,6 +5,7 @@ import diskcache
 
 import dashboard.utils.datacleaner as DataCleaner
 import dashboard.utils.handleFile as HandleFile
+import dashboard.utils.userPreferences as UserPreferences
 from .layout import layout
 
 cache = diskcache.Cache("./cache")
@@ -133,10 +134,9 @@ def enforce_dtypes_modal(nc1, nc2, nc3, opened):
 )
 def populate_datatype_selection(opened, columns):
     if not opened or not columns:
-        # raise exceptions.PreventUpdate
         return dmc.Text("Upload a file to enforce datatypes!", style={"color": "black", "fontWeight": "bold", "textAlign": "center"})
 
-    data_type_options = ["numeric", "text", "any", "datetime"]
+    data_type_options = ["text", "numeric",  "datetime", "any"]
     children = []
 
     for col_details in columns:
@@ -175,13 +175,9 @@ def update_column_datatypes(_, modal_children, columns):
     if not columns:
         raise exceptions.PreventUpdate
 
-    dropdown_values = []
-    for child in modal_children:
-        if isinstance(child, dict) and child.get('type') == 'Div':
-            for inner_child in child['props']['children']:
-                if inner_child['type'] == 'Dropdown':
-                    dropdown_values.append(inner_child['props']['value'])
+    dropdown_values = UserPreferences.extract_dropdown_values(modal_children)
 
+    # We are able to iterate over columns and dropdown_values simultaneously because they are both in the same order
     for col, dtype in zip(columns, dropdown_values):
         if dtype:
             col['type'] = dtype
