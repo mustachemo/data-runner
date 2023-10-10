@@ -12,11 +12,12 @@ layout = html.Div([  # This is the main layout of the app
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
 
-        dmc.Button("Clean Data", id="clean-data-button"),
-        dmc.Button("Cancel", id="cancel-button", disabled=True),
-        dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
-        dmc.Text(id="log-textbox"),
   
+        #Here should be the preferences subtitle
+        #dmc.Button("Preferences", variant="subtle", style={ "marginBottom": "1px dashed black"}),
+        dmc.Button("Preferences", variant="subtle", style={"borderBottom": "1px dashed black", "paddingBottom": "5px"}),
+
+
         dmc.Tooltip(
             multiline=True,
             width=220,
@@ -26,7 +27,19 @@ layout = html.Div([  # This is the main layout of the app
             transitionDuration=300,
             # transitionTimingFunction="ease",
             label="Enforce datatypes for columns in the table. This will convert the data in the column to the selected datatype. Furthermore, it will prevent the user from entering data that is not of the selected datatype.",
-            children=dmc.Button("Enforce datatypes", id="btn-enforce-dtypes",
+            children=dmc.Button("Set Datatypes", id="btn-enforce-format",
+                                style={"marginBottom": "10px"}),
+        ),
+        dmc.Tooltip(
+            multiline=True,
+            width=220,
+            withArrow=True,
+            position="right",
+            transition="fade",
+            transitionDuration=300,
+            # transitionTimingFunction="ease",
+            label="Set formatting",
+            children=dmc.Button("Set Format", id="btn-enforce-dtypes",
                                 style={"marginBottom": "10px"}),
         ),
         dmc.Modal(
@@ -52,6 +65,11 @@ layout = html.Div([  # This is the main layout of the app
             ],
         ),
 
+
+        dmc.Button("Clean Data", id="clean-data-button"),
+        # dmc.Button("Cancel", id="cancel-button", disabled=True),
+        # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
+        # dmc.Text(id="log-textbox"),
 
 
     ], className="sidebar"),
