@@ -133,7 +133,7 @@ layout = html.Div([  # This is the main layout of the app
                         {"value": "csv", "label": "csv"},
                         {"value": "xml", "label": "xml"},
                         {"value": "html", "label": "html"},
-                        {"value": "xlsx", "label": "xlsx"},
+                        # {"value": "xlsx", "label": "xlsx"},
                         # {"value": "pdf", "label": "pdf"},
                     ],
                 ),
@@ -152,10 +152,9 @@ layout = html.Div([  # This is the main layout of the app
             children=dash_table.DataTable(  # This is the table that will display the data
                 id='editable-table',  # Assign an ID to the DataTable component
                 editable=True,  # Enable editing,
-                column_selectable="multi",  # This enables column selection
-                row_selectable='multi',  # This enables row selection
-                # This enables virtualization, which allows large data sets to be rendered efficiently
-                virtualization=True,
+                # column_selectable="multi",  # This enables column selection
+                # row_selectable='multi',  # This enables row selection
+                # virtualization=True, # Enabling virtualization causes the table to not render properly
                 # selected_columns=[],
                 # selected_rowss=[],
                 sort_action='native',  # This enables data to be sorted by the user
