@@ -16,7 +16,8 @@ layout = html.Div([  # This is the main layout of the app
         # dmc.Button("Cancel", id="cancel-button", disabled=True),
         # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
         # dmc.Text(id="log-textbox"),
-        dmc.Text("Cleanings", size="md", style={ "marginBottom": "1px solid black", "borderBottom": "1px dashed black",}),
+        # dmc.Text("Cleanings", size="md", style={ "marginBottom": "1px solid black", "borderBottom": "1px dashed black"}),
+        dmc.Text("Cleanings", variant="subtle", style={"borderBottom": "1px dashed black", "paddingBottom": "5px"}),
         dmc.Group(
             [
                 dmc.Tooltip(
