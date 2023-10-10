@@ -60,8 +60,10 @@ To set up and run the Data Clean-up Tool, follow these steps:
 
 ## Features
 
+- Standard Features:
+
   - [x] Upload button to upload various forms of data 
-    - [ ] Style the button to make it look nice
+    - [x] Style the button to make it look nice
   - [x] Display the data in a table
   - [x] All columns are displayed and are scrollable
   - [x] Up to 259 rows are displayed and are scrollable. Rest of data is cycled through pages system
@@ -70,15 +72,22 @@ To set up and run the Data Clean-up Tool, follow these steps:
     - [x] Also need to make a button that exports the data into the format specified by the radio buttons
     - [ ] Style export button!
   - [ ] Make the columns/first row/headers sticky. Meaning they stay when scrolling
-  - [ ] Make a tab option for graphs (bonus feature) (https://dash.plotly.com/dash-core-components/tab)
+
   - [ ] Could style the table to make it nicer (bonus feature)
-  - [ ] Add enforcement of types. Say a column shows only numbers, let's say money. Enforce that you can't edit a text into there, only numeric values are allowed (https://dash.plotly.com/datatable/typing)
+  - [x] Add enforcement of types. Say a column shows only numbers, let's say money. Enforce that you can't edit a text into there, only numeric values are allowed (https://dash.plotly.com/datatable/typing)
   - [ ] Add a formatting setting that formats columns to a specified prefereance. For example, cost column will show $ sign and number type enforcement along with commas when needed (https://dash.plotly.com/datatable/typing)
   - [ ] Adding or removing columns
-  - [x] Make columns selection through a checkbox (https://dash.plotly.com/datatable/editable)
   - [ ] Update parse_content function to include 'xslx, xml, html" and "pdf" if we can (pdf is a bonus feature)
   - [ ] Combine two or more data of the same format into one file
+
+- Bonus Features:
+
+  - [ ] Make a tab option for graphs (https://dash.plotly.com/dash-core-components/tab)
+  - [ ] Highlight Changes: Display changed cells in a different color for easier tracking
   - [x] Add loading animation (https://dash.plotly.com/dash-core-components/loading)
+  - [x] Make columns selection through a checkbox (https://dash.plotly.com/datatable/editable)
+
+
 
 ## Optimization
 
