@@ -7,15 +7,14 @@ layout = html.Div([  # This is the main layout of the app
     # Sidebar
     html.Div([
         html.Div([
-            dmc.Image(
+            dmc.Image( # This is the logo
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
 
-        #Here should be the preferences subtitle
-        dmc.Text("Preferences", variant="subtle", style={"borderBottom": "1px dashed black", "paddingBottom": "5px"}),
+        dmc.Text("Preferences", variant="subtle", style={"borderBottom": "1px dashed black", "paddingBottom": "5px"}), # This is the preferences header
 
-        dmc.Tooltip(
+        dmc.Tooltip( # This is enforce formatting button
             multiline=True,
             width=220,
             withArrow=True,
@@ -27,7 +26,7 @@ layout = html.Div([  # This is the main layout of the app
             children=dmc.Button("Enforce Formatting", id="btn-enforce-format",
                                 style={"marginBottom": "10px"}),
         ),
-        dmc.Tooltip(
+        dmc.Tooltip( # This is enforce datatypes button
             multiline=True,
             width=220,
             withArrow=True,
@@ -39,7 +38,8 @@ layout = html.Div([  # This is the main layout of the app
             children=dmc.Button("Enforce DataTypes", id="btn-enforce-dtypes",
                                 style={"marginBottom": "10px"}),
         ),
-        dmc.Modal(
+
+        dmc.Modal( # This is the modal that will open when the enforce datatypes button is clicked
             title="Select a column to enforce a datatype",
             id="enforce-dtypes-modal",
             zIndex=10000,
