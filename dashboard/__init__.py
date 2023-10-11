@@ -85,22 +85,22 @@ def download_file(_, data, columns, fileType):
 ###################### HIGHLIGHT COLUMNS ######################
 
 
-@callback(
-    Output('editable-table', 'style_data_conditional'),
-    Input('editable-table', 'selected_columns')
-    # Input('editable-table', 'selected_rows')
-)
-def highlight_column(selected_columns):
-    styles = []
+# @callback(
+#     Output('editable-table', 'style_data_conditional'),
+#     Input('editable-table', 'selected_columns')
+#     # Input('editable-table', 'selected_rows')
+# )
+# def highlight_column(selected_columns):
+#     styles = []
 
-    if selected_columns:
-        styles.extend([{'if': {'column_id': col}, 'background_color': '#D2F3FF'}
-                       for col in selected_columns])
+#     if selected_columns:
+#         styles.extend([{'if': {'column_id': col}, 'background_color': '#D2F3FF'}
+#                        for col in selected_columns])
 
-    # if selected_rows:
-    #     styles.extend([{'if': {'row_index': row}, 'background_color': '#7FFF7F'} for row in selected_rows])
+#     # if selected_rows:
+#     #     styles.extend([{'if': {'row_index': row}, 'background_color': '#7FFF7F'} for row in selected_rows])
 
-    return styles
+#     return styles
 
 
 # endregion
@@ -164,31 +164,7 @@ def populate_datatype_selection(opened, columns):
     if not opened or not columns:
         return dmc.Text("Upload a file to enforce datatypes!", style={"color": "black", "fontWeight": "bold", "textAlign": "center"})
 
-    data_type_options = ["text", "numeric",  "datetime", "any"]
-    children = []
-
-    for col_details in columns:
-        col_name = col_details['name']
-        dropdown_value = col_details.get('type', None)
-
-        dropdown = dcc.Dropdown(
-            id={'type': 'datatype-dropdown', 'index': col_name},
-            options=[{'label': dt, 'value': dt}
-                     for dt in data_type_options],
-            value=dropdown_value,
-            placeholder="Select data type",
-            style={'width': '9rem'}
-        )
-
-        children.append(
-            html.Div(
-                [html.Label(col_name), dropdown],
-                style={"display": "flex", "justifyContent": "space-between",
-                       "alignItems": "center", "padding": "0.5rem", "borderBottom": "1px solid #000"}
-            )
-        )
-
-    return children
+    return UserPreferences.populate_datatype_selection(opened, columns)
 
 
 ###################### ENFORCE DATATYPES (SUBMIT MODAL) ######################

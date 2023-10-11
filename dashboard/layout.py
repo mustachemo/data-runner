@@ -197,7 +197,7 @@ layout = html.Div([  # This is the main layout of the app
                 #     'backgroundColor': 'rgb(50, 50, 50)',
                 #     'color': 'white'
                 # },
-                # fixed_rows={'headers':True, 'data':1}  # Fix header rows at the top
+                # fixed_rows={'headers': True, 'data': 0}
             ), parent_style={'maxWidth': '100%', 'maxHeight': '100%'}
         )
 
