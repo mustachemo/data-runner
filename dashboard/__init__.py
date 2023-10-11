@@ -21,12 +21,12 @@ app.layout = layout
 
 # region handleFile
 
+
 ###################### UPLOAD FILE ######################
-
-
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
     Output('editable-table', 'columns', allow_duplicate=True),
+    Output('editable-table', 'fixed_rows'),
     State('editable-table', 'data'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),

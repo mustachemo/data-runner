@@ -1,5 +1,4 @@
-from dash import html
-import dash_core_components as dcc
+from dash import html, dcc
 
 
 def extract_dropdown_values(children):

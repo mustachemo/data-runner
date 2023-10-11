@@ -44,7 +44,7 @@ def importFiles(prevData, files, fileNames):
     print(message)
 
     # todo return message
-    return data, columns
+    return data, columns, {'headers': True}
 
 
 def combineDf(prevDf, df):
