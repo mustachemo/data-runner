@@ -32,12 +32,13 @@ def cleanDataAuto(data, columns, preferences):
                 elif (newCellValue != cellValue):
                     df[columnId].iloc[rowIndex] = newCellValue
                     changedCells.append((columnId, rowIndex))
-                    
+
     newData = df.to_dict("records")
     return newData, message, changedCells, emptyCells, needsAttention
 
-def cleanCell(cellValue, dataType, format = None):
-    #todo add to logic
+
+def cleanCell(cellValue, dataType, format=None):
+    # todo add to logic
     # returns newCellValue, isCleaned
     try:
         match dataType:
@@ -48,3 +49,9 @@ def cleanCell(cellValue, dataType, format = None):
     except Exception as e:
         print("unable to convert", e)
         return cellValue, False
+
+
+def remove_duplicate_rows(data, n_clicks):
+    df = pd.DataFrame.from_dict(data)
+    df.drop_duplicates(inplace=True)
+    return df.to_dict('records')

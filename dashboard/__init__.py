@@ -3,9 +3,10 @@ import dash_mantine_components as dmc
 import pandas as pd
 import diskcache
 
-import dashboard.utils.datacleaner as DataCleaner
+import dashboard.utils.dataCleaner as DataCleaner
 import dashboard.utils.handleFile as HandleFile
 import dashboard.utils.userPreferences as UserPreferences
+import dashboard.utils.dataAnalysis as DataAnalysis
 from .layout import layout
 
 cache = diskcache.Cache("./cache")
@@ -38,7 +39,34 @@ def upload_file(prevData, files, fileNames):
     return HandleFile.importFiles(prevData, files, fileNames)
 
 
+###################### CHECK NUMBER OF EMPTY AND CORRUPT CELLS WHEN FILE IS UPLOADED ######################
+@callback(
+    Output('alert-empty-and-corrupt-cells', 'children'),
+    Input('editable-table', 'data', )
+)
+def check_number_of_empty_and_corrupt_cells(data):
+    if data is None:
+        raise exceptions.PreventUpdate
+
+    return DataAnalysis.get_data_analysis(data)
+
+
+###################### REMOVE DUPLICATE ROWS ######################
+@callback(
+    Output('editable-table', 'data'),
+    State('editable-table', 'data'),
+    Input('btn-remove-duplicates', 'n_clicks')
+)
+def remove_duplicate_rows(data, n_clicks):
+    if data is None:
+        raise exceptions.PreventUpdate
+
+    return DataCleaner.remove_duplicate_rows(data, n_clicks)
+
+
 ###################### DOWNLOAD FILE ######################
+
+
 @callback(
     Output("download-file", "data"),
     Input("btn-download", "n_clicks"),
