@@ -12,10 +12,15 @@ layout = html.Div([  # This is the main layout of the app
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
 
+        dmc.Text("Data Analysis", variant="subtle", style={
+                 "borderBottom": "1px dashed black", "paddingBottom": "5px"}),
+        dmc.Alert(id="alert-empty-and-corrupt-cells",
+                  color="yellow"),
+
+
+
         dmc.Text("User Preferences", variant="subtle", style={
                  "borderBottom": "1px dashed black", "paddingBottom": "5px"}),  # This is the preferences header
-
-
         dmc.Tooltip(  # This is enforce datatypes button
             multiline=True,
             width=200,
@@ -130,11 +135,6 @@ layout = html.Div([  # This is the main layout of the app
         # dmc.Button("Cancel", id="cancel-button", disabled=True),
         # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
         # dmc.Text(id="log-textbox"),
-
-        dmc.Text("Messages", variant="subtle", style={"borderBottom": "1px dashed black", "paddingBottom": "5px"}),
-        dmc.Alert("You have 50 empty cells and 23 corrupt cells", title="Warning!", color="yellow", style={"padding": "20px", "margin":"15px", "height": "150px", "borderRadius":"10px"}),
-
-
 
 
 

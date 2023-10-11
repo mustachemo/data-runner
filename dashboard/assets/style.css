@@ -66,3 +66,15 @@
   align-items: center;
   gap: 1rem;
 }
+
+/********* ALERT-EMPTY-AND-CORRUPT-CELLS *********/
+#alert-empty-and-corrupt-cells {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+  max-width: 100%;
+  /* margin-left: 20px;
+  margin-right: 20px; */
+  margin-bottom: 20px;
+  max-height: 150px;
+}
