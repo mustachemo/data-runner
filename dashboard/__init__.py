@@ -1,67 +1,91 @@
-from dash import Dash, Input, Output, State, callback, callback_context, exceptions
-import dash_bootstrap_components as dbc
+from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager
+import dash_mantine_components as dmc
 import pandas as pd
+import diskcache
 
-from dashboard.utils.datacleaner import DataCleaner as dc
+import dashboard.utils.dataCleaner as DataCleaner
+import dashboard.utils.handleFile as HandleFile
+import dashboard.utils.userPreferences as UserPreferences
+import dashboard.utils.dataAnalysis as DataAnalysis
 from .layout import layout
 
-# This is the data handler object (see dashboard/utils/datahandler.py)
-dc = dc()
-df = pd.DataFrame()
+cache = diskcache.Cache("./cache")
+long_callback_manager = DiskcacheManager(cache)
+
 # This is the main app object
 app = Dash(__name__)
 # Improves load time by not loading all callbacks at once. 5-10% improvement
-app.config.suppress_callback_exceptions = True
+# app.config.suppress_callback_exceptions = True
 
 app.layout = layout
 
+# region handleFile
 
 ###################### UPLOAD FILE ######################
+
+
 @callback(
-    Output('editable-table', 'data'),
-    Output('editable-table', 'columns'),
+    Output('editable-table', 'data', allow_duplicate=True),
+    Output('editable-table', 'columns', allow_duplicate=True),
+    State('editable-table', 'data'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
-    State('upload-data', 'last_modified')
+    prevent_initial_call=True,
 )
-def upload_file(list_of_contents, list_of_names, list_of_dates):
-    if list_of_contents is None:
+def upload_file(prevData, files, fileNames):
+    if files is None:
         raise exceptions.PreventUpdate
 
-    df = dc.parse_contents(
-        list_of_contents[0], list_of_names[0], list_of_dates[0])
-    columns = [{'name': col, 'id': col, "selectable": True, "renamable": True,
-                "clearable": True, "hideable": True, "deletable": True} for col in df.columns]
+    return HandleFile.importFiles(prevData, files, fileNames)
 
-    return df.to_dict('records'), columns
+
+###################### CHECK NUMBER OF EMPTY AND CORRUPT CELLS WHEN FILE IS UPLOADED ######################
+@callback(
+    Output('alert-empty-and-corrupt-cells', 'children'),
+    Input('editable-table', 'data', )
+)
+def check_number_of_empty_and_corrupt_cells(data):
+    if data is None:
+        raise exceptions.PreventUpdate
+
+    return DataAnalysis.get_data_analysis(data)
+
+
+###################### REMOVE DUPLICATE ROWS ######################
+@callback(
+    Output('editable-table', 'data'),
+    State('editable-table', 'data'),
+    Input('btn-remove-duplicates', 'n_clicks')
+)
+def remove_duplicate_rows(data, n_clicks):
+    if data is None:
+        raise exceptions.PreventUpdate
+
+    return DataCleaner.remove_duplicate_rows(data, n_clicks)
 
 
 ###################### DOWNLOAD FILE ######################
-@callback(  # This is a callback that will download the file
+
+
+@callback(
     Output("download-file", "data"),
-    [Input("btn-download", "n_clicks")],
-    [State('framework-select', 'value'),
-     State('editable-table', 'data'),
-     State('editable-table', 'columns')],
+    Input("btn-download", "n_clicks"),
+    State('editable-table', 'data'),
+    State('editable-table', 'columns'),
+    State('file-type-select', 'value'),
     prevent_initial_call=True,
 )
-def download_specific_files(_, fileType, dataTableData, current_columns):
-    df = pd.DataFrame.from_dict(data=dataTableData)
+def download_file(_, data, columns, fileType):
+    return HandleFile.exportFile(data, columns, fileType)
 
-    # Renaming columns based on current columns in DataTable
-    renaming_dict = {col['id']: col['name'] for col in current_columns}
-    df.rename(columns=renaming_dict, inplace=True)
+# endregion
 
-    if fileType == 'csv':
-        return dict(content=df.to_csv(index=False), filename="data.csv")
-    if fileType == 'xml':
-        return dict(content=df.to_xml(index=False), filename="data.xml")
-    if fileType == 'html':
-        return dict(content=df.to_html(index=False), filename="data.html")
-
+# region design
 
 ###################### HIGHLIGHT COLUMNS ######################
-@callback(  # This is a callback that will highlight the selected columns
+
+
+@callback(
     Output('editable-table', 'style_data_conditional'),
     Input('editable-table', 'selected_columns')
     # Input('editable-table', 'selected_rows')
@@ -77,6 +101,116 @@ def highlight_column(selected_columns):
     #     styles.extend([{'if': {'row_index': row}, 'background_color': '#7FFF7F'} for row in selected_rows])
 
     return styles
+
+
+# endregion
+
+# region datacleaner
+
+# @app.long_callback(
+#     Output("editable-table", "data"),
+#     Output("log-textbox", "children"),
+#     Input("clean-data-button", "n_clicks"),
+#     State("editable-table", "data"),
+#     State("editable-table", "columns"),
+#     State("auto-clean-checkbox", "checked"),
+#     running=[(Output("clean-data-button", "disabled"), True, False),
+#              (Output("cancel-button", "disabled"), False, True)
+#              ],
+#     cancel=[Input("cancel-button", "n_clicks")],
+#     manager=long_callback_manager,
+#     prevent_initial_call=True,
+# )
+# def cleanData(_, data, columns, isAutoClean):
+#     # todo manual clean
+#     # todo get and use user preferences
+#     # todo clean up logging
+#     # reconsider what to report based on frontend needs
+#     userPreferences = {"*": "int"}
+#     if (isAutoClean):
+#         data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(
+#             data, columns, userPreferences)
+#         message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
+#         print(message)
+#         return data, message
+
+#     print("Not implemented")
+#     raise exceptions.NonExistentEventException
+
+# endregion
+
+
+###################### ENFORCE DATATYPES (OPEN MODAL) ######################
+@callback(
+    Output("enforce-dtypes-modal", "opened"),
+    Input("btn-enforce-dtypes", "n_clicks"),
+    Input("modal-close-button", "n_clicks"),
+    Input("modal-submit-button", "n_clicks"),
+    State("enforce-dtypes-modal", "opened"),
+    prevent_initial_call=True,
+)
+def enforce_dtypes_modal(nc1, nc2, nc3, opened):
+    return not opened
+
+
+###################### ENFORCE DATATYPES (FILL MODAL WITH COLUMNS) ######################
+@callback(
+    Output("column-type-selector", "children"),
+    Input("enforce-dtypes-modal", "opened"),
+    State("editable-table", "columns"),
+    prevent_initial_call=True,
+)
+def populate_datatype_selection(opened, columns):
+    if not opened or not columns:
+        return dmc.Text("Upload a file to enforce datatypes!", style={"color": "black", "fontWeight": "bold", "textAlign": "center"})
+
+    data_type_options = ["text", "numeric",  "datetime", "any"]
+    children = []
+
+    for col_details in columns:
+        col_name = col_details['name']
+        dropdown_value = col_details.get('type', None)
+
+        dropdown = dcc.Dropdown(
+            id={'type': 'datatype-dropdown', 'index': col_name},
+            options=[{'label': dt, 'value': dt}
+                     for dt in data_type_options],
+            value=dropdown_value,
+            placeholder="Select data type",
+            style={'width': '9rem'}
+        )
+
+        children.append(
+            html.Div(
+                [html.Label(col_name), dropdown],
+                style={"display": "flex", "justifyContent": "space-between",
+                       "alignItems": "center", "padding": "0.5rem", "borderBottom": "1px solid #000"}
+            )
+        )
+
+    return children
+
+
+###################### ENFORCE DATATYPES (SUBMIT MODAL) ######################
+@callback(
+    Output('editable-table', 'columns'),
+    Input('modal-submit-button', 'n_clicks'),
+    State('column-type-selector', 'children'),
+    State('editable-table', 'columns'),
+    prevent_initial_call=True
+)
+def update_column_datatypes(_, modal_children, columns):
+    if not columns:
+        raise exceptions.PreventUpdate
+
+    dropdown_values = UserPreferences.extract_dropdown_values(modal_children)
+
+    # We are able to iterate over columns and dropdown_values simultaneously because they are both in the same order
+    for col, dtype in zip(columns, dropdown_values):
+        if dtype:
+            col['type'] = dtype
+
+    return columns
 
 
 if __name__ == '__main__':
