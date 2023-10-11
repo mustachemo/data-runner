@@ -10,6 +10,7 @@ dependencies:
   - pip:
     - dash-mantine-components
     - dash[diskcache]
+    - dash_iconify
   - openpyxl # unused
   - lxml # unused
   - xlsxwriter # unused

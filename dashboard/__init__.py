@@ -2,6 +2,7 @@ from dash import Dash, Input, Output, State, callback, callback_context, excepti
 import dash_mantine_components as dmc
 import pandas as pd
 import diskcache
+from dash_iconify import DashIconify
 
 import dashboard.utils.dataCleaner as DataCleaner
 import dashboard.utils.handleFile as HandleFile
@@ -54,6 +55,7 @@ def check_number_of_empty_and_corrupt_cells(data):
 ###################### REMOVE DUPLICATE ROWS ######################
 @callback(
     Output('editable-table', 'data'),
+    # Output('notify-container', 'children'),
     State('editable-table', 'data'),
     Input('btn-remove-duplicates', 'n_clicks')
 )
@@ -61,6 +63,15 @@ def remove_duplicate_rows(data, n_clicks):
     if data is None:
         raise exceptions.PreventUpdate
 
+    # success_notification = dmc.Notification(
+    #     id="my-notification",
+    #     title="Data loaded",
+    #     message="The process has started.",
+    #     color="green",
+    #     action="show",
+    #     icon=DashIconify(icon="akar-icons:circle-check"),
+    # )
+    # return DataCleaner.remove_duplicate_rows(data, n_clicks), success_notification
     return DataCleaner.remove_duplicate_rows(data, n_clicks)
 
 

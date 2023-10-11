@@ -1,8 +1,10 @@
 from dash import html, dcc, dash_table
 import dash_mantine_components as dmc
-# import dash_bootstrap_components as dbc
 
 layout = html.Div([  # This is the main layout of the app
+
+    # This is the notification container
+    # html.Div(id="notify-container"),
 
     # Sidebar
     html.Div([
@@ -141,14 +143,25 @@ layout = html.Div([  # This is the main layout of the app
     ], className="sidebar"),
 
 
+
+
     # Main content
     html.Div([
         html.Div([
-            dcc.Upload(  # This is the upload button
-                id='upload-data',
-                children=dmc.Button("Upload File",
-                                    style={"backgroundColor": "#0C7FDA"}),
-                multiple=True
+            dmc.Tooltip(
+                withArrow=True,
+                width=200,
+                multiline=True,
+                position="right",
+                transition="fade",
+                transitionDuration=300,
+                label="Mulitple file uploads will be combined into one table, duplicate rows removed, and mismatched columns ignored.",
+                children=dcc.Upload(  # This is the upload button
+                    id='upload-data',
+                    children=dmc.Button("Upload File",
+                                        style={"backgroundColor": "#0C7FDA"}),
+                    multiple=True
+                ),
             ),
             html.Div([  # This is the dropdown and download button
                 dmc.Select(
