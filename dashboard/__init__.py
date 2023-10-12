@@ -28,7 +28,6 @@ app.layout = layout
     Output('editable-table', 'data', allow_duplicate=True),
     Output('editable-table', 'columns', allow_duplicate=True),
     Output('editable-table', 'fixed_rows'),
-    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     State('editable-table', 'data'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
@@ -96,31 +95,6 @@ def download_file(_, data, columns, fileType):
 
 # endregion
 
-# region design
-
-###################### HIGHLIGHT COLUMNS ######################
-
-
-# @callback(
-#     Output('editable-table', 'style_data_conditional'),
-#     Input('editable-table', 'selected_columns')
-#     # Input('editable-table', 'selected_rows')
-# )
-# def highlight_column(selected_columns):
-#     styles = []
-
-#     if selected_columns:
-#         styles.extend([{'if': {'column_id': col}, 'background_color': '#D2F3FF'}
-#                        for col in selected_columns])
-
-#     # if selected_rows:
-#     #     styles.extend([{'if': {'row_index': row}, 'background_color': '#7FFF7F'} for row in selected_rows])
-
-#     return styles
-
-
-# endregion
-
 # region datacleaner
 
 # @app.long_callback(
@@ -160,8 +134,8 @@ def download_file(_, data, columns, fileType):
 @callback(
     Output("enforce-dtypes-modal", "opened"),
     Input("btn-enforce-dtypes", "n_clicks"),
-    Input("modal-close-button", "n_cxslicks"),
-    Input("modal-submit-button", "n_clicks"),
+    Input("dtype-modal-close-button", "n_cxslicks"),
+    Input("dtype-modal-submit-button", "n_clicks"),
     State("enforce-dtypes-modal", "opened"),
     prevent_initial_call=True,
 )
@@ -186,8 +160,7 @@ def populate_datatype_selection(opened, columns):
 ###################### ENFORCE DATATYPES (SUBMIT MODAL) ######################
 @callback(
     Output('editable-table', 'columns'),
-    Output('editable-table', 'style_data_conditional'),
-    Input('modal-submit-button', 'n_clicks'),
+    Input('dtype-modal-submit-button', 'n_clicks'),
     State('column-type-selector', 'children'),
     State('editable-table', 'columns'),
     prevent_initial_call=True
@@ -203,7 +176,7 @@ def update_column_datatypes(_, modal_children, columns):
         if dtype:
             col['type'] = dtype
 
-    return columns, DataAnalysis.generate_dtype_highlighting(columns)
+    return columns
 
 
 if __name__ == '__main__':

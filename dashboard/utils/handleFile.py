@@ -46,7 +46,7 @@ def importFiles(prevData, files, fileNames):
     print(message)
 
     # todo return message
-    return data, columns, {'headers': True}, higlight_empty_nan_null_cells(columns)
+    return data, columns, {'headers': True}
 
 
 def combineDf(prevDf, df):

@@ -19,6 +19,44 @@ layout = html.Div([  # This is the main layout of the app
         dmc.Alert(id="alert-empty-and-corrupt-cells",
                   color="yellow"),
 
+        dmc.Tooltip(
+            multiline=True,
+            width=200,
+            withArrow=True,
+            position="right",
+            transition="fade",
+            transitionDuration=300,
+            # transitionTimingFunction="ease",
+            label="Opens a modal for cell higlighting options",
+            children=dmc.Button("Highlight Cells", id="btn-higlight-cells",
+                                style={"marginBottom": "5px"}),
+        ),
+
+        dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
+            title="Choose options for cell highlighting",
+            id="higlight-cells-modal",
+            zIndex=10000,
+            children=[
+                dmc.Space(h=20),
+                dmc.Checkbox(label="Highlight Empty/NaN/None Cells",
+                             color="pink", checked=True),
+                dmc.Checkbox(
+                    label="Highlight Datatype Enforced Columns", color="pink", checked=True),
+                dmc.Group(
+                    [
+                        dmc.Button(
+                            "Submit", id="higlight-modal-submit-button"),
+                        dmc.Button(
+                            "Close",
+                            color="red",
+                            variant="outline",
+                            id="higlight-modal-close-button",
+                        ),
+                    ],
+                    position="right",
+                ),
+            ],
+        ),
 
 
         dmc.Text("User Preferences", variant="subtle", style={
@@ -46,12 +84,12 @@ layout = html.Div([  # This is the main layout of the app
                 dmc.Space(h=20),
                 dmc.Group(
                     [
-                        dmc.Button("Submit", id="modal-submit-button"),
+                        dmc.Button("Submit", id="dtype-modal-submit-button"),
                         dmc.Button(
                             "Close",
                             color="red",
                             variant="outline",
-                            id="modal-close-button",
+                            id="dtype-modal-close-button",
                         ),
                     ],
                     position="right",
