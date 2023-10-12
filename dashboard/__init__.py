@@ -1,4 +1,4 @@
-from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager
+from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager, no_update
 import dash_mantine_components as dmc
 import pandas as pd
 import diskcache
@@ -40,7 +40,7 @@ def upload_file(prevData, files, fileNames):
     return HandleFile.importFiles(prevData, files, fileNames)
 
 
-###################### CHECK NUMBER OF EMPTY AND CORRUPT CELLS WHEN FILE IS UPLOADED ######################
+###################### Data Analytics ######################
 @callback(
     Output('alert-empty-and-corrupt-cells', 'children'),
     Input('editable-table', 'data', )
@@ -52,6 +52,46 @@ def check_number_of_empty_and_corrupt_cells(data):
     return DataAnalysis.get_data_analysis(data)
 
 
+###################### HIGHLIGHT CELLS (OPEN MODAL) ######################
+@callback(
+    Output("higlight-cells-modal", "opened"),
+    Input("btn-higlight-cells", "n_clicks"),
+    Input("higlight-modal-submit-button", "n_clicks"),
+    Input("higlight-modal-close-button", "n_clicks"),
+    State("higlight-cells-modal", "opened"),
+    prevent_initial_call=True,
+)
+def higlight_cells_modal(nc1, nc2, nc3, opened):
+    return not opened
+
+
+###################### HIGHLIGHT CELLS (SUBMIT MODAL) ######################
+@callback(
+    Output('editable-table', 'style_data_conditional'),
+    Input("higlight-modal-submit-button", "n_clicks"),
+    State('highlight-empty-nan-null-cells-checkbox', 'checked'),
+    State('highlight-dtype-columns-cells-checkbox', 'checked'),
+    State("editable-table", "columns"),
+    prevent_initial_call=True,
+)
+def highlight_cells(submit_btn, highlight_empty_cells, highlight_dtype_cells, columns):
+    if not columns:
+        raise exceptions.PreventUpdate
+
+    new_highlighting = []
+
+    if highlight_empty_cells:
+        new_highlighting.extend(
+            DataAnalysis.higlight_empty_nan_null_cells(columns))
+
+    if highlight_dtype_cells:
+        new_highlighting.extend(
+            DataAnalysis.generate_dtype_highlighting(columns))
+
+    if submit_btn:
+        return new_highlighting
+
+
 ###################### REMOVE DUPLICATE ROWS ######################
 @callback(
     Output('editable-table', 'data'),
@@ -60,8 +100,12 @@ def check_number_of_empty_and_corrupt_cells(data):
     Input('btn-remove-duplicates', 'n_clicks')
 )
 def remove_duplicate_rows(data, n_clicks):
-    if data is None:
+    if data is None and n_clicks is None:
         raise exceptions.PreventUpdate
+
+    df = pd.DataFrame.from_dict(data)
+    df.drop_duplicates(inplace=True)
+    return df.to_dict('records')
 
     # success_notification = dmc.Notification(
     #     id="my-notification",
@@ -72,7 +116,7 @@ def remove_duplicate_rows(data, n_clicks):
     #     icon=DashIconify(icon="akar-icons:circle-check"),
     # )
     # return DataCleaner.remove_duplicate_rows(data, n_clicks), success_notification
-    return DataCleaner.remove_duplicate_rows(data, n_clicks)
+    # return DataCleaner.remove_duplicate_rows(data, n_clicks)
 
 
 ###################### DOWNLOAD FILE ######################
@@ -88,31 +132,6 @@ def remove_duplicate_rows(data, n_clicks):
 )
 def download_file(_, data, columns, fileType):
     return HandleFile.exportFile(data, columns, fileType)
-
-# endregion
-
-# region design
-
-###################### HIGHLIGHT COLUMNS ######################
-
-
-# @callback(
-#     Output('editable-table', 'style_data_conditional'),
-#     Input('editable-table', 'selected_columns')
-#     # Input('editable-table', 'selected_rows')
-# )
-# def highlight_column(selected_columns):
-#     styles = []
-
-#     if selected_columns:
-#         styles.extend([{'if': {'column_id': col}, 'background_color': '#D2F3FF'}
-#                        for col in selected_columns])
-
-#     # if selected_rows:
-#     #     styles.extend([{'if': {'row_index': row}, 'background_color': '#7FFF7F'} for row in selected_rows])
-
-#     return styles
-
 
 # endregion
 
@@ -155,8 +174,8 @@ def download_file(_, data, columns, fileType):
 @callback(
     Output("enforce-dtypes-modal", "opened"),
     Input("btn-enforce-dtypes", "n_clicks"),
-    Input("modal-close-button", "n_clicks"),
-    Input("modal-submit-button", "n_clicks"),
+    Input("dtype-modal-close-button", "n_clicks"),
+    Input("dtype-modal-submit-button", "n_clicks"),
     State("enforce-dtypes-modal", "opened"),
     prevent_initial_call=True,
 )
@@ -181,7 +200,7 @@ def populate_datatype_selection(opened, columns):
 ###################### ENFORCE DATATYPES (SUBMIT MODAL) ######################
 @callback(
     Output('editable-table', 'columns'),
-    Input('modal-submit-button', 'n_clicks'),
+    Input('dtype-modal-submit-button', 'n_clicks'),
     State('column-type-selector', 'children'),
     State('editable-table', 'columns'),
     prevent_initial_call=True

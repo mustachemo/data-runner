@@ -19,6 +19,46 @@ layout = html.Div([  # This is the main layout of the app
         dmc.Alert(id="alert-empty-and-corrupt-cells",
                   color="yellow"),
 
+        dmc.Tooltip(
+            multiline=True,
+            width=200,
+            withArrow=True,
+            position="right",
+            transition="fade",
+            transitionDuration=300,
+            # transitionTimingFunction="ease",
+            label="Opens a modal for cell higlighting options",
+            children=dmc.Button("Highlight Cells", id="btn-higlight-cells",
+                                style={"marginBottom": "5px"}),
+        ),
+
+        dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
+            title="Choose options for cell highlighting",
+            id="higlight-cells-modal",
+            zIndex=10000,
+            children=[
+                dmc.Space(h=20),
+                dmc.Checkbox(label="Highlight Empty/NaN/None Cells", id="highlight-empty-nan-null-cells-checkbox",
+                             color="pink", checked=True),
+                dmc.Space(h=10),
+                dmc.Checkbox(
+                    label="Highlight Datatype Enforced Columns", id="highlight-dtype-columns-cells-checkbox", color="pink", checked=True),
+                dmc.Space(h=10),
+                dmc.Group(
+                    [
+                        dmc.Button(
+                            "Submit", id="higlight-modal-submit-button"),
+                        dmc.Button(
+                            "Close",
+                            color="red",
+                            variant="outline",
+                            id="higlight-modal-close-button",
+                        ),
+                    ],
+                    position="right",
+                ),
+            ],
+        ),
 
 
         dmc.Text("User Preferences", variant="subtle", style={
@@ -46,12 +86,12 @@ layout = html.Div([  # This is the main layout of the app
                 dmc.Space(h=20),
                 dmc.Group(
                     [
-                        dmc.Button("Submit", id="modal-submit-button"),
+                        dmc.Button("Submit", id="dtype-modal-submit-button"),
                         dmc.Button(
                             "Close",
                             color="red",
                             variant="outline",
-                            id="modal-close-button",
+                            id="dtype-modal-close-button",
                         ),
                     ],
                     position="right",
@@ -163,6 +203,59 @@ layout = html.Div([  # This is the main layout of the app
                     multiple=True
                 ),
             ),
+
+            html.Div([
+
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Empty/Corrupt Cells: Cells that are empty, NaN, or None",
+                    children=html.Div(style={
+                        'display': 'inline-block',
+                        'width': '20px',
+                        'height': '20px',
+                        'backgroundColor': 'tomato',
+                        "margin": "0.5rem",
+                    })),
+
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Cells with numeric datatype enforced",
+                    children=html.Div(style={
+                        'display': 'inline-block',
+                        'width': '20px',
+                        'height': '20px',
+                        'backgroundColor': 'lightgreen',
+                        'margin': '0.5rem',
+                    })),
+
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Cells with datetime datatype enforced",
+                    children=html.Div(style={
+                        'display': 'inline-block',
+                        'width': '20px',
+                        'height': '20px',
+                        'backgroundColor': 'lightyellow',
+                        'margin': '0.5rem',
+                    })),
+
+            ], style={"display": "flex", "backgroundColor": "grey"}),
+
             html.Div([  # This is the dropdown and download button
                 dmc.Select(
                     id="file-type-select",
@@ -206,6 +299,7 @@ layout = html.Div([  # This is the main layout of the app
                     'backgroundColor': 'rgb(224,241,255)',
                     'color': 'rgb(12,127,218)'
                 },
+                style_cell_conditional=()
                 # style_data={
                 #     'backgroundColor': 'rgb(50, 50, 50)',
                 #     'color': 'white'
