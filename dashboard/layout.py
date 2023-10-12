@@ -38,10 +38,12 @@ layout = html.Div([  # This is the main layout of the app
             zIndex=10000,
             children=[
                 dmc.Space(h=20),
-                dmc.Checkbox(label="Highlight Empty/NaN/None Cells",
+                dmc.Checkbox(label="Highlight Empty/NaN/None Cells", id="highlight-empty-nan-null-cells-checkbox",
                              color="pink", checked=True),
+                dmc.Space(h=10),
                 dmc.Checkbox(
-                    label="Highlight Datatype Enforced Columns", color="pink", checked=True),
+                    label="Highlight Datatype Enforced Columns", id="highlight-dtype-columns-cells-checkbox", color="pink", checked=True),
+                dmc.Space(h=10),
                 dmc.Group(
                     [
                         dmc.Button(

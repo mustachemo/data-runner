@@ -52,47 +52,52 @@ def check_number_of_empty_and_corrupt_cells(data):
     return DataAnalysis.get_data_analysis(data)
 
 
-###################### HIGHLIGHT CELLS ######################
+###################### HIGHLIGHT CELLS (OPEN MODAL) ######################
 @callback(
-    Output('editable-table', 'style_data_conditional'),
     Output("higlight-cells-modal", "opened"),
     Input("btn-higlight-cells", "n_clicks"),
     Input("higlight-modal-submit-button", "n_clicks"),
     Input("higlight-modal-close-button", "n_clicks"),
-    State("editable-table", "columns"),
     State("higlight-cells-modal", "opened"),
-    State("editable-table", "style_data_conditional"),
     prevent_initial_call=True,
 )
-def highlight_cells(btn_highlight, btn_submit, btn_close, columns, modal_opened, existing_style):
-    # Use dash.callback_context to identify which input was triggered
+def higlight_cells_modal(nc1, nc2, nc3, opened):
+    return not opened
+
+
+###################### HIGHLIGHT CELLS ######################
+@callback(
+    Output('editable-table', 'style_data_conditional'),
+    Input("higlight-modal-submit-button", "n_clicks"),
+    State("editable-table", "columns"),
+    State("editable-table", "style_data_conditional"),
+    State('highlight-empty-nan-null-cells-checkbox', 'checked'),
+    State('highlight-dtype-columns-cells-checkbox', 'checked'),
+    prevent_initial_call=True,
+)
+def highlight_cells(submit_btn, columns, current_highlighting, highlight_empty_cells, highlight_dtype_cells):
     ctx = callback_context
+    highlight_empty_cells_checkbox = False
+    higlight_dtype_cells_checkbox = False
 
     if not columns:
         raise exceptions.PreventUpdate
+    if ctx.triggered[0]['prop_id'] == "highlight-empty-nan-null-cells-checkbox.checked":
+        highlight_empty_cells = True
+    if ctx.triggered[0]['prop_id'] == "highlight-dtype-columns-cells-checkbox.checked":
+        highlight_dtype_cells = True
 
-    # If the Highlight Cells button was clicked, open the modal
-    if ctx.triggered[0]['prop_id'] == "btn-higlight-cells.n_clicks":
-        return no_update, True
-
-    # If the Submit button inside the modal was clicked
-    elif ctx.triggered[0]['prop_id'] == "higlight-modal-submit-button.n_clicks":
-        empty_highlighting = DataAnalysis.higlight_empty_nan_null_cells(
-            columns)
-        dtype_highlighting = DataAnalysis.generate_dtype_highlighting(columns)
-
-        # Combine the two types of highlighting. This is just an example.
-        # You would typically check the state of the checkboxes and apply the relevant highlighting.
-        combined_highlighting = empty_highlighting + dtype_highlighting
-
-        return combined_highlighting, False
-
-    # If the Close button inside the modal was clicked, close the modal
-    elif ctx.triggered[0]['prop_id'] == "higlight-modal-close-button.n_clicks":
-        return no_update, False
-
-    else:
-        return no_update, no_update
+    if ctx.triggered[0]['prop_id'] == "higlight-modal-submit-button.n_clicks":
+        if highlight_empty_cells and highlight_dtype_cells:
+            combined_highlighting = DataAnalysis.higlight_empty_nan_null_cells(
+                columns) + DataAnalysis.generate_dtype_highlighting(columns)
+            return combined_highlighting
+        elif highlight_empty_cells:
+            return DataAnalysis.higlight_empty_nan_null_cells(columns)
+        elif highlight_dtype_cells:
+            return DataAnalysis.generate_dtype_highlighting(columns)
+        else:
+            return no_update
 
 
 ###################### REMOVE DUPLICATE ROWS ######################
@@ -177,7 +182,7 @@ def download_file(_, data, columns, fileType):
 @callback(
     Output("enforce-dtypes-modal", "opened"),
     Input("btn-enforce-dtypes", "n_clicks"),
-    Input("dtype-modal-close-button", "n_cxslicks"),
+    Input("dtype-modal-close-button", "n_clicks"),
     Input("dtype-modal-submit-button", "n_clicks"),
     State("enforce-dtypes-modal", "opened"),
     prevent_initial_call=True,
