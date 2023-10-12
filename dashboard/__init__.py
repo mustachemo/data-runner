@@ -1,4 +1,4 @@
-from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager
+from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager, no_update
 import dash_mantine_components as dmc
 import pandas as pd
 import diskcache
@@ -50,6 +50,49 @@ def check_number_of_empty_and_corrupt_cells(data):
         raise exceptions.PreventUpdate
 
     return DataAnalysis.get_data_analysis(data)
+
+
+###################### HIGHLIGHT CELLS ######################
+@callback(
+    Output('editable-table', 'style_data_conditional'),
+    Output("higlight-cells-modal", "opened"),
+    Input("btn-higlight-cells", "n_clicks"),
+    Input("higlight-modal-submit-button", "n_clicks"),
+    Input("higlight-modal-close-button", "n_clicks"),
+    State("editable-table", "columns"),
+    State("higlight-cells-modal", "opened"),
+    State("editable-table", "style_data_conditional"),
+    prevent_initial_call=True,
+)
+def highlight_cells(btn_highlight, btn_submit, btn_close, columns, modal_opened, existing_style):
+    # Use dash.callback_context to identify which input was triggered
+    ctx = callback_context
+
+    if not columns:
+        raise exceptions.PreventUpdate
+
+    # If the Highlight Cells button was clicked, open the modal
+    if ctx.triggered[0]['prop_id'] == "btn-higlight-cells.n_clicks":
+        return no_update, True
+
+    # If the Submit button inside the modal was clicked
+    elif ctx.triggered[0]['prop_id'] == "higlight-modal-submit-button.n_clicks":
+        empty_highlighting = DataAnalysis.higlight_empty_nan_null_cells(
+            columns)
+        dtype_highlighting = DataAnalysis.generate_dtype_highlighting(columns)
+
+        # Combine the two types of highlighting. This is just an example.
+        # You would typically check the state of the checkboxes and apply the relevant highlighting.
+        combined_highlighting = empty_highlighting + dtype_highlighting
+
+        return combined_highlighting, False
+
+    # If the Close button inside the modal was clicked, close the modal
+    elif ctx.triggered[0]['prop_id'] == "higlight-modal-close-button.n_clicks":
+        return no_update, False
+
+    else:
+        return no_update, no_update
 
 
 ###################### REMOVE DUPLICATE ROWS ######################
