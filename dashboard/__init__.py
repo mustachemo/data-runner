@@ -28,7 +28,7 @@ app.layout = layout
     Output('editable-table', 'data', allow_duplicate=True),
     Output('editable-table', 'columns', allow_duplicate=True),
     Output('editable-table', 'fixed_rows'),
-    Output('editable-table', 'style_data_conditional'),
+    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     State('editable-table', 'data'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
@@ -186,6 +186,7 @@ def populate_datatype_selection(opened, columns):
 ###################### ENFORCE DATATYPES (SUBMIT MODAL) ######################
 @callback(
     Output('editable-table', 'columns'),
+    Output('editable-table', 'style_data_conditional'),
     Input('modal-submit-button', 'n_clicks'),
     State('column-type-selector', 'children'),
     State('editable-table', 'columns'),
@@ -202,7 +203,7 @@ def update_column_datatypes(_, modal_children, columns):
         if dtype:
             col['type'] = dtype
 
-    return columns
+    return columns, DataAnalysis.generate_dtype_highlighting(columns)
 
 
 if __name__ == '__main__':
