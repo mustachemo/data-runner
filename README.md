@@ -79,6 +79,8 @@ To set up and run the Data Clean-up Tool, follow these steps:
   - [ ] Adding or removing columns
   - [ ] Update parse_content function to include 'xslx, xml, html" and "pdf" if we can (pdf is a bonus feature)
   - [ ] Combine two or more data of the same format into one file
+  - [ ] After "Enforcing" dtypes or formatting, those cells are then highlighted (https://dash.plotly.com/datatable/conditional-formatting). We could also use for other use cases when highlighting is required. We should have a legend that says what each higlight color means
+    - [ ] Highlighting None, NaN, or Empty String Values
 
 - Bonus Features:
 
@@ -86,13 +88,19 @@ To set up and run the Data Clean-up Tool, follow these steps:
   - [ ] Highlight Changes: Display changed cells in a different color for easier tracking
   - [x] Add loading animation (https://dash.plotly.com/dash-core-components/loading)
   - [x] Make columns selection through a checkbox (https://dash.plotly.com/datatable/editable)
-
-
+  - [ ] Displaying Errors with dash.no_update (https://dash.plotly.com/advanced-callbacks)
+  - [ ] Taps for visuals and/or data analytics information (https://dash.plotly.com/dash-core-components/tabs) (https://dash.plotly.com/dash-core-components/graph)
 
 ## Optimization
 
-- [ ] Get rid of df-store, no need to store in memory as we have the df stored as a variable in the instance of DataHandler
+- [x] Get rid of df-store, no need to store in memory as we have the df stored as a variable in the instance of DataHandler
+- [ ] Use callback_context to combine multiple callbacks to one [Determining which Input Has Fired with dash.callback_context] (https://dash.plotly.com/advanced-callbacks), also look at Duplicate Callback Outputs (https://dash.plotly.com/duplicate-callback-outputs), also look at this (https://dash.plotly.com/determining-which-callback-input-changed)
+- [ ] Use Partial Property Update callback to highlight/unhighlight cells/rows/columns that match a specific pattern [Could be used for other cases] (https://dash.plotly.com/partial-properties) (Check clear section)
+- [ ] Make callbacks more readable with Flexible Callback Signatures (https://dash.plotly.com/flexible-callback-signatures)
 
+## Extras
+
+- [ ] Periodic Calling of callbacks/refreshing of page for real-time monitering (https://dash.plotly.com/dash-core-components/interval)
 ## Problem
 
 The presence of large amounts of bad data which does not comply with the required format, currently not relevant and that has been entered into the warehouse management system (WMS) incorrectly and cannot be utilized for any purpose. This data always causes hinderance in many daily activities, become hurdles when the company transitions to a new WMS and most importantly occupies huge amounts of memory in the server systems. A tool which can help identify this bad data, modify it to required format and delete gaps, if necessary, can help resolve many of the forementioned issues.

@@ -28,6 +28,7 @@ app.layout = layout
     Output('editable-table', 'data', allow_duplicate=True),
     Output('editable-table', 'columns', allow_duplicate=True),
     Output('editable-table', 'fixed_rows'),
+    Output('editable-table', 'style_data_conditional'),
     State('editable-table', 'data'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
@@ -40,7 +41,7 @@ def upload_file(prevData, files, fileNames):
     return HandleFile.importFiles(prevData, files, fileNames)
 
 
-###################### CHECK NUMBER OF EMPTY AND CORRUPT CELLS WHEN FILE IS UPLOADED ######################
+###################### Data Analytics ######################
 @callback(
     Output('alert-empty-and-corrupt-cells', 'children'),
     Input('editable-table', 'data', )
@@ -60,8 +61,12 @@ def check_number_of_empty_and_corrupt_cells(data):
     Input('btn-remove-duplicates', 'n_clicks')
 )
 def remove_duplicate_rows(data, n_clicks):
-    if data is None:
+    if data is None and n_clicks is None:
         raise exceptions.PreventUpdate
+
+    df = pd.DataFrame.from_dict(data)
+    df.drop_duplicates(inplace=True)
+    return df.to_dict('records')
 
     # success_notification = dmc.Notification(
     #     id="my-notification",
@@ -72,7 +77,7 @@ def remove_duplicate_rows(data, n_clicks):
     #     icon=DashIconify(icon="akar-icons:circle-check"),
     # )
     # return DataCleaner.remove_duplicate_rows(data, n_clicks), success_notification
-    return DataCleaner.remove_duplicate_rows(data, n_clicks)
+    # return DataCleaner.remove_duplicate_rows(data, n_clicks)
 
 
 ###################### DOWNLOAD FILE ######################
@@ -155,7 +160,7 @@ def download_file(_, data, columns, fileType):
 @callback(
     Output("enforce-dtypes-modal", "opened"),
     Input("btn-enforce-dtypes", "n_clicks"),
-    Input("modal-close-button", "n_clicks"),
+    Input("modal-close-button", "n_cxslicks"),
     Input("modal-submit-button", "n_clicks"),
     State("enforce-dtypes-modal", "opened"),
     prevent_initial_call=True,

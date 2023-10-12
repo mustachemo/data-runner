@@ -40,3 +40,18 @@ def get_data_analysis(data):
                 })
             ], style={"listStyleType": "none"})
         ]
+
+
+def higlight_empty_nan_null_cells(columns):
+    higlight_cells = [
+        {
+            'if': {
+                'filter_query': '{{{}}} is blank'.format(col),
+                'column_id': col
+            },
+            'backgroundColor': 'tomato',
+            'color': 'white'
+        } for col in [col_dict['id'] for col_dict in columns]
+    ]
+
+    return higlight_cells

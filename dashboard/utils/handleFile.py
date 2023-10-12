@@ -4,6 +4,8 @@ import io
 import base64
 from dash.exceptions import PreventUpdate
 
+from dashboard.utils.dataAnalysis import higlight_empty_nan_null_cells
+
 
 def importFiles(prevData, files, fileNames):
     df = pd.DataFrame.from_dict(data=prevData)
@@ -44,7 +46,7 @@ def importFiles(prevData, files, fileNames):
     print(message)
 
     # todo return message
-    return data, columns, {'headers': True}
+    return data, columns, {'headers': True}, higlight_empty_nan_null_cells(columns)
 
 
 def combineDf(prevDf, df):
