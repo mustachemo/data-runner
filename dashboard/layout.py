@@ -203,6 +203,59 @@ layout = html.Div([  # This is the main layout of the app
                     multiple=True
                 ),
             ),
+
+            html.Div([
+
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Empty/Corrupt Cells: Cells that are empty, NaN, or None",
+                    children=html.Div(style={
+                        'display': 'inline-block',
+                        'width': '20px',
+                        'height': '20px',
+                        'backgroundColor': 'tomato',
+                        "margin": "0.5rem",
+                    })),
+
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Cells with numeric datatype enforced",
+                    children=html.Div(style={
+                        'display': 'inline-block',
+                        'width': '20px',
+                        'height': '20px',
+                        'backgroundColor': 'lightgreen',
+                        'margin': '0.5rem',
+                    })),
+
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Cells with datetime datatype enforced",
+                    children=html.Div(style={
+                        'display': 'inline-block',
+                        'width': '20px',
+                        'height': '20px',
+                        'backgroundColor': 'lightyellow',
+                        'margin': '0.5rem',
+                    })),
+
+            ], style={"display": "flex", "backgroundColor": "grey"}),
+
             html.Div([  # This is the dropdown and download button
                 dmc.Select(
                     id="file-type-select",

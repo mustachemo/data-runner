@@ -85,7 +85,7 @@ def generate_dtype_highlighting(columns):
                 'if': {
                     'column_id': col_id
                 },
-                'backgroundColor': 'lightyellow'
+                'backgroundColor': 'lightpurple'
             })
 
     return dtype_higlighting
