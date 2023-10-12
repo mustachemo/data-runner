@@ -65,39 +65,31 @@ def higlight_cells_modal(nc1, nc2, nc3, opened):
     return not opened
 
 
-###################### HIGHLIGHT CELLS ######################
+###################### HIGHLIGHT CELLS (SUBMIT MODAL) ######################
 @callback(
     Output('editable-table', 'style_data_conditional'),
     Input("higlight-modal-submit-button", "n_clicks"),
-    State("editable-table", "columns"),
-    State("editable-table", "style_data_conditional"),
     State('highlight-empty-nan-null-cells-checkbox', 'checked'),
     State('highlight-dtype-columns-cells-checkbox', 'checked'),
+    State("editable-table", "columns"),
     prevent_initial_call=True,
 )
-def highlight_cells(submit_btn, columns, current_highlighting, highlight_empty_cells, highlight_dtype_cells):
-    ctx = callback_context
-    highlight_empty_cells_checkbox = False
-    higlight_dtype_cells_checkbox = False
-
+def highlight_cells(submit_btn, highlight_empty_cells, highlight_dtype_cells, columns):
     if not columns:
         raise exceptions.PreventUpdate
-    if ctx.triggered[0]['prop_id'] == "highlight-empty-nan-null-cells-checkbox.checked":
-        highlight_empty_cells = True
-    if ctx.triggered[0]['prop_id'] == "highlight-dtype-columns-cells-checkbox.checked":
-        highlight_dtype_cells = True
 
-    if ctx.triggered[0]['prop_id'] == "higlight-modal-submit-button.n_clicks":
-        if highlight_empty_cells and highlight_dtype_cells:
-            combined_highlighting = DataAnalysis.higlight_empty_nan_null_cells(
-                columns) + DataAnalysis.generate_dtype_highlighting(columns)
-            return combined_highlighting
-        elif highlight_empty_cells:
-            return DataAnalysis.higlight_empty_nan_null_cells(columns)
-        elif highlight_dtype_cells:
-            return DataAnalysis.generate_dtype_highlighting(columns)
-        else:
-            return no_update
+    new_highlighting = []
+
+    if highlight_empty_cells:
+        new_highlighting.extend(
+            DataAnalysis.higlight_empty_nan_null_cells(columns))
+
+    if highlight_dtype_cells:
+        new_highlighting.extend(
+            DataAnalysis.generate_dtype_highlighting(columns))
+
+    if submit_btn:
+        return new_highlighting
 
 
 ###################### REMOVE DUPLICATE ROWS ######################
