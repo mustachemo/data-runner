@@ -269,7 +269,7 @@ layout = html.Div([  # This is the main layout of the app
             html.Div([  # This is the dropdown and download button
                 dmc.Select(
                     id="file-type-select",
-                    style={"width": "80px"},
+                    style={"width": "80px", "zIndex": "1000"},
                     value="csv",
                     data=[
                         {"value": "csv", "label": "csv"},

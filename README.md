@@ -76,11 +76,15 @@ To set up and run the Data Clean-up Tool, follow these steps:
   - [ ] Could style the table to make it nicer (bonus feature)
   - [x] Add enforcement of types. Say a column shows only numbers, let's say money. Enforce that you can't edit a text into there, only numeric values are allowed (https://dash.plotly.com/datatable/typing)
   - [ ] Add a formatting setting that formats columns to a specified prefereance. For example, cost column will show $ sign and number type enforcement along with commas when needed (https://dash.plotly.com/datatable/typing)
-  - [ ] Adding or removing columns
+  - [ ] Adding or removing columns and rows
   - [ ] Update parse_content function to include 'xslx, xml, html" and "pdf" if we can (pdf is a bonus feature)
-  - [ ] Combine two or more data of the same format into one file
+  - [x] Combine two or more data of the same format into one file
   - [ ] After "Enforcing" dtypes or formatting, those cells are then highlighted (https://dash.plotly.com/datatable/conditional-formatting). We could also use for other use cases when highlighting is required. We should have a legend that says what each higlight color means
-    - [ ] Highlighting None, NaN, or Empty String Values
+    - [x] dtype highlighting
+    - [x] Highlighting None, NaN, or Empty String Values
+    - [ ] formatting highlighting
+  - [ ] Make legend for filtering operations/syntax (https://dash.plotly.com/datatable/filtering)
+  - [ ] Testing (https://dash.plotly.com/testing)
 
 - Bonus Features:
 
@@ -97,10 +101,21 @@ To set up and run the Data Clean-up Tool, follow these steps:
 - [ ] Use callback_context to combine multiple callbacks to one [Determining which Input Has Fired with dash.callback_context] (https://dash.plotly.com/advanced-callbacks), also look at Duplicate Callback Outputs (https://dash.plotly.com/duplicate-callback-outputs), also look at this (https://dash.plotly.com/determining-which-callback-input-changed)
 - [ ] Use Partial Property Update callback to highlight/unhighlight cells/rows/columns that match a specific pattern [Could be used for other cases] (https://dash.plotly.com/partial-properties) (Check clear section)
 - [ ] Make callbacks more readable with Flexible Callback Signatures (https://dash.plotly.com/flexible-callback-signatures)
+- [ ] Backend paging for loading a couple of rows per page (https://dash.plotly.com/datatable/callbacks)
+- [ ] Performance (https://dash.plotly.com/performance)
+- [ ] Remember user preferences? (https://dash.plotly.com/persistence)
 
 ## Extras
 
 - [ ] Periodic Calling of callbacks/refreshing of page for real-time monitering (https://dash.plotly.com/dash-core-components/interval)
+- [ ] Add more highlighting for differnet cases (https://dash.plotly.com/datatable/conditional-formatting)
+- [ ] Format numbers [i.e. adding $ or % sign before or after numbers, commas between numbers, padding] (https://dash.plotly.com/datatable/data-formatting)
+- [ ] Check out dash AG Grid (https://dash.plotly.com/dash-ag-grid/getting-started)
+- [ ] Dev tools, Custom Timing Events
+- [ ] Loading for text/small compone ts (https://dash.plotly.com/loading-states)
+- [ ] Deployment (https://dash.plotly.com/deployment)
+- [ ] help (https://community.plotly.com/c/python/25?utm_medium=dash_docs&utm_content=sidebar)
+
 ## Problem
 
 The presence of large amounts of bad data which does not comply with the required format, currently not relevant and that has been entered into the warehouse management system (WMS) incorrectly and cannot be utilized for any purpose. This data always causes hinderance in many daily activities, become hurdles when the company transitions to a new WMS and most importantly occupies huge amounts of memory in the server systems. A tool which can help identify this bad data, modify it to required format and delete gaps, if necessary, can help resolve many of the forementioned issues.
