@@ -39,6 +39,17 @@ def upload_file(prevData, files, fileNames):
 
     return HandleFile.importFiles(prevData, files, fileNames)
 
+###################### UPLOAD FILE Notification ######################
+@callback(
+    Output('upload-notification', 'children'),
+    Input('upload-data', 'contents'),
+)
+def update_upload_notification(contents):
+    #checks if file upload was successful
+    if contents is None:
+        return "No file has been uploaded."
+    
+    return "File uploaded successfully."
 
 ###################### Data Analytics ######################
 @callback(

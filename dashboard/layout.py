@@ -213,6 +213,11 @@ layout = html.Div([  # This is the main layout of the app
                     multiple=True
                 ),
             ),
+            dmc.NotificationsProvider(
+                html.Div([
+                    html.Div(id="upload-notification"),
+                ]),
+            ),
 
             html.Div([
 
