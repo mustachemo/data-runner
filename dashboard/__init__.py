@@ -41,15 +41,34 @@ def upload_file(prevData, files, fileNames):
 
 ###################### UPLOAD FILE Notification ######################
 @callback(
-    Output('upload-notification', 'children'),
-    Input('upload-data', 'contents'),
+    Output("notifications-container", "children"),
+    Input("upload-data", "filename"),
+    prevent_initial_call=True,
 )
-def update_upload_notification(contents):
-    #checks if file upload was successful
-    if contents is None:
-        return "No file has been uploaded."
+def show(filenames):
+    if not filenames:
+        return dmc.Notification(
+            id="simple-notify",
+            action="show",
+            message="Upload Failed",
+            icon=DashIconify(icon="ic:round-error"),
+        )
     
-    return "File uploaded successfully."
+    for filename in filenames:
+        if filename.endswith(".txt"):
+            return dmc.Notification(
+                id="simple-notify",
+                action="show",
+                message="Upload Failed",
+                icon=DashIconify(icon="ic:round-error"),
+            )
+
+    return dmc.Notification(
+        id="simple-notify",
+        action="show",
+        message="File Uploaded!",
+        icon=DashIconify(icon="ic:round-upload"),
+    )
 
 ###################### Data Analytics ######################
 @callback(
