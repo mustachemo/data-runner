@@ -1,5 +1,6 @@
 from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager, no_update
 import dash_mantine_components as dmc
+import os
 import pandas as pd
 import diskcache
 from dash_iconify import DashIconify
@@ -40,34 +41,66 @@ def upload_file(prevData, files, fileNames):
     return HandleFile.importFiles(prevData, files, fileNames)
 
 ###################### UPLOAD FILE Notification ######################
+# @callback(
+#     Output("notifications-container", "children"),
+#     Input("upload-data", "filename"),
+#     prevent_initial_call=True,
+# )
+# def show(filenames):
+#     if not filenames:
+#         return dmc.Notification(
+#             id="simple-notify",
+#             action="show",
+#             message="Upload Failed",
+#             icon=DashIconify(icon="ic:round-error"),
+#         )
+    
+#     for filename in filenames:
+#         if filename.endswith(".txt"):
+#             return dmc.Notification(
+#                 id="simple-notify",
+#                 action="show",
+#                 message="Upload Failed",
+#                 icon=DashIconify(icon="ic:round-error"),
+#             )
+
+#     return dmc.Notification(
+#         id="simple-notify",
+#         action="show",
+#         message="File Uploaded!",
+#         icon=DashIconify(icon="ic:round-upload"),
+#     )
 @callback(
     Output("notifications-container", "children"),
     Input("upload-data", "filename"),
     prevent_initial_call=True,
 )
+
 def show(filenames):
     if not filenames:
         return dmc.Notification(
-            id="simple-notify",
+            id="upload-notifcation",
             action="show",
             message="Upload Failed",
             icon=DashIconify(icon="ic:round-error"),
         )
     
+    file_types = {'.csv', '.xlsx', '.html'}
     for filename in filenames:
-        if filename.endswith(".txt"):
+        ext = os.path.splitext(filename)[1].lower()
+        if ext in file_types:
             return dmc.Notification(
-                id="simple-notify",
+                id="upload-notifcation",
                 action="show",
-                message="Upload Failed",
-                icon=DashIconify(icon="ic:round-error"),
+                message="File Uploaded!",
+                icon=DashIconify(icon="ic:round-upload"),
             )
 
     return dmc.Notification(
-        id="simple-notify",
+        id="upload-notifcation",
         action="show",
-        message="File Uploaded!",
-        icon=DashIconify(icon="ic:round-upload"),
+        message="Upload Failed!",
+        icon=DashIconify(icon="ic:round-error"),
     )
 
 ###################### Data Analytics ######################
