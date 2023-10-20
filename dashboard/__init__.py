@@ -81,6 +81,7 @@ def show(filenames):
         return dmc.Notification(
             id="upload-notifcation",
             action="show",
+            autoClose=100000,
             message="Upload Failed",
             icon=DashIconify(icon="ic:round-error"),
         )
@@ -92,6 +93,7 @@ def show(filenames):
             return dmc.Notification(
                 id="upload-notifcation",
                 action="show",
+                autoClose=100000,
                 message="File Uploaded!",
                 icon=DashIconify(icon="ic:round-upload"),
             )
@@ -99,6 +101,7 @@ def show(filenames):
     return dmc.Notification(
         id="upload-notifcation",
         action="show",
+        autoClose=100000,
         message="Upload Failed!",
         icon=DashIconify(icon="ic:round-error"),
     )
