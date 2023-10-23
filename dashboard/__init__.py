@@ -57,7 +57,7 @@ def show(filenames):
             icon=DashIconify(icon="ic:round-error"),
         )
     
-    file_types = {'.csv', '.xlsx', '.html'}
+    file_types = {'.csv', '.xlsx', '.html', '.xml'}
     for filename in filenames:
         ext = os.path.splitext(filename)[1].lower()
         if ext in file_types:
