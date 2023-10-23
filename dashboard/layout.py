@@ -198,26 +198,6 @@ layout = html.Div([  # This is the main layout of the app
     # Main content
     html.Div([
         html.Div([
-            # dmc.Tooltip(
-            #     withArrow=True,
-            #     width=200,
-            #     multiline=True,
-            #     position="right",
-            #     transition="fade",
-            #     transitionDuration=300,
-            #     label="Mulitple file uploads will be combined into one table, duplicate rows removed, and mismatched columns ignored.",
-            #     children=dcc.Upload(  # This is the upload button
-            #         id='upload-data',
-            #         children=dmc.Button("Upload File",
-            #                             style={"backgroundColor": "#0C7FDA"}),
-            #         multiple=True
-            #     ),
-            # ),
-            # dmc.NotificationsProvider(
-            #     html.Div([
-            #         html.Div(id="upload-notification"),
-            #     ]),
-            # ),
             dmc.NotificationsProvider(
                 html.Div(
                     [
