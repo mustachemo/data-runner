@@ -52,19 +52,19 @@ def show(filenames):
         return dmc.Notification(
             id="upload-notifcation",
             action="show",
-            autoClose=100000,
+            # autoClose=100000,
             message="Upload Failed",
             icon=DashIconify(icon="ic:round-error"),
         )
     
-    file_types = {'.csv', '.xlsx', '.html', '.xml'}
+    file_types = {'.csv', '.xlsx', ".xls", ".xlsm" '.html', '.xml'}
     for filename in filenames:
         ext = os.path.splitext(filename)[1].lower()
         if ext in file_types:
             return dmc.Notification(
                 id="upload-notifcation",
                 action="show",
-                autoClose=100000,
+                # autoClose=100000,
                 message="File Uploaded!",
                 icon=DashIconify(icon="ic:round-upload"),
             )
@@ -72,7 +72,7 @@ def show(filenames):
     return dmc.Notification(
         id="upload-notifcation",
         action="show",
-        autoClose=100000,
+        # autoClose=100000,
         message="Upload Failed!",
         icon=DashIconify(icon="ic:round-error"),
     )
