@@ -1,5 +1,6 @@
 from dash import Dash, Input, Output, State, callback, callback_context, exceptions, dcc, html, exceptions, DiskcacheManager, no_update
 import dash_mantine_components as dmc
+import os
 import pandas as pd
 import diskcache
 from dash_iconify import DashIconify
@@ -39,6 +40,42 @@ def upload_file(prevData, files, fileNames):
 
     return HandleFile.importFiles(prevData, files, fileNames)
 
+###################### UPLOAD FILE Notification ######################
+@callback(
+    Output("notifications-container", "children"),
+    Input("upload-data", "filename"),
+    prevent_initial_call=True,
+)
+
+def show(filenames):
+    if not filenames:
+        return dmc.Notification(
+            id="upload-notifcation",
+            action="show",
+            # autoClose=100000,
+            message="Upload Failed",
+            icon=DashIconify(icon="ic:round-error"),
+        )
+    
+    file_types = {'.csv', '.xlsx', ".xls", ".xlsm" '.html', '.xml'}
+    for filename in filenames:
+        ext = os.path.splitext(filename)[1].lower()
+        if ext in file_types:
+            return dmc.Notification(
+                id="upload-notifcation",
+                action="show",
+                # autoClose=100000,
+                message="File Uploaded!",
+                icon=DashIconify(icon="ic:round-upload"),
+            )
+
+    return dmc.Notification(
+        id="upload-notifcation",
+        action="show",
+        # autoClose=100000,
+        message="Upload Failed!",
+        icon=DashIconify(icon="ic:round-error"),
+    )
 
 ###################### Data Analytics ######################
 @callback(
