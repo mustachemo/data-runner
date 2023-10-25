@@ -18,7 +18,7 @@ layout = html.Div([  # This is the main layout of the app
                  "borderBottom": "1px dashed black", "paddingBottom": "5px"}),
         dmc.Alert(id="alert-empty-and-corrupt-cells",
                   color="yellow"),
-        
+
         dmc.Tooltip(
             withArrow=True,
             width=200,
@@ -26,7 +26,8 @@ layout = html.Div([  # This is the main layout of the app
             position="right",
             transition="fade",
             label="Opens a modal showing which columns have corrupt/missing cells and duplicate data",
-            children=dmc.Button("Detailed Analysis", id="btn-detailed-analysis", style={"marginBottom": "5px"}),
+            children=dmc.Button(
+                "Detailed Analysis", id="btn-detailed-analysis", style={"marginBottom": "5px"}),
         ),
 
         dmc.Tooltip(
@@ -138,6 +139,54 @@ layout = html.Div([  # This is the main layout of the app
             children=dmc.Button(
                 "Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", style={"marginBottom": "5px"}),
         ),
+        dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
+            title="Show all empty/corrupt cells",
+            id="check-empty-corrupt-cells-modal",
+            zIndex=10000,
+            children=[
+                dmc.Space(h=20),
+                dash_table.DataTable(  # This is the table that will display the data
+                    id='empty-corrupt-editable-table',  # Assign an ID to the DataTable component
+                    editable=True,  # Enable editing,
+                    # column_selectable="multi",  # This enables column selection
+                    # row_selectable='multi',  # This enables row selection
+                    # virtualization=True, # Enabling virtualization causes the table to not render properly
+                    # selected_columns=[],
+                    # selected_rowss=[],
+                    sort_action='native',  # This enables data to be sorted by the user
+                    filter_action='native',  # This enables data to be filtered by the user
+                    row_deletable=True,  # This enables users to delete rows
+                    style_table={'minHeight': '75vh', 'height': '75vh', 'maxWidth': '100%',
+                                 'overflowY': 'auto', 'overflowX': 'auto'},
+                    style_cell={'textAlign': 'left'},
+                    style_header={
+                        'backgroundColor': 'rgb(224,241,255)',
+                        'color': 'rgb(12,127,218)'
+                    },
+                    style_cell_conditional=()
+                    # style_data={
+                    #     'backgroundColor': 'rgb(50, 50, 50)',
+                    #     'color': 'white'
+                    # },
+                    # fixed_rows={'headers': True, 'data': 0}
+                ),
+                dmc.Space(h=20),
+                dmc.Group(
+                    [
+                        dmc.Button(
+                            "Submit", id="check-empty-modal-submit-button"),
+                        dmc.Button(
+                            "Close",
+                            color="red",
+                            variant="outline",
+                            id="check-empty-modal-close-button",
+                        ),
+                    ],
+                    position="right",
+                ),
+            ],
+        ),
+
         dmc.Tooltip(
             withArrow=True,
             width=200,
@@ -214,7 +263,8 @@ layout = html.Div([  # This is the main layout of the app
                                 children=[
                                     dcc.Upload(
                                         id='upload-data',
-                                        children=dmc.Button("Upload File", style={"backgroundColor": "#0C7FDA"}),
+                                        children=dmc.Button("Upload File", style={
+                                                            "backgroundColor": "#0C7FDA"}),
                                         multiple=True
                                     ),
                                 ],

@@ -41,12 +41,13 @@ def upload_file(prevData, files, fileNames):
     return HandleFile.importFiles(prevData, files, fileNames)
 
 ###################### UPLOAD FILE Notification ######################
+
+
 @callback(
     Output("notifications-container", "children"),
     Input("upload-data", "filename"),
     prevent_initial_call=True,
 )
-
 def show(filenames):
     if not filenames:
         return dmc.Notification(
@@ -56,7 +57,7 @@ def show(filenames):
             message="Upload Failed",
             icon=DashIconify(icon="ic:round-error"),
         )
-    
+
     file_types = {'.csv', '.xlsx', ".xls", ".xlsm" '.html', '.xml'}
     for filename in filenames:
         ext = os.path.splitext(filename)[1].lower()
@@ -78,6 +79,8 @@ def show(filenames):
     )
 
 ###################### Data Analytics ######################
+
+
 @callback(
     Output('alert-empty-and-corrupt-cells', 'children'),
     Input('editable-table', 'data', )
@@ -254,6 +257,37 @@ def update_column_datatypes(_, modal_children, columns):
             col['type'] = dtype
 
     return columns
+
+
+###################### CHECK EMPTY/CORRUPT DATATYPE (OPEN MODAL) ######################
+@callback(
+    Output("check-empty-corrupt-cells-modal", "opened"),
+    Input("btn-check-empty-corrupt-cells", "n_clicks"),
+    Input("check-empty-modal-close-button", "n_clicks"),
+    Input("check-empty-modal-submit-button", "n_clicks"),
+    State("check-empty-corrupt-cells-modal", "opened"),
+    prevent_initial_call=True,
+)
+def enforce_dtypes_modal(nc1, nc2, nc3, opened):
+    return not opened
+
+###################### CHECK EMPTY/CORRUPT DATATYPE (FILL MODAL) ######################
+
+
+@callback(
+    Output('empty-corrupt-editable-table', 'data'),
+    Input("enforce-dtypes-modal", "opened"),
+    State('editable-table', 'data'),
+    State("editable-table", "columns"),
+)
+def check_empty_corrupt_cells(opened, data, columns):
+    if not opened or not columns:
+        raise exceptions.PreventUpdate
+
+    df = pd.DataFrame.from_dict(data)
+    df = df.isna()
+    df = df.applymap(lambda x: "X" if x else "")
+    return df.to_dict('records')
 
 
 if __name__ == '__main__':
