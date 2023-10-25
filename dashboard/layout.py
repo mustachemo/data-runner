@@ -313,7 +313,9 @@ layout = html.Div([  # This is the main layout of the app
                 row_deletable=True,  # This enables users to delete rows
                 style_table={'minHeight': '75vh', 'height': '75vh', 'maxWidth': '100%',
                              'overflowY': 'auto', 'overflowX': 'auto'},
-                style_cell={'textAlign': 'left'},
+                style_cell={'textAlign': 'left', 'overflow': 'hidden',
+                            'textOverflow': 'ellipsis', 'minWidth':'200px',
+                            'width': '100%', 'maxWidth':'400px'},
                 style_header={
                     'backgroundColor': 'rgb(224,241,255)',
                     'color': 'rgb(12,127,218)'
