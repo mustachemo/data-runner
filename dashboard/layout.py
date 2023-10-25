@@ -18,7 +18,7 @@ layout = html.Div([  # This is the main layout of the app
                  "borderBottom": "1px dashed black", "paddingBottom": "5px"}),
         dmc.Alert(id="alert-empty-and-corrupt-cells",
                   color="yellow"),
-        
+
         dmc.Tooltip(
             withArrow=True,
             width=200,
@@ -26,7 +26,8 @@ layout = html.Div([  # This is the main layout of the app
             position="right",
             transition="fade",
             label="Opens a modal showing which columns have corrupt/missing cells and duplicate data",
-            children=dmc.Button("Detailed Analysis", id="btn-detailed-analysis", style={"marginBottom": "5px"}),
+            children=dmc.Button(
+                "Detailed Analysis", id="btn-detailed-analysis", style={"marginBottom": "5px"}),
         ),
 
         dmc.Tooltip(
