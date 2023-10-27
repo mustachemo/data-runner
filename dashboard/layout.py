@@ -1,6 +1,8 @@
 from dash import html, dcc, dash_table
 import dash_mantine_components as dmc
 
+button_style = {"color": "#228be6", "backgroundColor": "#f7f7f7", "border": "none", "cursor": "pointer", "padding": "5px", "width": "100%", "text-align": "left", "margin": "5px 0"}
+
 layout = html.Div([  # This is the main layout of the app
 
     # This is the notification container
@@ -14,185 +16,160 @@ layout = html.Div([  # This is the main layout of the app
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
 
-        dmc.Text("Data Analysis", variant="subtle", style={
-                 "borderBottom": "1px dashed black", "paddingBottom": "5px"}),
-        dmc.Alert(id="alert-empty-and-corrupt-cells",
-                  color="yellow"),
-        
-        dmc.Tooltip(
-            withArrow=True,
-            width=200,
-            multiline=True,
-            position="right",
-            transition="fade",
-            label="Opens a modal showing which columns have corrupt/missing cells and duplicate data",
-            children=dmc.Button("Detailed Analysis", id="btn-detailed-analysis", style={"marginBottom": "5px"}),
-        ),
-
-        dmc.Tooltip(
-            multiline=True,
-            width=200,
-            withArrow=True,
-            position="right",
-            transition="fade",
-            transitionDuration=300,
-            # transitionTimingFunction="ease",
-            label="Opens a modal for cell higlighting options",
-            children=dmc.Button("Highlight Cells", id="btn-higlight-cells",
-                                style={"marginBottom": "5px"}),
-        ),
-
-        dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
-            title="Choose options for cell highlighting",
-            id="higlight-cells-modal",
-            zIndex=10000,
-            children=[
-                dmc.Space(h=20),
-                dmc.Checkbox(label="Highlight Empty/NaN/None Cells", id="highlight-empty-nan-null-cells-checkbox",
-                             color="pink", checked=True),
-                dmc.Space(h=10),
-                dmc.Checkbox(
-                    label="Highlight Datatype Enforced Columns", id="highlight-dtype-columns-cells-checkbox", color="pink", checked=True),
-                dmc.Space(h=10),
-                dmc.Group(
-                    [
-                        dmc.Button(
-                            "Submit", id="higlight-modal-submit-button"),
-                        dmc.Button(
-                            "Close",
-                            color="red",
-                            variant="outline",
-                            id="higlight-modal-close-button",
+        html.Div([
+            dmc.Menu([
+                dmc.MenuLabel("Data Analysis", style={"padding-left": "5px"}),
+                # dmc.MenuDivider(style={"width": 200, "padding-left": "5px"}),
+                dmc.Alert(id="alert-empty-and-corrupt-cells", color="yellow"),
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    label="Opens a modal showing which columns have corrupt/missing cells and duplicate data",
+                    children=html.Button("Detailed Analysis", id="btn-detailed-analysis", style=button_style),
+                ),
+                dmc.Tooltip(
+                    multiline=True,
+                    width=200,
+                    withArrow=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    # transitionTimingFunction="ease",
+                    label="Opens a modal for cell higlighting options",
+                    children=html.Button("Highlight Cells", id="btn-higlight-cells", style=button_style),
+                ),
+                dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
+                    title="Choose options for cell highlighting",
+                    id="higlight-cells-modal",
+                    zIndex=10000,
+                    children=[
+                        dmc.Space(h=20),
+                        dmc.Checkbox(label="Highlight Empty/NaN/None Cells", id="highlight-empty-nan-null-cells-checkbox",
+                                    color="pink", checked=True),
+                        dmc.Space(h=10),
+                        dmc.Checkbox(
+                            label="Highlight Datatype Enforced Columns", id="highlight-dtype-columns-cells-checkbox", color="pink", checked=True),
+                        dmc.Space(h=10),
+                        dmc.Group(
+                            [
+                                dmc.Button(
+                                    "Submit", id="higlight-modal-submit-button"),
+                                dmc.Button(
+                                    "Close",
+                                    color="red",
+                                    variant="outline",
+                                    id="higlight-modal-close-button",
+                                ),
+                            ],
+                            position="right",
                         ),
                     ],
-                    position="right",
                 ),
-            ],
-        ),
-
-
-        dmc.Text("User Preferences", variant="subtle", style={
-                 "borderBottom": "1px dashed black", "paddingBottom": "5px"}),  # This is the preferences header
-        dmc.Tooltip(  # This is enforce datatypes button
-            multiline=True,
-            width=200,
-            withArrow=True,
-            position="right",
-            transition="fade",
-            transitionDuration=300,
-            # transitionTimingFunction="ease",
-            label="Enforce datatypes for each column in the table",
-            children=dmc.Button("Enforce DataTypes", id="btn-enforce-dtypes",
-                                style={"marginBottom": "5px"}),
-        ),
-
-        dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
-            title="Select a column to enforce a datatype",
-            id="enforce-dtypes-modal",
-            zIndex=10000,
-            children=[
-                dmc.Space(h=20),
-                html.Div(id='column-type-selector'),
-                dmc.Space(h=20),
-                dmc.Group(
-                    [
-                        dmc.Button("Submit", id="dtype-modal-submit-button"),
-                        dmc.Button(
-                            "Close",
-                            color="red",
-                            variant="outline",
-                            id="dtype-modal-close-button",
+                dmc.Space(h=30),
+                dmc.MenuLabel("User Preferences", style={"padding-left": "5px"}),
+                dmc.Tooltip(  # This is enforce datatypes button
+                    multiline=True,
+                    width=200,
+                    withArrow=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    # transitionTimingFunction="ease",
+                    label="Enforce datatypes for each column in the table",
+                    children=html.Button("Enforce Datatypes", id="btn-enforce-dtypes", style=button_style),
+                ),
+                dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
+                    title="Select a column to enforce a datatype",
+                    id="enforce-dtypes-modal",
+                    zIndex=10000,
+                    children=[
+                        dmc.Space(h=20),
+                        html.Div(id='column-type-selector'),
+                        dmc.Space(h=20),
+                        dmc.Group(
+                            [
+                                dmc.Button("Submit", id="dtype-modal-submit-button"),
+                                dmc.Button(
+                                    "Close",
+                                    color="red",
+                                    variant="outline",
+                                    id="dtype-modal-close-button",
+                                ),
+                            ],
+                            position="right",
                         ),
                     ],
-                    position="right",
                 ),
-            ],
-        ),
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
+                    children=html.Button("Enforce Formatting", id="btn-enforce-format", style=button_style),
+                ),
+                dmc.Space(h=30),
+                dmc.MenuLabel("Cleaning Operations", style={"padding-left": "5px"}),
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Distinguish and iterate over empty and corrupt cells",
+                    children=html.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", style=button_style),
+                ),
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Removes duplicate rows from the imported data",
+                    children=html.Button("Remove Duplicates", id="btn-remove-duplicates", style=button_style),
+                ),
 
-        dmc.Tooltip(  # This is enforce formatting button
-            multiline=True,
-            width=200,
-            withArrow=True,
-            position="right",
-            transition="fade",
-            transitionDuration=300,
-            # transitionTimingFunction="ease",
-            label="Enforce formatting for cells in the table. This informs the cleaning function of specific formatting for selected columns. The cleaning function will be able to pick up on these formats and clean the data accordingly.",
-            children=dmc.Button("Enforce Formatting", id="btn-enforce-format",
-                                style={"marginBottom": "20px"}),
-        ),
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Distinguish cells that don't match their columns enforced datatypes, set in user preferences",
+                    children=html.Button("Check Cells Datatypes", id="btn-check-cells-datatypes", style=button_style),
+                ),
 
-
-        dmc.Text("Cleaning Operations", variant="subtle", style={
-                 "borderBottom": "1px dashed black", "paddingBottom": "5px"}),
-
-
-        dmc.Tooltip(
-            withArrow=True,
-            width=200,
-            multiline=True,
-            position="right",
-            transition="fade",
-            transitionDuration=300,
-            label="Distinguish and iterate over empty and corrupt cells",
-            children=dmc.Button(
-                "Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", style={"marginBottom": "5px"}),
-        ),
-        dmc.Tooltip(
-            withArrow=True,
-            width=200,
-            multiline=True,
-            position="right",
-            transition="fade",
-            transitionDuration=300,
-            label="Removes duplicate rows from the imported data",
-            children=dmc.Button(
-                "Remove Duplicates", id="btn-remove-duplicates", style={"marginBottom": "5px"}),
-        ),
-
-        dmc.Tooltip(
-            withArrow=True,
-            width=200,
-            multiline=True,
-            position="right",
-            transition="fade",
-            transitionDuration=300,
-            label="Distinguish cells that don't match their columns enforced datatypes, set in user preferences",
-            children=dmc.Button(
-                "Check Cells Datatypes", id="btn-check-cells-datatypes", style={"marginBottom": "5px"}),
-        ),
-
-        dmc.Tooltip(
-            withArrow=True,
-            width=200,
-            multiline=True,
-            position="right",
-            transition="fade",
-            transitionDuration=300,
-            label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
-            children=dmc.Button(
-                "Check Cells Formatting", id="btn-check-cells-formatting", style={"marginBottom": "5px"}),
-        ),
-        dmc.Tooltip(
-            withArrow=True,
-            width=200,
-            multiline=True,
-            position="right",
-            transition="fade",
-            transitionDuration=300,
-            label="Check all cells for any issues",
-            children=dmc.Button(
-                "Clean All", id="btn-clean-all", style={"marginBottom": "20px"}, color="red"),
-        ),
-        # dmc.Button("Cancel", id="cancel-button", disabled=True),
-        # dmc.Checkbox(id="auto-clean-checkbox", label="Auto Clean First?", checked=True),
-        # dmc.Text(id="log-textbox"),
-
-
-
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
+                    children=html.Button("Check Cells Formatting", id="btn-check-cells-formatting", style=button_style),
+                ),
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Check all cells for any issues",
+                    children=html.Button("Clean All", id="btn-clean-all", style={"color": "red", "backgroundColor": "#f7f7f7", "border": "none", "cursor": "pointer", "padding": "5px", "width": "100%", "text-align": "left", "margin": "5px 0"}),
+                ),
+            ]),
+        ], style={"fontSize": "26px"}),
     ], className="sidebar"),
-
-
 
 
     # Main content
