@@ -304,7 +304,8 @@ def show_noncomplient_data(n_clicks, columns, data):
         for idx in non_compliant_indices:
             condition = {
                 'if': {'column_id': col['name'], 'row_index': idx},
-                'backgroundColor': 'red',
+                'backgroundColor': '#0074D9',
+                'color': 'white',
             }
             style_conditions.append(condition)
             # style_conditions.append({
@@ -313,7 +314,7 @@ def show_noncomplient_data(n_clicks, columns, data):
             # })
         
         # Print the non-compliant indices and conditions for debugging
-        print(f"column: {col['name']}, Non-compliant indices: {non_compliant_indices}")
+        # print(f"column: {col['name']}, Non-compliant indices: {non_compliant_indices}")
         # print(style_conditions)
 
     # return df.to_dict('records'), style_conditions
