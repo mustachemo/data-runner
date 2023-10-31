@@ -278,7 +278,18 @@ def show_noncomplient_data(n_clicks, columns, data):
             continue
 
         if col['type'] == 'text':
-            mask = df[col['name']].apply(lambda x: not isinstance(x, str))
+            def is_convertible_to_numeric(val):
+                if val is None:
+                    return False
+                try:
+                    # Try to convert to float
+                    float(val)
+                    return True
+                except (TypeError, ValueError):
+                    return False
+            
+            mask = df[col['name']].apply(lambda x: isinstance(x, str) and not is_convertible_to_numeric(x))
+
 
         elif col['type'] == 'numeric':
             def is_numeric(val):
@@ -330,7 +341,17 @@ def style_noncompliant_cells(data, columns):
             continue
 
         if col['type'] == 'text':
-            mask = df[col['name']].apply(lambda x: not isinstance(x, str))
+            def is_convertible_to_numeric(val):
+                if val is None:
+                    return False
+                try:
+                    # Try to convert to float
+                    float(val)
+                    return True
+                except (TypeError, ValueError):
+                    return False
+            
+            mask = df[col['name']].apply(lambda x: isinstance(x, str) and not is_convertible_to_numeric(x))
             color = '#6ee7b7'
 
         elif col['type'] == 'numeric':
