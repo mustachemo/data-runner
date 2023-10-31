@@ -104,7 +104,7 @@ def higlight_cells_modal(nc1, nc2, nc3, opened):
 
 ###################### HIGHLIGHT CELLS (SUBMIT MODAL) ######################
 @callback(
-    Output('editable-table', 'style_data_conditional'),
+    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     Input("higlight-modal-submit-button", "n_clicks"),
     State('highlight-empty-nan-null-cells-checkbox', 'checked'),
     State('highlight-dtype-columns-cells-checkbox', 'checked'),
@@ -257,7 +257,7 @@ def update_column_datatypes(_, modal_children, columns):
 
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
 @callback(
-    Output('editable-table', 'data', allow_duplicate=True),
+    # Output('editable-table', 'data', allow_duplicate=True),
     Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     [Input('btn-check-cells-datatypes', 'n_clicks')],
     State('editable-table', 'columns'),
@@ -296,23 +296,28 @@ def show_noncomplient_data(n_clicks, columns, data):
             continue
         
         # Print the column name and the mask for debugging
-        print(f"Column: {col['name']}")
-        print(mask)
+        # print(f"Column: {col['name']}")
+        # print(mask)
 
         # Add to the style_conditions based on the mask
         non_compliant_indices = mask[mask].index.tolist()
         for idx in non_compliant_indices:
             condition = {
                 'if': {'column_id': col['name'], 'row_index': idx},
-                'backgroundColor': 'lightpurple',
+                'backgroundColor': 'red',
             }
             style_conditions.append(condition)
+            # style_conditions.append({
+            #     'if': {'column_id': col['name'], 'row_index': idx},
+            #     'backgroundColor': 'lightpurple',
+            # })
         
         # Print the non-compliant indices and conditions for debugging
-        print(f"Non-compliant indices: {non_compliant_indices}")
-        print(style_conditions)
+        print(f"column: {col['name']}, Non-compliant indices: {non_compliant_indices}")
+        # print(style_conditions)
 
-    return df.to_dict('records'), style_conditions
+    # return df.to_dict('records'), style_conditions
+    return style_conditions
 
 
 if __name__ == '__main__':

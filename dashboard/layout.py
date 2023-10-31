@@ -320,7 +320,8 @@ layout = html.Div([  # This is the main layout of the app
                     'backgroundColor': 'rgb(224,241,255)',
                     'color': 'rgb(12,127,218)'
                 },
-                style_cell_conditional=()
+                style_cell_conditional=(),
+                # style_data_conditional=()
                 # style_data={
                 #     'backgroundColor': 'rgb(50, 50, 50)',
                 #     'color': 'white'
