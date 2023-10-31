@@ -288,7 +288,7 @@ def show_noncomplient_data(n_clicks, columns, data):
                 except (TypeError, ValueError):
                     return False
             
-            mask = df[col['name']].apply(lambda x: isinstance(x, str) and not is_convertible_to_numeric(x))
+            mask = df[col['name']].apply(lambda x: not isinstance(x, str) or is_convertible_to_numeric(x))
 
 
         elif col['type'] == 'numeric':
@@ -358,19 +358,17 @@ def style_noncompliant_cells(data, columns):
                 except (TypeError, ValueError):
                     return False
             
-            mask = df[col['name']].apply(lambda x: isinstance(x, str) and not is_convertible_to_numeric(x))
-            color = '#6ee7b7'
+            mask = df[col['name']].apply(lambda x: not isinstance(x, str) or is_convertible_to_numeric(x))
+            color = '#fde047'  # Adjusted color for non-string data in a text column
 
         elif col['type'] == 'numeric':
             def is_numeric(val):
                 if val is None:
                     return False
 
-                # If val is already numeric (float or int)
                 if isinstance(val, (float, int)):
                     return True
 
-                # If val is a string, attempt to convert to float after removing hyphens
                 if isinstance(val, str):
                     try:
                         float(val.replace('-', ''))
@@ -380,15 +378,14 @@ def style_noncompliant_cells(data, columns):
                 return False
 
             mask = df[col['name']].apply(lambda x: not is_numeric(x))
-            color = '#fde047'
+            color = '#6ee7b7'  # Adjusted color for non-numeric data in a numeric column
     
         elif col['type'] == 'datetime':
             mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
-            color = '#c4b5fd'
+            color = '#c4b5fd'  # Adjusted color for non-datetime data in a datetime column
         else:
             continue
 
-        # Add styling information for non-compliant cells
         non_compliant_indices = mask[mask].index.tolist()
         for idx in non_compliant_indices:
             style_data_conditional.append({
@@ -398,6 +395,7 @@ def style_noncompliant_cells(data, columns):
             })
 
     return style_data_conditional
+
 
 
 
