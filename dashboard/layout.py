@@ -240,10 +240,25 @@ layout = html.Div([  # This is the main layout of the app
                         'display': 'inline-block',
                         'width': '20px',
                         'height': '20px',
-                        'backgroundColor': 'tomato',
+                        'backgroundColor': '#f87171',
                         "margin": "0.5rem",
                     })),
 
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Cells with text datatype enforced",
+                    children=html.Div(style={
+                        'display': 'inline-block',
+                        'width': '20px',
+                        'height': '20px',
+                        'backgroundColor': '#fde047',
+                        'margin': '0.5rem',
+                    })),
                 dmc.Tooltip(
                     withArrow=True,
                     width=200,
@@ -256,10 +271,9 @@ layout = html.Div([  # This is the main layout of the app
                         'display': 'inline-block',
                         'width': '20px',
                         'height': '20px',
-                        'backgroundColor': 'lightgreen',
+                        'backgroundColor': '#6ee7b7',
                         'margin': '0.5rem',
                     })),
-
                 dmc.Tooltip(
                     withArrow=True,
                     width=200,
@@ -272,7 +286,7 @@ layout = html.Div([  # This is the main layout of the app
                         'display': 'inline-block',
                         'width': '20px',
                         'height': '20px',
-                        'backgroundColor': 'lightyellow',
+                        'backgroundColor': '#c4b5fd',
                         'margin': '0.5rem',
                     })),
 

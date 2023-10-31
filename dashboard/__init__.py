@@ -328,7 +328,7 @@ def show_noncomplient_data(n_clicks, columns, data):
 
     # Filter the dataframe to keep only rows with non-compliant data
     df_filtered = df[df.index.isin(non_compliant_rows)]
-    print(df_filtered)
+    # print(df_filtered)
 
     if df_filtered.empty:
         return no_update
@@ -399,7 +399,6 @@ def style_noncompliant_cells(data, columns):
             style_data_conditional.append({
                 'if': {'row_index': idx, 'column_id': col['name']},
                 'backgroundColor': color,
-                'color': 'white'
             })
 
     return style_data_conditional
