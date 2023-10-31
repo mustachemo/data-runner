@@ -202,7 +202,7 @@ layout = html.Div([  # This is the main layout of the app
                                 children=[
                                     dcc.Upload(
                                         id='upload-data',
-                                        children=dmc.Button("Upload File", style={"backgroundColor": "#0C7FDA"}),
+                                        children=dmc.Button("Upload File", style={"backgroundColor": "#0C7FDA"}, leftIcon=DashIconify(icon="tabler:upload"),),
                                         multiple=True
                                     ),
                                 ],
@@ -278,7 +278,8 @@ layout = html.Div([  # This is the main layout of the app
                 ),
                 dmc.Button("Export",
                            id="btn-download",
-                           style={"backgroundColor": "#0C7FDA"}
+                           style={"backgroundColor": "#0C7FDA"},
+                           leftIcon=DashIconify(icon="mdi:export"),
                            ),
                 dcc.Download(id="download-file")
             ], className="export-group"),
