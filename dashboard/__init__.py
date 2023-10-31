@@ -288,7 +288,9 @@ def show_noncomplient_data(n_clicks, columns, data):
                 except (TypeError, ValueError):
                     return False
             
-            mask = df[col['name']].apply(lambda x: not isinstance(x, str) or is_convertible_to_numeric(x))
+            # mask = df[col['name']].apply(lambda x: not isinstance(x, str) or is_convertible_to_numeric(x))
+            mask = df[col['name']].apply(lambda x: x is not None and (not isinstance(x, str) or is_convertible_to_numeric(x)))
+
 
 
         elif col['type'] == 'numeric':
@@ -309,10 +311,13 @@ def show_noncomplient_data(n_clicks, columns, data):
                         return False
                 return False
 
-            mask = df[col['name']].apply(lambda x: not is_numeric(x))
+            # mask = df[col['name']].apply(lambda x: not is_numeric(x))
+            mask = df[col['name']].apply(lambda x: x is not None and (not is_numeric(x)))
+
     
         elif col['type'] == 'datetime':
-            mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
+            # mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
+            mask = df[col['name']].apply(lambda x: x is not None and (not isinstance(x, pd.Timestamp)))
         else:
             continue
 
@@ -358,7 +363,8 @@ def style_noncompliant_cells(data, columns):
                 except (TypeError, ValueError):
                     return False
             
-            mask = df[col['name']].apply(lambda x: not isinstance(x, str) or is_convertible_to_numeric(x))
+            # mask = df[col['name']].apply(lambda x: not isinstance(x, str) or is_convertible_to_numeric(x))
+            mask = df[col['name']].apply(lambda x: x is not None and (not isinstance(x, str) or is_convertible_to_numeric(x)))
             color = '#fde047'  # Adjusted color for non-string data in a text column
 
         elif col['type'] == 'numeric':
@@ -377,11 +383,13 @@ def style_noncompliant_cells(data, columns):
                         return False
                 return False
 
-            mask = df[col['name']].apply(lambda x: not is_numeric(x))
+            # mask = df[col['name']].apply(lambda x: not is_numeric(x))
+            mask = df[col['name']].apply(lambda x: x is not None and (not is_numeric(x)))
             color = '#6ee7b7'  # Adjusted color for non-numeric data in a numeric column
     
         elif col['type'] == 'datetime':
-            mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
+            # mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
+            mask = df[col['name']].apply(lambda x: x is not None and (not isinstance(x, pd.Timestamp)))
             color = '#c4b5fd'  # Adjusted color for non-datetime data in a datetime column
         else:
             continue
