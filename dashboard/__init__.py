@@ -258,7 +258,6 @@ def update_column_datatypes(_, modal_children, columns):
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
-    Output('editable-table', 'columns', allow_duplicate=True),
     Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     [Input('btn-check-cells-datatypes', 'n_clicks')],
     State('editable-table', 'columns'),
@@ -282,23 +281,38 @@ def show_noncomplient_data(n_clicks, columns, data):
             mask = df[col['name']].apply(lambda x: not isinstance(x, str))
 
         elif col['type'] == 'numeric':
-            mask = df[col['name']].apply(lambda x: not isinstance(x, (int, float)))
+            def is_numeric(val):
+                try:
+                    float(val)
+                    return True
+                except (TypeError, ValueError):
+                    return False
+
+            mask = df[col['name']].apply(lambda x: not is_numeric(x))
     
         elif col['type'] == 'datetime':
             mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
         else:
             continue
+        
+        # Print the column name and the mask for debugging
+        print(f"Column: {col['name']}")
+        print(mask)
 
         # Add to the style_conditions based on the mask
         non_compliant_indices = mask[mask].index.tolist()
         for idx in non_compliant_indices:
             condition = {
                 'if': {'column_id': col['name'], 'row_index': idx},
-                'backgroundColor': 'red',  # this can be changed to your preferred color
+                'backgroundColor': 'lightpurple',
             }
             style_conditions.append(condition)
+        
+        # Print the non-compliant indices and conditions for debugging
+        print(f"Non-compliant indices: {non_compliant_indices}")
+        print(style_conditions)
 
-    return df.to_dict('records'), [{"name": i, "id": i} for i in df.columns], style_conditions
+    return df.to_dict('records'), style_conditions
 
 
 if __name__ == '__main__':
