@@ -305,12 +305,63 @@ def show_noncomplient_data(n_clicks, columns, data):
 
     # Filter the dataframe to keep only rows with non-compliant data
     df_filtered = df[df.index.isin(non_compliant_rows)]
+    print(df_filtered)
 
     if df_filtered.empty:
         return no_update
     
     # return df_filtered.to_dict('records'), []
     return df_filtered.to_dict('records')
+
+
+###################### CLEAN CELLS DATATYPE [CLEANING OPERATION] highlighting ######################
+@callback(
+    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    [Input('editable-table', 'data')],
+    State('editable-table', 'columns'),
+    prevent_initial_call=True
+)
+def style_noncompliant_cells(data, columns):
+    df = pd.DataFrame.from_dict(data)
+    style_data_conditional = []
+
+    for col in columns:
+        if 'type' not in col:
+            continue
+
+        if col['type'] == 'text':
+            mask = df[col['name']].apply(lambda x: not isinstance(x, str))
+            color = '#6ee7b7'
+
+        elif col['type'] == 'numeric':
+            def is_numeric(val):
+                if val is None:
+                    return False    
+                try:
+                    float(val.replace('-', ''))
+                    return True
+                except (TypeError, ValueError):
+                    return False
+
+            mask = df[col['name']].apply(lambda x: not is_numeric(x))
+            color = '#fde047'
+    
+        elif col['type'] == 'datetime':
+            mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
+            color = '#c4b5fd'
+        else:
+            continue
+
+        # Add styling information for non-compliant cells
+        non_compliant_indices = mask[mask].index.tolist()
+        for idx in non_compliant_indices:
+            style_data_conditional.append({
+                'if': {'row_index': idx, 'column_id': col['name']},
+                'backgroundColor': color,
+                'color': 'white'
+            })
+
+    return style_data_conditional
 
 
 
@@ -330,7 +381,6 @@ def reset_table(n_clicks, initial_data, initial_columns):
     if n_clicks is None:
         raise exceptions.PreventUpdate
 
-    # return initial_data, initial_columns, []
     return initial_data, initial_columns
 
 
