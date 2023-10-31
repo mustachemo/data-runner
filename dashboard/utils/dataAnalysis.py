@@ -7,6 +7,7 @@ def get_data_analysis(data):
     df = pd.DataFrame.from_dict(data)
 
     empty_corrupt_values = df.isna().sum()
+    num_rows, num_columns = df.shape
     num_duplicate_rows = df.duplicated().sum()
 
     if (empty_corrupt_values.sum() != 0):
@@ -22,8 +23,16 @@ def get_data_analysis(data):
                 # i want ot get rid of the bulletd points
             ], style={"listStyleType": "none"}),
             html.Li([
-                "Empty/Corrupt Cells: ",
-                html.Span(f'{"{:,}".format(empty_corrupt_values.sum())}', style={
+                "Rows: ",
+                html.Span(f'{"{:,}".format(num_rows)}', style={
+                    'color': '#007BFF',
+                    'fontWeight': 'bold',
+                    'padding': '0 5px',
+                    'borderRadius': '5px'
+                }),
+                " | ",
+                "Columns: ",
+                html.Span(f'{"{:,}".format(num_columns)}', style={
                     'color': '#007BFF',
                     'fontWeight': 'bold',
                     'padding': '0 5px',
