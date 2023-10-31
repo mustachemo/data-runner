@@ -282,8 +282,11 @@ def show_noncomplient_data(n_clicks, columns, data):
 
         elif col['type'] == 'numeric':
             def is_numeric(val):
+                if val is None:
+                    return False    
                 try:
-                    float(val)
+                    # Remove hyphens (for negative numbers) and try to convert to float
+                    float(val.replace('-', ''))
                     return True
                 except (TypeError, ValueError):
                     return False
