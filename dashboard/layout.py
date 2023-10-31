@@ -5,6 +5,8 @@ layout = html.Div([  # This is the main layout of the app
 
     # This is the notification container
     # html.Div(id="notify-container"),
+    dcc.Store(id='initial-table-data'),
+    dcc.Store(id='initial-table-columns'),
 
     # Sidebar
     html.Div([
@@ -223,6 +225,7 @@ layout = html.Div([  # This is the main layout of the app
                     ]
                 ),
             ),
+            dmc.Button("Reset Table", id="btn-reset-table", style={"backgroundColor": "#0C7FDA"}),
             html.Div([
 
                 dmc.Tooltip(
