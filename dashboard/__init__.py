@@ -303,6 +303,9 @@ def show_noncomplient_data(n_clicks, columns, data):
     # Filter the dataframe to keep only rows with non-compliant data
     df_filtered = df[df.index.isin(non_compliant_rows)]
 
+    if df_filtered.empty:
+        return no_update
+    
     # return df_filtered.to_dict('records'), []
     return df_filtered.to_dict('records')
 
