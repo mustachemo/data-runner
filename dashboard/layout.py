@@ -28,7 +28,8 @@ layout = html.Div([  # This is the main layout of the app
                     position="right",
                     transition="fade",
                     label="Opens a modal showing which columns have corrupt/missing cells and duplicate data",
-                    children=html.Button("Detailed Analysis", id="btn-detailed-analysis", style=button_style),
+                    # children=html.Button("Detailed Analysis", id="btn-detailed-analysis", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
+                    children=dmc.Button("Detailed Analysis", id="btn-detailed-analysis", variant="subtle"),
                 ),
                 dmc.Tooltip(
                     multiline=True,
@@ -39,7 +40,8 @@ layout = html.Div([  # This is the main layout of the app
                     transitionDuration=300,
                     # transitionTimingFunction="ease",
                     label="Opens a modal for cell higlighting options",
-                    children=html.Button("Highlight Cells", id="btn-higlight-cells", style=button_style),
+                    # children=html.Button("Highlight Cells", id="btn-higlight-cells", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
+                    children=dmc.Button("Highlight Cells", id="btn-higlight-cells", variant="subtle"),
                 ),
                 dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
                     title="Choose options for cell highlighting",
@@ -79,7 +81,8 @@ layout = html.Div([  # This is the main layout of the app
                     transitionDuration=300,
                     # transitionTimingFunction="ease",
                     label="Enforce datatypes for each column in the table",
-                    children=html.Button("Enforce Datatypes", id="btn-enforce-dtypes", style=button_style),
+                    # children=html.Button("Enforce Datatypes", id="btn-enforce-dtypes", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
+                    children=dmc.Button("Enforce Datatypes", id="btn-enforce-dtypes", variant="subtle")
                 ),
                 dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
                     title="Select a column to enforce a datatype",
@@ -111,7 +114,8 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
-                    children=html.Button("Enforce Formatting", id="btn-enforce-format", style=button_style),
+                    # children=html.Button("Enforce Formatting", id="btn-enforce-format", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
+                    children=dmc.Button("Enforce Formatting", id="btn-enforce-format", variant="subtle")
                 ),
                 dmc.Space(h=30),
                 dmc.MenuLabel("Cleaning Operations", style={"padding-left": "5px"}),
@@ -123,7 +127,8 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Distinguish and iterate over empty and corrupt cells",
-                    children=html.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", style=button_style),
+                    # children=html.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
+                    children=dmc.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", variant="subtle")
                 ),
                 dmc.Tooltip(
                     withArrow=True,
@@ -133,7 +138,8 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Removes duplicate rows from the imported data",
-                    children=html.Button("Remove Duplicates", id="btn-remove-duplicates", style=button_style),
+                    # children=html.Button("Remove Duplicates", id="btn-remove-duplicates", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
+                    children=dmc.Button("Remove Duplicates", id="btn-remove-duplicates", variant="subtle")
                 ),
 
                 dmc.Tooltip(
@@ -144,7 +150,8 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Distinguish cells that don't match their columns enforced datatypes, set in user preferences",
-                    children=html.Button("Check Cells Datatypes", id="btn-check-cells-datatypes", style=button_style),
+                    # children=html.Button("Check Cells Datatypes", id="btn-check-cells-datatypes", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
+                    children=dmc.Button("Check Cells Datatypes", id="btn-check-cells-datatypes", variant="subtle")
                 ),
 
                 dmc.Tooltip(
@@ -155,7 +162,8 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
-                    children=html.Button("Check Cells Formatting", id="btn-check-cells-formatting", style=button_style),
+                    # children=html.Button("Check Cells Formatting", id="btn-check-cells-formatting", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
+                    children=dmc.Button("Check Cells Formatting", id="btn-check-cells-formatting", variant="subtle"),
                 ),
                 dmc.Tooltip(
                     withArrow=True,
@@ -165,7 +173,8 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Check all cells for any issues",
-                    children=html.Button("Clean All", id="btn-clean-all", style={"color": "red", "backgroundColor": "#f7f7f7", "border": "none", "cursor": "pointer", "padding": "5px", "width": "100%", "text-align": "left", "margin": "5px 0"}),
+                    # children=html.Button("Clean All", id="btn-clean-all", style={"color": "white", "backgroundColor": "#e35454", "border": "none", "borderRadius": "4px", "padding": "9px"}),
+                    children=dmc.Button("Clean All", id="btn-clean-all", variant="subtle", color="red"),
                 ),
             ]),
         ], style={"fontSize": "26px"}),
