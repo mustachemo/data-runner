@@ -294,13 +294,20 @@ def show_noncomplient_data(n_clicks, columns, data):
         elif col['type'] == 'numeric':
             def is_numeric(val):
                 if val is None:
-                    return False    
-                try:
-                    # Remove hyphens (for negative numbers) and try to convert to float
-                    float(val.replace('-', ''))
-                    return True
-                except (TypeError, ValueError):
                     return False
+
+                # If val is already numeric (float or int)
+                if isinstance(val, (float, int)):
+                    return True
+
+                # If val is a string, attempt to convert to float after removing hyphens
+                if isinstance(val, str):
+                    try:
+                        float(val.replace('-', ''))
+                        return True
+                    except (TypeError, ValueError):
+                        return False
+                return False
 
             mask = df[col['name']].apply(lambda x: not is_numeric(x))
     
@@ -357,12 +364,20 @@ def style_noncompliant_cells(data, columns):
         elif col['type'] == 'numeric':
             def is_numeric(val):
                 if val is None:
-                    return False    
-                try:
-                    float(val.replace('-', ''))
-                    return True
-                except (TypeError, ValueError):
                     return False
+
+                # If val is already numeric (float or int)
+                if isinstance(val, (float, int)):
+                    return True
+
+                # If val is a string, attempt to convert to float after removing hyphens
+                if isinstance(val, str):
+                    try:
+                        float(val.replace('-', ''))
+                        return True
+                    except (TypeError, ValueError):
+                        return False
+                return False
 
             mask = df[col['name']].apply(lambda x: not is_numeric(x))
             color = '#fde047'
