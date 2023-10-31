@@ -30,7 +30,6 @@ app.layout = layout
     Output('editable-table', 'columns', allow_duplicate=True),
     Output('editable-table', 'fixed_rows'),
     Output('initial-table-data', 'data'),
-    Output('initial-table-columns', 'data'),
     State('editable-table', 'data'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
@@ -260,7 +259,7 @@ def update_column_datatypes(_, modal_children, columns):
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
-    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    # Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     [Input('btn-check-cells-datatypes', 'n_clicks')],
     State('editable-table', 'columns'),
     State('editable-table', 'data'),
@@ -271,8 +270,6 @@ def show_noncomplient_data(n_clicks, columns, data):
         raise exceptions.PreventUpdate
     
     df = pd.DataFrame.from_dict(data)
-
-    style_conditions = []
     non_compliant_rows = set()  # To track rows with non-compliant data
 
     for col in columns:
@@ -298,37 +295,37 @@ def show_noncomplient_data(n_clicks, columns, data):
         else:
             continue
 
-        # Add to the style_conditions based on the mask
+        # Find non-compliant indices and add them to the set
         non_compliant_indices = mask[mask].index.tolist()
         for idx in non_compliant_indices:
             non_compliant_rows.add(idx)  # Add row index to the set
-            condition = {
-                'if': {'column_id': col['name'], 'row_index': idx},
-                'backgroundColor': '#85144b',
-                'color': 'white',
-            }
-            style_conditions.append(condition)
 
     # Filter the dataframe to keep only rows with non-compliant data
     df_filtered = df[df.index.isin(non_compliant_rows)]
 
-    return df_filtered.to_dict('records'), style_conditions
+    # return df_filtered.to_dict('records'), []
+    return df_filtered.to_dict('records')
+
+
+
 
 ###################### RESET TABLE ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
     Output('editable-table', 'columns', allow_duplicate=True),
-    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    # Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     Input('btn-reset-table', 'n_clicks'),
     State('initial-table-data', 'data'),
-    State('initial-table-columns', 'data'),
+    State('editable-table', 'columns'),
+
     prevent_initial_call=True
 )
 def reset_table(n_clicks, initial_data, initial_columns):
     if n_clicks is None:
         raise exceptions.PreventUpdate
 
-    return initial_data, initial_columns, []
+    # return initial_data, initial_columns, []
+    return initial_data, initial_columns
 
 
 if __name__ == '__main__':
