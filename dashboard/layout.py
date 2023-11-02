@@ -2,7 +2,6 @@ from dash import html, dcc, dash_table
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 
-# button_style = {"color": "#228be6", "backgroundColor": "#f7f7f7", "border": "none", "cursor": "pointer", "padding": "5px", "width": "100%", "text-align": "left", "margin": "5px 0"}
 
 layout = html.Div([  # This is the main layout of the app
 
