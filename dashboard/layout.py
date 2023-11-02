@@ -29,7 +29,6 @@ layout = html.Div([  # This is the main layout of the app
                     position="right",
                     transition="fade",
                     label="Opens a modal showing which columns have corrupt/missing cells and duplicate data",
-                    # children=html.Button("Detailed Analysis", id="btn-detailed-analysis", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
                     children=dmc.Button("Detailed Analysis", id="btn-detailed-analysis", variant="subtle", leftIcon=DashIconify(icon="bx:data"),),
                 ),
                 dmc.Tooltip(
@@ -41,7 +40,6 @@ layout = html.Div([  # This is the main layout of the app
                     transitionDuration=300,
                     # transitionTimingFunction="ease",
                     label="Opens a modal for cell higlighting options",
-                    # children=html.Button("Highlight Cells", id="btn-higlight-cells", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
                     children=dmc.Button("Highlight Cells", id="btn-higlight-cells", variant="subtle", leftIcon=DashIconify(icon="bx:highlight"),),
                 ),
                 dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
@@ -82,7 +80,6 @@ layout = html.Div([  # This is the main layout of the app
                     transitionDuration=300,
                     # transitionTimingFunction="ease",
                     label="Enforce datatypes for each column in the table",
-                    # children=html.Button("Enforce Datatypes", id="btn-enforce-dtypes", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
                     children=dmc.Button("Enforce Datatypes", id="btn-enforce-dtypes", variant="subtle", leftIcon=DashIconify(icon="material-symbols:data-check"),)
                 ),
                 dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
@@ -115,7 +112,6 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
-                    # children=html.Button("Enforce Formatting", id="btn-enforce-format", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
                     children=dmc.Button("Enforce Formatting", id="btn-enforce-format", variant="subtle", leftIcon=DashIconify(icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing"),)
                 ),
                 dmc.Space(h=20),
@@ -128,7 +124,6 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Distinguish and iterate over empty and corrupt cells",
-                    # children=html.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
                     children=dmc.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", variant="subtle", leftIcon=DashIconify(icon="iconoir:info-empty"),)
                 ),
                 dmc.Tooltip(
@@ -139,8 +134,6 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Removes duplicate rows from the imported data",
-                    # children=html.Button("Remove Duplicates", id="btn-remove-duplicates", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
-                    # children=dmc.Button("Remove Duplicates", id="btn-remove-duplicates", variant="subtle", leftIcon=DashIconify(icon="gg:remove-r"),)
                     children=dmc.Button("Remove Duplicates", id="btn-remove-duplicates", variant="subtle", leftIcon=DashIconify(icon="bx:duplicate"),)
                 ),
 
@@ -152,7 +145,6 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Distinguish cells that don't match their columns enforced datatypes, set in user preferences",
-                    # children=html.Button("Check Cells Datatypes", id="btn-check-cells-datatypes", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
                     children=dmc.Button("Check Cells Datatypes", id="btn-check-cells-datatypes", variant="subtle", leftIcon=DashIconify(icon="gg:check-o"),)
                 ),
 
@@ -164,7 +156,6 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
-                    # children=html.Button("Check Cells Formatting", id="btn-check-cells-formatting", style={"color": "white", "backgroundColor": "#0C7FDA", "border": "none", "borderRadius": "4px", "padding": "9px"}),
                     children=dmc.Button("Check Cells Formatting", id="btn-check-cells-formatting", variant="subtle", leftIcon=DashIconify(icon="mdi:checkbox-outline"),),
                 ),
                 dmc.Tooltip(
@@ -175,7 +166,6 @@ layout = html.Div([  # This is the main layout of the app
                     transition="fade",
                     transitionDuration=300,
                     label="Check all cells for any issues",
-                    # children=html.Button("Clean All", id="btn-clean-all", style={"color": "white", "backgroundColor": "#e35454", "border": "none", "borderRadius": "4px", "padding": "9px"}),
                     children=dmc.Button("Clean All", id="btn-clean-all", variant="subtle", color="red", leftIcon=DashIconify(icon="material-symbols:cleaning-services-outline"),),
                 ),
             ]),
