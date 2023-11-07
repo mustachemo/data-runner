@@ -99,9 +99,10 @@ def highlight_cells(submit_btn, highlight_empty_cells, highlight_dtype_cells, co
 ###################### REMOVE DUPLICATE ROWS ######################
 @callback(
     Output('editable-table', 'data'),
-    # Output('notify-container', 'children'),
+    Output('notifications-container', 'children', allow_duplicate=True),
     State('editable-table', 'data'),
-    Input('btn-remove-duplicates', 'n_clicks')
+    Input('btn-remove-duplicates', 'n_clicks'),
+    prevent_initial_call=True
 )
 def remove_duplicate_rows(data, n_clicks):
     if data is None and n_clicks is None:
@@ -109,25 +110,40 @@ def remove_duplicate_rows(data, n_clicks):
 
     df = pd.DataFrame.from_dict(data)
     df.drop_duplicates(inplace=True)
-    return df.to_dict('records')
 
-    # success_notification = dmc.Notification(
-    #     id="my-notification",
-    #     title="Data loaded",
-    #     message="The process has started.",
-    #     color="green",
-    #     action="show",
-    #     icon=DashIconify(icon="akar-icons:circle-check"),
-    # )
-    # return DataCleaner.remove_duplicate_rows(data, n_clicks), success_notification
-    # return DataCleaner.remove_duplicate_rows(data, n_clicks)
+    # Count how many rows were removed
+    rows_removed = len(data) - len(df)
+
+    if rows_removed == 0:
+        notification = dmc.Notification(
+            title="No duplicate rows found!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            autoClose=3000,
+            message="",
+            icon=DashIconify(icon="akar-icons:circle-alert")
+        )
+        return no_update, notification
+
+    else: 
+        notification = dmc.Notification(
+            title="Duplicate rows removed!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            autoClose=3000,
+            message=f'{rows_removed} rows removed',
+            icon=DashIconify(icon="akar-icons:circle-check"),
+        )
+
+        return df.to_dict('records'), notification
 
 
 ###################### DOWNLOAD FILE ######################
-
-
 @callback(
     Output("download-file", "data"),
+    Output("notifications-container", "children", allow_duplicate=True),
     Input("btn-download", "n_clicks"),
     State('editable-table', 'data'),
     State('editable-table', 'columns'),
@@ -135,7 +151,21 @@ def remove_duplicate_rows(data, n_clicks):
     prevent_initial_call=True,
 )
 def download_file(_, data, columns, fileType):
-    return HandleFile.exportFile(data, columns, fileType)
+    if (data == None or columns == None):
+        print("Nothing to export")
+        raise exceptions.PreventUpdate
+
+    notification = dmc.Notification(
+        title="File Exported Successfuly!",
+        id="simple-notify",
+        color="green",
+        action="show",
+        autoClose=3000,
+        message='',
+        icon=DashIconify(icon="akar-icons:circle-alert"),
+    )
+
+    return HandleFile.exportFile(data, columns, fileType), notification
 
 # endregion
 
@@ -225,7 +255,8 @@ def update_column_datatypes(_, modal_children, columns):
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
-    # Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    Output('noncomplient-indices', 'data'),
+    Output('notifications-container', 'children', allow_duplicate=True),
     [Input('btn-check-cells-datatypes', 'n_clicks')],
     State('editable-table', 'columns'),
     State('editable-table', 'data'),
@@ -298,20 +329,36 @@ def show_noncomplient_data(n_clicks, columns, data):
 
     if df_filtered.empty:
         print("No non-compliant data found")
-        return no_update
+        
+        notification = dmc.Notification(
+            title="No non-complient data found!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            message="",
+            autoClose=3000,
+            icon=DashIconify(icon="akar-icons:circle-alert")
+        )
+        return no_update, no_update, notification
     
     # return df_filtered.to_dict('records'), []
-    return df_filtered.to_dict('records')
+    return df_filtered.to_dict('records'), df_filtered.index.tolist(), []
 
 
 ###################### CLEAN CELLS DATATYPE [CLEANING OPERATION] highlighting ######################
 @callback(
     Output('editable-table', 'style_data_conditional', allow_duplicate=True),
-    [Input('editable-table', 'data')],
+    [Input('noncomplient-indices', 'data')],
     State('editable-table', 'columns'),
+    State('editable-table', 'data'),
     prevent_initial_call=True
 )
-def style_noncompliant_cells(data, columns):
+def style_noncompliant_cells(cache, columns, data):
+    if not cache:
+        raise exceptions.PreventUpdate
+    
+    print(f'cache: {cache}')
+
     df = pd.DataFrame.from_dict(data)
     style_data_conditional = []
 
@@ -378,7 +425,7 @@ def style_noncompliant_cells(data, columns):
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
     Output('editable-table', 'columns', allow_duplicate=True),
-    # Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     Input('btn-reset-table', 'n_clicks'),
     State('initial-table-data', 'data'),
     State('editable-table', 'columns'),
@@ -389,7 +436,7 @@ def reset_table(n_clicks, initial_data, initial_columns):
     if n_clicks is None:
         raise exceptions.PreventUpdate
 
-    return initial_data, initial_columns
+    return initial_data, initial_columns, []
 
 
 if __name__ == '__main__':

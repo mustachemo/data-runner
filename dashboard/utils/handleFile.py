@@ -52,7 +52,8 @@ def importFiles(prevData, files, fileNames):
         id="simple-notify",
         color="green",
         action="show",
-        message=f'file name(s(): {fileNames}',
+        autoClose=3000,
+        message=f'file name(s): {fileNames}',
         icon=DashIconify(icon="akar-icons:circle-check"),
     )
 
@@ -72,9 +73,6 @@ def combineDf(prevDf, df):
 
 
 def exportFile(data, columns, fileType="csv"):
-    if (data == None or columns == None):
-        print("Nothing to export")
-        raise PreventUpdate
     message = ""
     df = pd.DataFrame.from_dict(data)
     columnNameMap = {col["id"]: col["name"] for col in columns}

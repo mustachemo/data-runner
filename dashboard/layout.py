@@ -7,6 +7,7 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
     html.Div(id="notifications-container"),
     dcc.Store(id='initial-table-data'),
     dcc.Store(id='initial-table-columns'),
+    dcc.Store(id='noncomplient-indices'),
 
     # Sidebar
     html.Div([
@@ -294,6 +295,7 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     id="file-type-select",
                     style={"width": "80px"},
                     value="csv",
+                    zIndex=10000,
                     data=[
                         {"value": "csv", "label": "csv"},
                         {"value": "xml", "label": "xml"},
