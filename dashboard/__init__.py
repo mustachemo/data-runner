@@ -97,7 +97,7 @@ def check_number_of_empty_and_corrupt_cells(data):
     State("detailed-analysis-modal", "opened"),
     prevent_initial_call=True,
 )
-def modal_demo(nc1, nc2, nc3, opened):
+def detailed_analysis_modal(nc1, nc2, nc3, opened):
     return not opened
 
 ###################### HIGHLIGHT CELLS (OPEN MODAL) ######################
