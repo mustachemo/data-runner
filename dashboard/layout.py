@@ -1,10 +1,10 @@
 from dash import html, dcc, dash_table
 import dash_mantine_components as dmc
 
-layout = html.Div([  # This is the main layout of the app
+layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the app
 
     # This is the notification container
-    # html.Div(id="notify-container"),
+    html.Div(id="notifications-container"),
     dcc.Store(id='initial-table-data'),
     dcc.Store(id='initial-table-columns'),
 
@@ -200,33 +200,30 @@ layout = html.Div([  # This is the main layout of the app
     # Main content
     html.Div([
         html.Div([
-            dmc.NotificationsProvider(
-                html.Div(
-                    [
-                        html.Div(id="notifications-container"),
-                        html.Div(  # Corrected children to html.Div
-                            dmc.Tooltip(
-                                withArrow=True,
-                                width=200,
-                                multiline=True,
-                                position="right",
-                                transition="fade",
-                                transitionDuration=300,
-                                label="Multiple file uploads will be combined into one table, duplicate rows removed, and mismatched columns ignored.",
-                                children=[
-                                    dcc.Upload(
-                                        id='upload-data',
-                                        children=dmc.Button("Upload File", style={"backgroundColor": "#0C7FDA"}),
-                                        multiple=True
-                                    ),
-                                ],
-                            ),
+
+            html.Div(
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Multiple file uploads will be combined into one table, duplicate rows removed, and mismatched columns ignored.",
+                    children=[
+                        dcc.Upload(
+                            id='upload-data',
+                            children=dmc.Button("Upload File", style={"backgroundColor": "#0C7FDA"}),
+                            multiple=True
                         ),
-                    ]
+                    ],
                 ),
             ),
+
+
             dmc.Button("Reset Table", id="btn-reset-table", style={"backgroundColor": "#0C7FDA"}),
-            html.Div([
+            
+            html.Div([ 
 
                 dmc.Tooltip(
                     withArrow=True,
@@ -349,4 +346,4 @@ layout = html.Div([  # This is the main layout of the app
 
     ], className="main-content")
 
-], className="app-container")
+], className="app-container"))

@@ -30,6 +30,7 @@ app.layout = layout
     Output('editable-table', 'columns', allow_duplicate=True),
     Output('editable-table', 'fixed_rows'),
     Output('initial-table-data', 'data'),
+    Output('notifications-container', 'children'),
     State('editable-table', 'data'),
     Input('upload-data', 'contents'),
     State('upload-data', 'filename'),
@@ -39,44 +40,9 @@ def upload_file(prevData, files, fileNames):
     if files is None:
         raise exceptions.PreventUpdate
 
+
+
     return HandleFile.importFiles(prevData, files, fileNames)
-
-###################### UPLOAD FILE Notification ######################
-@callback(
-    Output("notifications-container", "children"),
-    Input("upload-data", "filename"),
-    prevent_initial_call=True,
-)
-
-def show(filenames):
-    if not filenames:
-        return dmc.Notification(
-            id="upload-notifcation",
-            action="show",
-            # autoClose=100000,
-            message="Upload Failed",
-            icon=DashIconify(icon="ic:round-error"),
-        )
-    
-    file_types = {'.csv', '.xlsx', ".xls", ".xlsm" '.html', '.xml'}
-    for filename in filenames:
-        ext = os.path.splitext(filename)[1].lower()
-        if ext in file_types:
-            return dmc.Notification(
-                id="upload-notifcation",
-                action="show",
-                # autoClose=100000,
-                message="File Uploaded!",
-                icon=DashIconify(icon="ic:round-upload"),
-            )
-
-    return dmc.Notification(
-        id="upload-notifcation",
-        action="show",
-        # autoClose=100000,
-        message="Upload Failed!",
-        icon=DashIconify(icon="ic:round-error"),
-    )
 
 ###################### Data Analytics ######################
 @callback(
@@ -331,6 +297,7 @@ def show_noncomplient_data(n_clicks, columns, data):
     # print(df_filtered)
 
     if df_filtered.empty:
+        print("No non-compliant data found")
         return no_update
     
     # return df_filtered.to_dict('records'), []

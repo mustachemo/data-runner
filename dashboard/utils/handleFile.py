@@ -3,6 +3,8 @@ import os
 import io
 import base64
 from dash.exceptions import PreventUpdate
+import dash_mantine_components as dmc
+from dash_iconify import DashIconify
 
 from dashboard.utils.dataAnalysis import higlight_empty_nan_null_cells
 
@@ -45,8 +47,17 @@ def importFiles(prevData, files, fileNames):
 
     print(message)
 
+    notification = dmc.Notification(
+        title="Data loaded!",
+        id="simple-notify",
+        color="green",
+        action="show",
+        message=f'file name(s(): {fileNames}',
+        icon=DashIconify(icon="akar-icons:circle-check"),
+    )
+
     # todo return message
-    return data, columns, {'headers': True}, data
+    return data, columns, {'headers': True}, data, notification
 
 
 def combineDf(prevDf, df):
