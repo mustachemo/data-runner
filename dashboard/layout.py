@@ -30,6 +30,27 @@ layout = html.Div([  # This is the main layout of the app
                     label="Opens a modal showing which columns have corrupt/missing cells and duplicate data",
                     children=dmc.Button("Detailed Analysis", id="btn-detailed-analysis", variant="subtle", leftIcon=DashIconify(icon="bx:data"),),
                 ),
+                dmc.Modal(  # This is the modal that will open when the detailed analysis button is clicked
+                    title="Detailed Analysis",
+                    id="detailed-analysis-modal",
+                    zIndex=10000,
+                    children=[
+                        dmc.Space(h=20),
+                        dmc.Group(
+                            [
+                                dmc.Button(
+                                    "Submit", id="detailed-analysis-submit-button"),
+                                dmc.Button(
+                                    "Close",
+                                    color="red",
+                                    variant="outline",
+                                    id="detailed-analysis-close-button",
+                                ),
+                            ],
+                            position="right",
+                        ),
+                    ],
+                ),
                 dmc.Tooltip(
                     multiline=True,
                     width=200,

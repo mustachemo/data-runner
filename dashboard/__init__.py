@@ -88,6 +88,17 @@ def check_number_of_empty_and_corrupt_cells(data):
 
     return DataAnalysis.get_data_analysis(data)
 
+###################### DETAILED ANALYSIS (MODAL) ######################
+@callback(
+    Output("detailed-analysis-modal", "opened"),
+    Input("btn-detailed-analysis", "n_clicks"),
+    Input("detailed-analysis-close-button", "n_clicks"),
+    Input("detailed-analysis-submit-button", "n_clicks"),
+    State("detailed-analysis-modal", "opened"),
+    prevent_initial_call=True,
+)
+def modal_demo(nc1, nc2, nc3, opened):
+    return not opened
 
 ###################### HIGHLIGHT CELLS (OPEN MODAL) ######################
 @callback(
