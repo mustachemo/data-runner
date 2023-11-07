@@ -36,6 +36,8 @@ layout = html.Div([  # This is the main layout of the app
                     zIndex=10000,
                     children=[
                         dmc.Space(h=20),
+                        dmc.Text(id="duplicate-rows-text"),
+                        dmc.Space(h=20),
                         dmc.Group(
                             [
                                 dmc.Button(

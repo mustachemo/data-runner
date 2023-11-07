@@ -90,15 +90,24 @@ def check_number_of_empty_and_corrupt_cells(data):
 
 ###################### DETAILED ANALYSIS (MODAL) ######################
 @callback(
+    Output("duplicate-rows-text", "children"),
     Output("detailed-analysis-modal", "opened"),
     Input("btn-detailed-analysis", "n_clicks"),
     Input("detailed-analysis-close-button", "n_clicks"),
     Input("detailed-analysis-submit-button", "n_clicks"),
     State("detailed-analysis-modal", "opened"),
+    State("editable-table", "data"),
     prevent_initial_call=True,
 )
-def detailed_analysis_modal(nc1, nc2, nc3, opened):
-    return not opened
+def detailed_analysis_modal(nc1, nc2, nc3, opened, table_data):
+    if nc1 or nc3:
+        df = pd.DataFrame.from_dict(table_data)
+        num_duplicate_rows = df.duplicated().sum()
+        content = [
+            dmc.Text(f"Number of Duplicate Rows: {num_duplicate_rows}")
+        ]
+        return content, not opened
+    return [], opened
 
 ###################### HIGHLIGHT CELLS (OPEN MODAL) ######################
 @callback(
