@@ -39,9 +39,7 @@ app.layout = layout
 def upload_file(prevData, files, fileNames):
     if files is None:
         raise exceptions.PreventUpdate
-
-
-
+    
     return HandleFile.importFiles(prevData, files, fileNames)
 
 ###################### Data Analytics ######################
@@ -168,41 +166,6 @@ def download_file(_, data, columns, fileType):
     return HandleFile.exportFile(data, columns, fileType), notification
 
 # endregion
-
-# region datacleaner
-
-# @app.long_callback(
-#     Output("editable-table", "data"),
-#     Output("log-textbox", "children"),
-#     Input("clean-data-button", "n_clicks"),
-#     State("editable-table", "data"),
-#     State("editable-table", "columns"),
-#     State("auto-clean-checkbox", "checked"),
-#     running=[(Output("clean-data-button", "disabled"), True, False),
-#              (Output("cancel-button", "disabled"), False, True)
-#              ],
-#     cancel=[Input("cancel-button", "n_clicks")],
-#     manager=long_callback_manager,
-#     prevent_initial_call=True,
-# )
-# def cleanData(_, data, columns, isAutoClean):
-#     # todo manual clean
-#     # todo get and use user preferences
-#     # todo clean up logging
-#     # reconsider what to report based on frontend needs
-#     userPreferences = {"*": "int"}
-#     if (isAutoClean):
-#         data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(
-#             data, columns, userPreferences)
-#         message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
-#         print(message)
-#         return data, message
-
-#     print("Not implemented")
-#     raise exceptions.NonExistentEventException
-
-# endregion
-
 
 ###################### ENFORCE DATATYPES (OPEN MODAL) ######################
 @callback(
