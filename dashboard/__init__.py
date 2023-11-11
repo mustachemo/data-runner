@@ -63,8 +63,8 @@ def check_number_of_empty_and_corrupt_cells(data):
     State("higlight-cells-modal", "opened"),
     prevent_initial_call=True,
 )
-def higlight_cells_modal(nc1, nc2, nc3, opened):
-    return not opened
+def higlight_cells_modal(nc1, nc2, nc3, is_open):
+    return not is_open
 
 
 ###################### HIGHLIGHT CELLS (SUBMIT MODAL) ######################
@@ -218,14 +218,14 @@ def update_column_datatypes(_, modal_children, columns):
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
-    Output('noncomplient-indices', 'data'),
+    Output('noncompliant-indices', 'data'),
     Output('notifications-container', 'children', allow_duplicate=True),
     [Input('btn-check-cells-datatypes', 'n_clicks')],
     State('editable-table', 'columns'),
     State('editable-table', 'data'),
     prevent_initial_call=True
 )
-def show_noncomplient_data(n_clicks, columns, data):
+def show_noncompliant_data(n_clicks, columns, data):
     if columns is None or data is None or n_clicks is None:
         raise exceptions.PreventUpdate
     
@@ -311,7 +311,7 @@ def show_noncomplient_data(n_clicks, columns, data):
 ###################### CLEAN CELLS DATATYPE [CLEANING OPERATION] highlighting ######################
 @callback(
     Output('editable-table', 'style_data_conditional', allow_duplicate=True),
-    [Input('noncomplient-indices', 'data')],
+    [Input('noncompliant-indices', 'data')],
     State('editable-table', 'columns'),
     State('editable-table', 'data'),
     prevent_initial_call=True
@@ -387,19 +387,17 @@ def style_noncompliant_cells(cache, columns, data):
 ###################### RESET TABLE ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
-    Output('editable-table', 'columns', allow_duplicate=True),
     Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     Input('btn-reset-table', 'n_clicks'),
     State('initial-table-data', 'data'),
-    State('editable-table', 'columns'),
 
     prevent_initial_call=True
 )
-def reset_table(n_clicks, initial_data, initial_columns):
+def reset_table(n_clicks, initial_data):
     if n_clicks is None:
         raise exceptions.PreventUpdate
 
-    return initial_data, initial_columns, []
+    return initial_data, []
 
 
 if __name__ == '__main__':

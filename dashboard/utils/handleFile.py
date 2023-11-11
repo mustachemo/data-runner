@@ -6,8 +6,6 @@ from dash.exceptions import PreventUpdate
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 
-from dashboard.utils.dataAnalysis import higlight_empty_nan_null_cells
-
 
 def importFiles(prevData, files, fileNames):
     df = pd.DataFrame.from_dict(data=prevData)
