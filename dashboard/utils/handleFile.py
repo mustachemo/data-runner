@@ -35,6 +35,13 @@ def importFiles(prevData, files, fileNames):
                     # todo pdf
                 case _:
                     message += f"Unrecognized filetype '{fileName}'.\n"
+            
+            # Add an ID column to the new dataframe
+            newDf['ID'] = range(1, len(newDf) + 1)
+
+            # Ensure the ID column is the first column
+            col_order = ['ID'] + [col for col in newDf.columns if col != 'ID']
+            newDf = newDf[col_order]
 
             df = combineDf(df, newDf)
         except Exception as e:
