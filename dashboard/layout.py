@@ -7,7 +7,6 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
     html.Div(id="notifications-container"),
     dcc.Store(id='initial-table-data'),
     dcc.Store(id='initial-table-columns'),
-    dcc.Store(id='noncomplient-indices'),
 
     # Sidebar
     html.Div([

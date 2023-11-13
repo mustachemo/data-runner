@@ -15,7 +15,7 @@ cache = diskcache.Cache("./cache")
 long_callback_manager = DiskcacheManager(cache)
 
 # This is the main app object
-app = Dash(__name__)
+app = Dash(__name__, suppress_callback_exceptions=True)
 # Improves load time by not loading all callbacks at once. 5-10% improvement
 # app.config.suppress_callback_exceptions = True
 
@@ -421,8 +421,25 @@ def style_noncompliant_cells(cache, columns, data):
     return style_data_conditional
 
 
+###################### CLEAN CELLS DATATYPE [CONFIRM BUTTON] (persist changes) ######################
+@callback(
+    Output('initial-table-data', 'data', allow_duplicate=True),
+    Output('initial-table-columns', 'data', allow_duplicate=True),
+    Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
+    Input('btn-confirm-changes', 'n_clicks'),
+    State('editable-table', 'data'),
+    State('editable-table', 'columns'),
+    State('initial-table-data', 'data'),
+    State('initial-table-columns', 'data'),
+    prevent_initial_call=True,
+)
+def clean_noncompliant_cells(n_clicks, current_data, current_columns, original_data, original_columns):
+    if n_clicks is None:
+        raise exceptions.PreventUpdate
 
+    # persist changes to the original data
 
+    
 
 ###################### RESET TABLE ######################
 @callback(
