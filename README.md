@@ -2,10 +2,14 @@
 
 ## Table of Contents
 
-- [Setup](#setup)
-- [Features](#features)
-- [Problem(s)](#problem)
-- [Objectives](#objectives)
+- [Data Clean-up Tool](#data-clean-up-tool)
+  - [Table of Contents](#table-of-contents)
+  - [Setup](#setup)
+  - [Features](#features)
+  - [Optimization](#optimization)
+  - [Extras](#extras)
+  - [Problem](#problem)
+  - [Objectives](#objectives)
 
 
 ## Setup
@@ -70,20 +74,20 @@ To set up and run the Data Clean-up Tool, follow these steps:
   - [x] Export data into various forms
     - [x] We are able to export the data, but not the modified data. Must fix that
     - [x] Also need to make a button that exports the data into the format specified by the radio buttons
-    - [ ] Style export button!
-  - [ ] Make the columns/first row/headers sticky. Meaning they stay when scrolling
+    - [x] Style export button!
+  - [x] Make the columns/first row/headers sticky. Meaning they stay when scrolling
 
-  - [ ] Could style the table to make it nicer (bonus feature)
+
   - [x] Add enforcement of types. Say a column shows only numbers, let's say money. Enforce that you can't edit a text into there, only numeric values are allowed (https://dash.plotly.com/datatable/typing)
   - [ ] Add a formatting setting that formats columns to a specified prefereance. For example, cost column will show $ sign and number type enforcement along with commas when needed (https://dash.plotly.com/datatable/typing)
-  - [ ] Adding or removing columns and rows
+  - [x] Adding or removing columns and rows
   - [ ] Update parse_content function to include 'xslx, xml, html" and "pdf" if we can (pdf is a bonus feature)
   - [x] Combine two or more data of the same format into one file
-  - [ ] After "Enforcing" dtypes or formatting, those cells are then highlighted (https://dash.plotly.com/datatable/conditional-formatting). We could also use for other use cases when highlighting is required. We should have a legend that says what each higlight color means
+  - [z] After "Enforcing" dtypes or formatting, those cells are then highlighted (https://dash.plotly.com/datatable/conditional-formatting). We could also use for other use cases when highlighting is required. We should have a legend that says what each higlight color means
     - [x] dtype highlighting
     - [x] Highlighting None, NaN, or Empty String Values
     - [ ] formatting highlighting
-  - [ ] Make legend for filtering operations/syntax (https://dash.plotly.com/datatable/filtering)
+  - [z] Make legend for filtering operations/syntax (https://dash.plotly.com/datatable/filtering)
   - [ ] Testing (https://dash.plotly.com/testing)
 
 - Bonus Features:
@@ -94,6 +98,7 @@ To set up and run the Data Clean-up Tool, follow these steps:
   - [x] Make columns selection through a checkbox (https://dash.plotly.com/datatable/editable)
   - [ ] Displaying Errors with dash.no_update (https://dash.plotly.com/advanced-callbacks)
   - [ ] Taps for visuals and/or data analytics information (https://dash.plotly.com/dash-core-components/tabs) (https://dash.plotly.com/dash-core-components/graph)
+  - [ ] Could style the table to make it nicer (bonus feature)
 
 ## Optimization
 
@@ -127,9 +132,9 @@ Objective is to design and function tool that can help the company to identify a
 - Standard Features:
 
   - [x] Ability to read various formats of data (xml, csv, pdf etc.;) and display in rows and columns.
-  - [ ] Give the user the ability to define each row or column of data according to the user’s preference. And modify or
+  - [x] Give the user the ability to define each row or column of data according to the user’s preference. And modify or
 display the data that is not according to the defined parameters. Preferably in GUI for a layman to use it.
-  - [ ] Combine different sets of data of same format into one set and customize as per user requirements.
+  - [x] Combine different sets of data of same format into one set and customize as per user requirements.
   - [x] Ability to export into different formats as per user needs.
 
 - Bonus Features:
