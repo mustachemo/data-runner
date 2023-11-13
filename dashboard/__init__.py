@@ -421,43 +421,37 @@ def style_noncompliant_cells(cache, columns, data):
     return style_data_conditional
 
 
-###################### CLEAN CELLS DATATYPE [CONFIRM BUTTON] (persist changes) ######################
-@callback(
-    Output('initial-table-data', 'data', allow_duplicate=True),
-    Output('initial-table-columns', 'data', allow_duplicate=True),
-    Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
-    Input('btn-confirm-changes', 'n_clicks'),
-    State('editable-table', 'data'),
-    State('editable-table', 'columns'),
-    State('initial-table-data', 'data'),
-    State('initial-table-columns', 'data'),
-    prevent_initial_call=True,
-)
-def clean_noncompliant_cells(n_clicks, current_data, current_columns, original_data, original_columns):
-    if n_clicks is None:
-        raise exceptions.PreventUpdate
+# ###################### CLEAN CELLS DATATYPE [CONFIRM BUTTON] (persist changes) ######################
+# @callback(
+#     Output('initial-table-data', 'data', allow_duplicate=True),
+#     Input('btn-confirm-changes', 'n_clicks'),
+#     State('editable-table', 'data'),
+#     State('initial-table-data', 'data'),
+#     prevent_initial_call=True,
+# )
+# def clean_noncompliant_cells(n_clicks, current_data, current_columns, original_data, original_columns):
+#     if n_clicks is None:
+#         raise exceptions.PreventUpdate
 
-    # persist changes to the original data
+#     # persist changes to the original data
 
     
 
 ###################### RESET TABLE ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
-    Output('editable-table', 'columns', allow_duplicate=True),
     Output('editable-table', 'style_data_conditional', allow_duplicate=True),
     Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
     Input('btn-reset-table', 'n_clicks'),
     State('initial-table-data', 'data'),
-    State('editable-table', 'columns'),
 
     prevent_initial_call=True
 )
-def reset_table(n_clicks, initial_data, initial_columns):
+def reset_table(n_clicks, initial_data):
     if n_clicks is None:
         raise exceptions.PreventUpdate
 
-    return initial_data, initial_columns, [], []
+    return initial_data, [], []
 
 
 if __name__ == '__main__':
