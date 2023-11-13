@@ -257,6 +257,7 @@ def update_column_datatypes(_, modal_children, columns):
     Output('editable-table', 'data', allow_duplicate=True),
     Output('noncomplient-indices', 'data'),
     Output('notifications-container', 'children', allow_duplicate=True),
+    Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
     [Input('btn-check-cells-datatypes', 'n_clicks')],
     State('editable-table', 'columns'),
     State('editable-table', 'data'),
@@ -339,10 +340,12 @@ def show_noncomplient_data(n_clicks, columns, data):
             autoClose=3000,
             icon=DashIconify(icon="akar-icons:circle-alert")
         )
-        return no_update, no_update, notification
+        return no_update, no_update, notification, no_update
     
+    confirm_button = dmc.Button("Confirm Changes", id="btn-confirm-changes", style={"backgroundColor": "#12B886"}),
+            
     # return df_filtered.to_dict('records'), []
-    return df_filtered.to_dict('records'), df_filtered.index.tolist(), []
+    return df_filtered.to_dict('records'), df_filtered.index.tolist(), [], confirm_button
 
 
 ###################### CLEAN CELLS DATATYPE [CLEANING OPERATION] highlighting ######################
@@ -426,6 +429,7 @@ def style_noncompliant_cells(cache, columns, data):
     Output('editable-table', 'data', allow_duplicate=True),
     Output('editable-table', 'columns', allow_duplicate=True),
     Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
     Input('btn-reset-table', 'n_clicks'),
     State('initial-table-data', 'data'),
     State('editable-table', 'columns'),
@@ -436,7 +440,7 @@ def reset_table(n_clicks, initial_data, initial_columns):
     if n_clicks is None:
         raise exceptions.PreventUpdate
 
-    return initial_data, initial_columns, []
+    return initial_data, initial_columns, [], []
 
 
 if __name__ == '__main__':

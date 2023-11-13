@@ -223,7 +223,8 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
 
 
             dmc.Button("Reset Table", id="btn-reset-table", style={"backgroundColor": "#0C7FDA"}),
-            
+            html.Div(id="btn-confirm-changes-container"),
+
             html.Div([ 
 
                 dmc.Tooltip(
