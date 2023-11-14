@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Dash",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/run.py", // Replace with your Dash app file
+      "console": "integratedTerminal",
+      "env": {
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "0"
+      }
+    }
+  ]
+}

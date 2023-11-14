@@ -422,20 +422,46 @@ def style_noncompliant_cells(cache, columns, data):
 
 
 # ###################### CLEAN CELLS DATATYPE [CONFIRM BUTTON] (persist changes) ######################
-# @callback(
-#     Output('initial-table-data', 'data', allow_duplicate=True),
-#     Input('btn-confirm-changes', 'n_clicks'),
-#     State('editable-table', 'data'),
-#     State('initial-table-data', 'data'),
-#     prevent_initial_call=True,
-# )
-# def clean_noncompliant_cells(n_clicks, current_data, current_columns, original_data, original_columns):
-#     if n_clicks is None:
-#         raise exceptions.PreventUpdate
+@callback(
+    Output('initial-table-data', 'data', allow_duplicate=True),
+    Input('btn-confirm-changes', 'n_clicks'),
+    State('editable-table', 'data'),
+    State('initial-table-data', 'data'),
+    prevent_initial_call=True,
+)
+def clean_noncompliant_cells(n_clicks, current_data, original_data):
+    if n_clicks is None:
+        raise exceptions.PreventUpdate
 
-#     # persist changes to the original data
+    # Create DataFrames from the current and original data
+    current_df = pd.DataFrame(current_data)
+    original_df = pd.DataFrame(original_data)
 
-    
+    # Ensure 'ID' column is of the same data type in both DataFrames to match correctly
+    current_df['ID'] = current_df['ID'].astype(original_df['ID'].dtype)
+
+    # Update the original DataFrame based on the 'ID' column
+    for _, row in current_df.iterrows():
+        # Find the index of the row with the matching 'ID' in the original DataFrame
+        row_id = row['ID']
+        match_index = original_df[original_df['ID'] == row_id].index
+
+        # If the matching row is found, update it
+        if not match_index.empty:
+            # Update only the columns that exist in the original DataFrame
+            for idx in match_index:
+                for col in original_df.columns:
+                    original_df.at[idx, col] = row[col]
+        # If the 'ID' is not found, append the new row with correct columns
+        else:
+            new_row = {col: row[col] for col in original_df.columns}
+            original_df = original_df.append(new_row, ignore_index=True)
+
+    # Reset the index to ensure it remains unique and sequential
+    original_df.reset_index(drop=True, inplace=True)
+
+    return original_df.to_dict('records')
+
 
 ###################### RESET TABLE ######################
 @callback(
