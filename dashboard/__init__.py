@@ -424,6 +424,7 @@ def style_noncompliant_cells(cache, columns, data):
 # ###################### CLEAN CELLS DATATYPE [CONFIRM BUTTON] (persist changes) ######################
 @callback(
     Output('initial-table-data', 'data', allow_duplicate=True),
+    Output('notifications-container', 'children', allow_duplicate=True),
     Input('btn-confirm-changes', 'n_clicks'),
     State('editable-table', 'data'),
     State('initial-table-data', 'data'),
@@ -460,7 +461,18 @@ def clean_noncompliant_cells(n_clicks, current_data, original_data):
     # Reset the index to ensure it remains unique and sequential
     original_df.reset_index(drop=True, inplace=True)
 
-    return original_df.to_dict('records')
+
+    notification = dmc.Notification(
+            title="Changes updated!",
+            id="simple-notify",
+            color="green",
+            action="show",
+            message="",
+            autoClose=3000,
+            icon=DashIconify(icon="akar-icons:circle-check")
+        )
+
+    return original_df.to_dict('records'), notification
 
 
 ###################### RESET TABLE ######################
