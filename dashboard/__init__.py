@@ -359,8 +359,6 @@ def show_noncomplient_data(n_clicks, columns, data):
 def style_noncompliant_cells(cache, columns, data):
     if not cache:
         raise exceptions.PreventUpdate
-    
-    print(f'cache: {cache}')
 
     df = pd.DataFrame.from_dict(data)
     style_data_conditional = []
