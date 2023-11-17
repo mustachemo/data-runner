@@ -76,7 +76,15 @@ def show(filenames):
         message="Upload Failed!",
         icon=DashIconify(icon="ic:round-error"),
     )
-
+###################### FILTER SYNTAX MODAL #################
+@callback(
+    Output("filter-syntax-modal", "opened"),
+    Input("filter-syntax-btn", "n_clicks"),
+    State("filter-syntax-modal", "opened"),
+    prevent_initial_call=True,
+)
+def toggle_modal(n_clicks, opened):
+    return not opened
 ###################### Data Analytics ######################
 @callback(
     Output('alert-empty-and-corrupt-cells', 'children'),
