@@ -3,6 +3,8 @@ import os
 import io
 import base64
 from dash.exceptions import PreventUpdate
+import dash_mantine_components as dmc
+from dash_iconify import DashIconify
 
 from dashboard.utils.dataAnalysis import higlight_empty_nan_null_cells
 
@@ -33,6 +35,13 @@ def importFiles(prevData, files, fileNames):
                     # todo pdf
                 case _:
                     message += f"Unrecognized filetype '{fileName}'.\n"
+            
+            # Add an ID column to the new dataframe
+            newDf['ID'] = range(1, len(newDf) + 1)
+
+            # Ensure the ID column is the first column
+            col_order = ['ID'] + [col for col in newDf.columns if col != 'ID']
+            newDf = newDf[col_order]
 
             df = combineDf(df, newDf)
         except Exception as e:
@@ -45,8 +54,18 @@ def importFiles(prevData, files, fileNames):
 
     print(message)
 
+    notification = dmc.Notification(
+        title="Data loaded!",
+        id="simple-notify",
+        color="green",
+        action="show",
+        autoClose=3000,
+        message=f'file name(s): {fileNames}',
+        icon=DashIconify(icon="akar-icons:circle-check"),
+    )
+
     # todo return message
-    return data, columns, {'headers': True}
+    return data, columns, {'headers': True}, data, notification
 
 
 def combineDf(prevDf, df):
@@ -61,9 +80,6 @@ def combineDf(prevDf, df):
 
 
 def exportFile(data, columns, fileType="csv"):
-    if (data == None or columns == None):
-        print("Nothing to export")
-        raise PreventUpdate
     message = ""
     df = pd.DataFrame.from_dict(data)
     columnNameMap = {col["id"]: col["name"] for col in columns}
