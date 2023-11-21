@@ -117,11 +117,11 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     children=dmc.Button("Enforce Formatting", id="btn-enforce-format", variant="subtle", leftIcon=DashIconify(icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing"),)
                 ),
                 dmc.Modal(  # This is the modal that will open when the enforce formatting button is clicked
-                    title="Select a column to enforce formatting",
+                    title="Input a specified format for each column",
                     id="enforce-formatting-modal",
                     zIndex=10000,
+                    size="60rem",
                     children=[
-                        dmc.Space(h=20),
                         html.Div(id='column-format-selector'),
                         dmc.Space(h=20),
                         dmc.Group(

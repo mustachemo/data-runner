@@ -275,7 +275,31 @@ def populate_format_selection(opened, columns):
     if not opened or not columns:
         return dmc.Text("Upload a file to enforce formatting!", style={"color": "black", "fontWeight": "bold", "textAlign": "center"})
 
-    return UserPreferences.populate_format_selection(opened, columns)
+    children = []
+    children.append(UserPreferences.create_regex_instructional_area())
+    children.append(dmc.Space(h=20))
+
+    for col_details in columns:
+        col_name = col_details['name']
+        dropdown_value = col_details.get('format', None)
+
+        input_text = dmc.TextInput(
+            id={'type': 'format-input', 'index': col_name},
+            value=dropdown_value,
+            placeholder="Enter format",
+            style={'width': '9rem'}
+        )
+
+        
+        children.append(
+            html.Div(
+                [html.Label(col_name), input_text],
+                style={"display": "flex", "justifyContent": "space-between",
+                       "alignItems": "center", "padding": "0.5rem", "borderBottom": "1px solid #000"}
+            )
+        )
+
+    return children
 
 
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
