@@ -36,7 +36,7 @@ def populate_datatype_selection(opened, columns):
 
     for col_details in columns:
         col_name = col_details['name']
-        dropdown_value = col_details.get('type', None)
+        dropdown_value = col_details.get('type', 'any')
 
         dropdown = dcc.Dropdown(
             id={'type': 'datatype-dropdown', 'index': col_name},

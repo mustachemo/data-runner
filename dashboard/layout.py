@@ -12,7 +12,6 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
     dcc.Store(id='formatting-store'),
 
     # Sidebar
-    # Sidebar
     html.Div([
         html.Div([
             dmc.Image(  # This is the logo

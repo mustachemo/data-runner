@@ -270,11 +270,14 @@ def enforce_dtypes_modal(nc1, nc2, nc3, opened):
     Output("column-format-selector", "children"),
     Input("enforce-formatting-modal", "opened"),
     State("editable-table", "columns"),
+    State('formatting-store', 'data'),
     prevent_initial_call=True,
 )
-def populate_format_selection(opened, columns):
+def populate_format_selection(opened, columns, formatting_options):
     if not opened or not columns:
         return dmc.Text("Upload a file to enforce formatting!", style={"color": "black", "fontWeight": "bold", "textAlign": "center"})
+
+    formatting_options = json.loads(formatting_options) if formatting_options else None
 
     children = []
     children.append(UserPreferences.create_regex_instructional_area())
@@ -282,11 +285,13 @@ def populate_format_selection(opened, columns):
 
     for col_details in columns:
         col_name = col_details['name']
-        dropdown_value = col_details.get('format', None)
+
+        # Retrieve the format from the stored formatting if it exists, otherwise set to None
+        placeholder_value = formatting_options.get(col_name, None) if formatting_options else None
 
         input_text = dmc.TextInput(
             id={'type': 'format-input', 'index': col_name},
-            value=dropdown_value,
+            value=placeholder_value,
             placeholder="Enter format",
             style={'width': '20rem'}
         )
@@ -315,31 +320,15 @@ def update_column_formatting(_, modal_children, columns):
         raise exceptions.PreventUpdate
 
     format_values = UserPreferences.extract_input_values(modal_children)
-    
-    print(f'Formatting options: {format_values}')
 
     # Create a dictionary with column names as keys and formatting options as values
     column_formats = {
         col['name']: fmt_val for col, fmt_val in zip(columns, format_values) if fmt_val
     }
-    # print(f'Formatting options: {column_formats}')
-    # print(f'formatting with json: {json.dumps(column_formats)}')
 
-    # Return the dictionary to be stored in dcc.Store as a JSON string
+    print(f'Formatting options: {column_formats}')
+
     return json.dumps(column_formats)
-
-@callback(
-    Output('store-output', 'children'),
-    Input('formatting-store', 'data'),
-    prevent_initial_call=True
-)
-def display_store_data(data):
-    if data is None:
-        return "No data in the store."
-    else:
-        print(f'Formatting options: {data}')
-        # Assuming the data is stored as a JSON string
-        return html.Pre(data)  # Use html.Pre for preformatted text to preserve spaces and line breaks
 
 
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
