@@ -9,6 +9,7 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
     dcc.Store(id='initial-table-data'),
     dcc.Store(id='initial-table-columns'),
     dcc.Store(id='noncomplient-indices'),
+    dcc.Store(id='formatting-store'),
 
     # Sidebar
     # Sidebar
@@ -18,7 +19,7 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
-
+        html.Div(id='store-output'),
         html.Div([
             dmc.Menu([
                 dmc.MenuLabel("Data Analysis", style={"padding-left": "5px"}),

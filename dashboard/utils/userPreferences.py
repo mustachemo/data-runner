@@ -19,6 +19,16 @@ def extract_dropdown_values(children):
 
     return dropdown_values
 
+def extract_input_values(children):
+    input_values = []
+
+    for child in children:
+        if isinstance(child, dict) and child.get('type') == 'Div':
+            for inner_child in child['props']['children']:
+                if inner_child['type'] == 'TextInput':
+                    input_values.append(inner_child['props']['value'])
+
+    return input_values
 
 def populate_datatype_selection(opened, columns):
     data_type_options = ["text", "numeric",  "datetime", "any"]

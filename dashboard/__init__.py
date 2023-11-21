@@ -10,6 +10,7 @@ import dashboard.utils.handleFile as HandleFile
 import dashboard.utils.userPreferences as UserPreferences
 import dashboard.utils.dataAnalysis as DataAnalysis
 from .layout import layout
+import json
 
 cache = diskcache.Cache("./cache")
 long_callback_manager = DiskcacheManager(cache)
@@ -300,6 +301,45 @@ def populate_format_selection(opened, columns):
         )
 
     return children
+
+###################### ENFORCE FORMATTING (SUBMIT MODAL) ######################
+@callback(
+    Output('formatting-store', 'data'),
+    Input('formatting-modal-submit-button', 'n_clicks'),
+    State('column-format-selector', 'children'),
+    State('editable-table', 'columns'),
+    prevent_initial_call=True
+)
+def update_column_formatting(_, modal_children, columns):
+    if not columns:
+        raise exceptions.PreventUpdate
+
+    format_values = UserPreferences.extract_input_values(modal_children)
+    
+    print(f'Formatting options: {format_values}')
+
+    # Create a dictionary with column names as keys and formatting options as values
+    column_formats = {
+        col['name']: fmt_val for col, fmt_val in zip(columns, format_values) if fmt_val
+    }
+    # print(f'Formatting options: {column_formats}')
+    # print(f'formatting with json: {json.dumps(column_formats)}')
+
+    # Return the dictionary to be stored in dcc.Store as a JSON string
+    return json.dumps(column_formats)
+
+@callback(
+    Output('store-output', 'children'),
+    Input('formatting-store', 'data'),
+    prevent_initial_call=True
+)
+def display_store_data(data):
+    if data is None:
+        return "No data in the store."
+    else:
+        print(f'Formatting options: {data}')
+        # Assuming the data is stored as a JSON string
+        return html.Pre(data)  # Use html.Pre for preformatted text to preserve spaces and line breaks
 
 
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
