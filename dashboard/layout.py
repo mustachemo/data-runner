@@ -122,7 +122,7 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     zIndex=10000,
                     children=[
                         dmc.Space(h=20),
-                        html.Div(id='column-type-selector-2'),
+                        html.Div(id='column-format-selector'),
                         dmc.Space(h=20),
                         dmc.Group(
                             [

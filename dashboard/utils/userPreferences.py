@@ -44,3 +44,27 @@ def populate_datatype_selection(opened, columns):
         )
 
     return children
+
+def populate_format_selection(opened, columns):
+    children = []
+
+    for col_details in columns:
+        col_name = col_details['name']
+        dropdown_value = col_details.get('format', None)
+
+        input_text = dcc.Input(
+            id={'type': 'format-input', 'index': col_name},
+            value=dropdown_value,
+            placeholder="Enter format",
+            style={'width': '9rem'}
+        )
+
+        children.append(
+            html.Div(
+                [html.Label(col_name), input_text],
+                style={"display": "flex", "justifyContent": "space-between",
+                       "alignItems": "center", "padding": "0.5rem", "borderBottom": "1px solid #000"}
+            )
+        )
+
+    return children

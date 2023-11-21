@@ -252,6 +252,32 @@ def update_column_datatypes(_, modal_children, columns):
 
     return columns
 
+###################### ENFORCE FORMATTING (OPEN MODAL) ######################
+@callback(
+    Output("enforce-formatting-modal", "opened"),
+    Input("btn-enforce-format", "n_clicks"),
+    Input("formatting-modal-close-button", "n_clicks"),
+    Input("formatting-modal-submit-button", "n_clicks"),
+    State("enforce-formatting-modal", "opened"),
+    prevent_initial_call=True,
+)
+def enforce_dtypes_modal(nc1, nc2, nc3, opened):
+    return not opened
+
+###################### ENFORCE FORMATTING (FILL MODAL WITH COLUMNS) ######################
+@callback(
+    Output("column-format-selector", "children"),
+    Input("enforce-formatting-modal", "opened"),
+    State("editable-table", "columns"),
+    prevent_initial_call=True,
+)
+def populate_format_selection(opened, columns):
+    if not opened or not columns:
+        return dmc.Text("Upload a file to enforce formatting!", style={"color": "black", "fontWeight": "bold", "textAlign": "center"})
+
+    return UserPreferences.populate_format_selection(opened, columns)
+
+
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
