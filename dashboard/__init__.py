@@ -287,7 +287,7 @@ def populate_format_selection(opened, columns):
             id={'type': 'format-input', 'index': col_name},
             value=dropdown_value,
             placeholder="Enter format",
-            style={'width': '9rem'}
+            style={'width': '20rem'}
         )
 
         
