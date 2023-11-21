@@ -44,7 +44,7 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     label="Opens a modal for cell higlighting options",
                     children=dmc.Button("Highlight Cells", id="btn-higlight-cells", variant="subtle", leftIcon=DashIconify(icon="bx:highlight"),),
                 ),
-                dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
+                dmc.Modal(  # This is the modal that will open when the highlight cells button is clicked
                     title="Choose options for cell highlighting",
                     id="higlight-cells-modal",
                     zIndex=10000,
@@ -115,6 +115,28 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     transitionDuration=300,
                     label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
                     children=dmc.Button("Enforce Formatting", id="btn-enforce-format", variant="subtle", leftIcon=DashIconify(icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing"),)
+                ),
+                dmc.Modal(  # This is the modal that will open when the enforce formatting button is clicked
+                    title="Select a column to enforce formatting",
+                    id="enforce-formatting-modal",
+                    zIndex=10000,
+                    children=[
+                        dmc.Space(h=20),
+                        html.Div(id='column-type-selector-2'),
+                        dmc.Space(h=20),
+                        dmc.Group(
+                            [
+                                dmc.Button("Submit", id="formatting-modal-submit-button"),
+                                dmc.Button(
+                                    "Close",
+                                    color="red",
+                                    variant="outline",
+                                    id="formatting-modal-close-button",
+                                ),
+                            ],
+                            position="right",
+                        ),
+                    ],
                 ),
                 dmc.Space(h=20),
                 dmc.MenuLabel("Cleaning Operations", style={"padding-left": "5px"}),
