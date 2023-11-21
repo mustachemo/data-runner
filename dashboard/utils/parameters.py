@@ -7,49 +7,49 @@ definition_items = [
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("."), html.Span("Matches any character except a newline")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("^"), html.Span("Matches the start of the string")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("$"), html.Span("Matches the end of the string or just before the newline")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("*"), html.Span("Matches 0 or more repetitions of the preceding RE")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("+"), html.Span("Matches 1 or more repetitions of the preceding RE")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("?"), html.Span("Matches 0 or 1 repetitions of the preceding RE")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("{m,n}"), html.Span("Matches from m to n repetitions of the preceding RE")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
@@ -58,7 +58,7 @@ definition_items = [
             },
             children=[dmc.Kbd("[...]"), html.Span("Matches any character inside the square brackets")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
@@ -67,28 +67,28 @@ definition_items = [
             },
             children=[dmc.Kbd("[^...]"), html.Span("Matches any character not inside the square brackets")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("(?=...)"), html.Span("Matches if ... matches next, but doesn’t consume any of the string (lookahead assertion)")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("\\d"), html.Span("Matches any Unicode decimal digit")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
     dmc.Col(
         html.Div(
             style={"display": "flex", "alignItems": "center", "justifyContent": "start", "gap": "10px"},
             children=[dmc.Kbd("\\w"), html.Span("Matches Unicode word characters")]
         ),
-        xs=12, md=4
+        xs=12, md=6
     ),
 ]
 
