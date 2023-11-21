@@ -11,6 +11,7 @@ import dashboard.utils.userPreferences as UserPreferences
 import dashboard.utils.dataAnalysis as DataAnalysis
 from .layout import layout
 import json
+import re
 
 cache = diskcache.Cache("./cache")
 long_callback_manager = DiskcacheManager(cache)
@@ -331,6 +332,72 @@ def update_column_formatting(_, modal_children, columns):
     return json.dumps(column_formats)
 
 
+
+###################### CHECK CELLS FORMATTING [CLEANING OPERATION] ######################
+@callback(
+    Output('editable-table', 'data', allow_duplicate=True),
+    Output('notifications-container', 'children', allow_duplicate=True),
+    Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
+    [Input('btn-check-cells-formatting', 'n_clicks')],
+    State('formatting-store', 'data'),  # State to hold formatting options
+    State('editable-table', 'columns'),
+    State('editable-table', 'data'),
+    prevent_initial_call=True
+)
+def show_noncompliant_format_data(n_clicks, formatting_store_data, columns, data):
+    if columns is None or data is None or n_clicks is None:
+        raise exceptions.PreventUpdate
+    
+    if formatting_store_data is None:
+        notification = dmc.Notification(
+            title="No formatting options found!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            message="",
+            autoClose=3000,
+            icon=DashIconify(icon="akar-icons:circle-alert")
+        )
+        return no_update, notification, no_update
+    
+    # Load the stored formatting options
+    formatting_options = json.loads(formatting_store_data)
+    df = pd.DataFrame.from_dict(data)
+    non_compliant_rows = set()  # To track rows with non-compliant data
+
+    for col in columns:
+        col_name = col['name']
+        # Ensure the column has a formatting pattern stored
+        if col_name in formatting_options:
+            pattern = formatting_options[col_name]
+            regex = re.compile(pattern)
+
+            # Find non-compliant indices and add them to the set
+            non_compliant_indices = df[col_name].apply(lambda x: not regex.match(str(x)) if x else False)
+            non_compliant_rows.update(non_compliant_indices[non_compliant_indices].index.tolist())
+
+    # Filter the dataframe to keep only rows with non-compliant data
+    df_filtered = df.loc[list(non_compliant_rows)]
+
+    if df_filtered.empty:
+        print("No format non-compliant data found")
+        
+        notification = dmc.Notification(
+            title="No format non-complient data found!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            message="",
+            autoClose=3000,
+            icon=DashIconify(icon="akar-icons:circle-alert")
+        )
+        return no_update, notification, no_update
+    
+    confirm_button = dmc.Button("Confirm Changes", id="btn-confirm-changes", style={"backgroundColor": "#12B886"})
+            
+    return df_filtered.to_dict('records'), [], confirm_button
+
+
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
@@ -342,7 +409,7 @@ def update_column_formatting(_, modal_children, columns):
     State('editable-table', 'data'),
     prevent_initial_call=True
 )
-def show_noncomplient_data(n_clicks, columns, data):
+def show_noncomplient_dtype_data(n_clicks, columns, data):
     if columns is None or data is None or n_clicks is None:
         raise exceptions.PreventUpdate
     
@@ -408,10 +475,10 @@ def show_noncomplient_data(n_clicks, columns, data):
     # print(df_filtered)
 
     if df_filtered.empty:
-        print("No non-compliant data found")
+        print("No datatype non-compliant data found")
         
         notification = dmc.Notification(
-            title="No non-complient data found!",
+            title="No datatype non-complient data found!",
             id="simple-notify",
             color="yellow",
             action="show",
@@ -435,7 +502,7 @@ def show_noncomplient_data(n_clicks, columns, data):
     State('editable-table', 'data'),
     prevent_initial_call=True
 )
-def style_noncompliant_cells(cache, columns, data):
+def style_noncompliant_dtype_cells(cache, columns, data):
     if not cache:
         raise exceptions.PreventUpdate
 
