@@ -15,16 +15,11 @@ import re
 
 cache = diskcache.Cache("./cache")
 long_callback_manager = DiskcacheManager(cache)
-
-# This is the main app object
 app = Dash(__name__, suppress_callback_exceptions=True)
-# Improves load time by not loading all callbacks at once. 5-10% improvement
-# app.config.suppress_callback_exceptions = True
-
 app.layout = layout
 
-# region handleFile
 
+# region handleFile
 
 ###################### UPLOAD FILE ######################
 @callback(
@@ -42,9 +37,39 @@ def upload_file(prevData, files, fileNames):
     if files is None:
         raise exceptions.PreventUpdate
 
-
-
     return HandleFile.importFiles(prevData, files, fileNames)
+
+###################### DOWNLOAD FILE ######################
+@callback(
+    Output("download-file", "data"),
+    Output("notifications-container", "children", allow_duplicate=True),
+    Input("btn-download", "n_clicks"),
+    State('editable-table', 'data'),
+    State('editable-table', 'columns'),
+    State('file-type-select', 'value'),
+    prevent_initial_call=True,
+)
+def download_file(_, data, columns, fileType):
+    if (data == None or columns == None):
+        print("Nothing to export")
+        raise exceptions.PreventUpdate
+
+    notification = dmc.Notification(
+        title="File Exported Successfuly!",
+        id="simple-notify",
+        color="green",
+        action="show",
+        autoClose=3000,
+        message='',
+        icon=DashIconify(icon="akar-icons:circle-alert"),
+    )
+
+    return HandleFile.exportFile(data, columns, fileType), notification
+
+# endregion
+
+
+# region dataAnalysis
 
 ###################### Data Analytics ######################
 @callback(
@@ -96,115 +121,12 @@ def highlight_cells(submit_btn, highlight_empty_cells, highlight_dtype_cells, co
 
     if submit_btn:
         return new_highlighting
-
-
-###################### REMOVE DUPLICATE ROWS ######################
-@callback(
-    Output('editable-table', 'data'),
-    Output('notifications-container', 'children', allow_duplicate=True),
-    State('editable-table', 'data'),
-    Input('btn-remove-duplicates', 'n_clicks'),
-    prevent_initial_call=True
-)
-def remove_duplicate_rows(data, n_clicks):
-    if data is None or n_clicks is None:
-        raise exceptions.PreventUpdate
-
-    df = pd.DataFrame.from_dict(data)
-    df.drop_duplicates(inplace=True)
-
-    # Count how many rows were removed
-    rows_removed = len(data) - len(df)
-
-    if rows_removed == 0:
-        notification = dmc.Notification(
-            title="No duplicate rows found!",
-            id="simple-notify",
-            color="yellow",
-            action="show",
-            autoClose=3000,
-            message="",
-            icon=DashIconify(icon="akar-icons:circle-alert")
-        )
-        return no_update, notification
-
-    else: 
-        notification = dmc.Notification(
-            title="Duplicate rows removed!",
-            id="simple-notify",
-            color="yellow",
-            action="show",
-            autoClose=3000,
-            message=f'{rows_removed} rows removed',
-            icon=DashIconify(icon="akar-icons:circle-check"),
-        )
-
-        return df.to_dict('records'), notification
-
-
-###################### DOWNLOAD FILE ######################
-@callback(
-    Output("download-file", "data"),
-    Output("notifications-container", "children", allow_duplicate=True),
-    Input("btn-download", "n_clicks"),
-    State('editable-table', 'data'),
-    State('editable-table', 'columns'),
-    State('file-type-select', 'value'),
-    prevent_initial_call=True,
-)
-def download_file(_, data, columns, fileType):
-    if (data == None or columns == None):
-        print("Nothing to export")
-        raise exceptions.PreventUpdate
-
-    notification = dmc.Notification(
-        title="File Exported Successfuly!",
-        id="simple-notify",
-        color="green",
-        action="show",
-        autoClose=3000,
-        message='',
-        icon=DashIconify(icon="akar-icons:circle-alert"),
-    )
-
-    return HandleFile.exportFile(data, columns, fileType), notification
+    
 
 # endregion
 
-# region datacleaner
 
-# @app.long_callback(
-#     Output("editable-table", "data"),
-#     Output("log-textbox", "children"),
-#     Input("clean-data-button", "n_clicks"),
-#     State("editable-table", "data"),
-#     State("editable-table", "columns"),
-#     State("auto-clean-checkbox", "checked"),
-#     running=[(Output("clean-data-button", "disabled"), True, False),
-#              (Output("cancel-button", "disabled"), False, True)
-#              ],
-#     cancel=[Input("cancel-button", "n_clicks")],
-#     manager=long_callback_manager,
-#     prevent_initial_call=True,
-# )
-# def cleanData(_, data, columns, isAutoClean):
-#     # todo manual clean
-#     # todo get and use user preferences
-#     # todo clean up logging
-#     # reconsider what to report based on frontend needs
-#     userPreferences = {"*": "int"}
-#     if (isAutoClean):
-#         data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(
-#             data, columns, userPreferences)
-#         message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
-#         print(message)
-#         return data, message
-
-#     print("Not implemented")
-#     raise exceptions.NonExistentEventException
-
-# endregion
-
+# region userPreferences
 
 ###################### ENFORCE DATATYPES (OPEN MODAL) ######################
 @callback(
@@ -328,6 +250,55 @@ def update_column_formatting(_, modal_children, columns):
     }
 
     return json.dumps(column_formats)
+
+
+# endregion
+
+# region dataCleaner
+
+###################### REMOVE DUPLICATE ROWS ######################
+@callback(
+    Output('editable-table', 'data'),
+    Output('notifications-container', 'children', allow_duplicate=True),
+    State('editable-table', 'data'),
+    Input('btn-remove-duplicates', 'n_clicks'),
+    prevent_initial_call=True
+)
+def remove_duplicate_rows(data, n_clicks):
+    if data is None or n_clicks is None:
+        raise exceptions.PreventUpdate
+
+    df = pd.DataFrame.from_dict(data)
+    df.drop_duplicates(inplace=True)
+
+    # Count how many rows were removed
+    rows_removed = len(data) - len(df)
+
+    if rows_removed == 0:
+        notification = dmc.Notification(
+            title="No duplicate rows found!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            autoClose=3000,
+            message="",
+            icon=DashIconify(icon="akar-icons:circle-alert")
+        )
+        return no_update, notification
+
+    else: 
+        notification = dmc.Notification(
+            title="Duplicate rows removed!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            autoClose=3000,
+            message=f'{rows_removed} rows removed',
+            icon=DashIconify(icon="akar-icons:circle-check"),
+        )
+
+        return df.to_dict('records'), notification
+
 
 
 ###################### CHECK EMPTY/CORRUPT CELLS [CLEANING OPERATION] ######################
@@ -674,6 +645,8 @@ def style_noncompliant_dtype_cells(cache, columns, data):
     return style_data_conditional
 
 
+# endregion
+
 # ###################### CLEAN CELLS DATATYPE [CONFIRM BUTTON] (persist changes) ######################
 @callback(
     Output('initial-table-data', 'data', allow_duplicate=True),
@@ -745,5 +718,38 @@ def reset_table(n_clicks, initial_data):
     return initial_data, [], []
 
 
+# @app.long_callback(
+#     Output("editable-table", "data"),
+#     Output("log-textbox", "children"),
+#     Input("clean-data-button", "n_clicks"),
+#     State("editable-table", "data"),
+#     State("editable-table", "columns"),
+#     State("auto-clean-checkbox", "checked"),
+#     running=[(Output("clean-data-button", "disabled"), True, False),
+#              (Output("cancel-button", "disabled"), False, True)
+#              ],
+#     cancel=[Input("cancel-button", "n_clicks")],
+#     manager=long_callback_manager,
+#     prevent_initial_call=True,
+# )
+# def cleanData(_, data, columns, isAutoClean):
+#     # todo manual clean
+#     # todo get and use user preferences
+#     # todo clean up logging
+#     # reconsider what to report based on frontend needs
+#     userPreferences = {"*": "int"}
+#     if (isAutoClean):
+#         data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(
+#             data, columns, userPreferences)
+#         message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
+#         print(message)
+#         return data, message
+
+#     print("Not implemented")
+#     raise exceptions.NonExistentEventException
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+

@@ -149,8 +149,8 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     position="right",
                     transition="fade",
                     transitionDuration=300,
-                    label="Distinguish and iterate over empty and corrupt cells",
-                    children=dmc.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", variant="subtle", leftIcon=DashIconify(icon="iconoir:info-empty"),)
+                    label="Removes duplicate rows from the imported data",
+                    children=dmc.Button("Remove Duplicates", id="btn-remove-duplicates", variant="subtle", leftIcon=DashIconify(icon="bx:duplicate"),)
                 ),
                 dmc.Tooltip(
                     withArrow=True,
@@ -159,10 +159,9 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     position="right",
                     transition="fade",
                     transitionDuration=300,
-                    label="Removes duplicate rows from the imported data",
-                    children=dmc.Button("Remove Duplicates", id="btn-remove-duplicates", variant="subtle", leftIcon=DashIconify(icon="bx:duplicate"),)
+                    label="Distinguish and iterate over empty and corrupt cells",
+                    children=dmc.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", variant="subtle", leftIcon=DashIconify(icon="iconoir:info-empty"),)
                 ),
-
                 dmc.Tooltip(
                     withArrow=True,
                     width=200,
