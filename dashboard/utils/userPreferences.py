@@ -1,5 +1,6 @@
 from dash import html, dcc
 import dash_mantine_components as dmc
+import json
 from dashboard.utils.parameters import definition_items, regex_table
 
 
@@ -57,20 +58,28 @@ def populate_datatype_selection(opened, columns):
 
     return children
 
-def populate_format_selection(opened, columns):
+def populate_format_selection(opened, columns, formatting_options):
+
+    formatting_options = json.loads(formatting_options) if formatting_options else None
+
     children = []
+    children.append(create_regex_instructional_area())
+    children.append(dmc.Space(h=20))
 
     for col_details in columns:
         col_name = col_details['name']
-        dropdown_value = col_details.get('format', None)
 
-        input_text = dcc.Input(
+        # Retrieve the format from the stored formatting if it exists, otherwise set to None
+        placeholder_value = formatting_options.get(col_name, None) if formatting_options else None
+
+        input_text = dmc.TextInput(
             id={'type': 'format-input', 'index': col_name},
-            value=dropdown_value,
+            value=placeholder_value,
             placeholder="Enter format",
-            style={'width': '9rem'}
+            style={'width': '20rem'}
         )
 
+        
         children.append(
             html.Div(
                 [html.Label(col_name), input_text],
