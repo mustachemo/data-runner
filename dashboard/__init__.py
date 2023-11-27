@@ -107,7 +107,7 @@ def highlight_cells(submit_btn, highlight_empty_cells, highlight_dtype_cells, co
     prevent_initial_call=True
 )
 def remove_duplicate_rows(data, n_clicks):
-    if data is None and n_clicks is None:
+    if data is None or n_clicks is None:
         raise exceptions.PreventUpdate
 
     df = pd.DataFrame.from_dict(data)
