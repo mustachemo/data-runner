@@ -330,6 +330,79 @@ def update_column_formatting(_, modal_children, columns):
     return json.dumps(column_formats)
 
 
+###################### CHECK EMPTY/CORRUPT CELLS [CLEANING OPERATION] ######################
+@callback(
+    Output('editable-table', 'data', allow_duplicate=True),
+    Output('noncomplient-indices-3', 'data'),
+    Output('notifications-container', 'children', allow_duplicate=True),
+    Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
+    [Input('btn-check-empty-corrupt-cells', 'n_clicks')],
+    State('editable-table', 'columns'),
+    State('editable-table', 'data'),
+    prevent_initial_call=True
+)
+def show_noncomplient_empty_data(n_clicks, columns, data):
+    if columns is None or data is None or n_clicks is None:
+        raise exceptions.PreventUpdate
+    
+    df = pd.DataFrame.from_dict(data)
+    non_compliant_rows = set()  # To track rows with non-compliant data
+
+    for col in columns:
+        # Find non-compliant indices and add them to the set
+        non_compliant_indices = df[col['name']].apply(lambda x: pd.isna(x))
+        non_compliant_rows.update(non_compliant_indices[non_compliant_indices].index.tolist())
+
+    # Filter the dataframe to keep only rows with non-compliant data
+    df_filtered = df.loc[list(non_compliant_rows)]
+
+    if df_filtered.empty:
+        notification = dmc.Notification(
+            title="No empty/corrupt data found!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            message="",
+            autoClose=3000,
+            icon=DashIconify(icon="akar-icons:circle-alert")
+        )
+        return no_update, no_update, notification, no_update
+    
+    confirm_button = dmc.Button("Confirm Changes", id="btn-confirm-changes", style={"backgroundColor": "#12B886"})
+
+    return df_filtered.to_dict('records'), df_filtered.index.tolist(), [], confirm_button
+
+
+###################### CLEAN EMPTY/CORRUPT CELLS [CLEANING OPERATION] highlighting ######################
+@callback(
+    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    [Input('noncomplient-indices-3', 'data')],
+    State('editable-table', 'columns'),
+    State('editable-table', 'data'),
+    prevent_initial_call=True
+)
+def style_noncompliant_empty_cells(cache, columns, data):
+    if not cache:
+        raise exceptions.PreventUpdate
+
+    df = pd.DataFrame.from_dict(data)
+    style_data_conditional = []
+
+    for col in columns:
+        # Find non-compliant indices
+        non_compliant_indices = df[col['name']].apply(pd.isna)
+        non_compliant_rows = non_compliant_indices[non_compliant_indices].index.tolist()
+
+        for idx in non_compliant_rows:
+            style_data_conditional.append({
+                'if': {'row_index': idx, 'column_id': col['name']},
+                'backgroundColor': '#f87171',  # Red background to highlight non-compliant cells
+            })
+
+
+    return style_data_conditional
+
+
 
 ###################### CHECK CELLS FORMATTING [CLEANING OPERATION] ######################
 @callback(
@@ -357,7 +430,7 @@ def show_noncompliant_format_data(n_clicks, formatting_store_data, columns, data
             autoClose=3000,
             icon=DashIconify(icon="akar-icons:circle-alert")
         )
-        return no_update, notification, no_update
+        return no_update, no_update, notification, no_update
     
     # Load the stored formatting options
     formatting_options = json.loads(formatting_store_data)
