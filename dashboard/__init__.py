@@ -327,8 +327,6 @@ def update_column_formatting(_, modal_children, columns):
         col['name']: fmt_val for col, fmt_val in zip(columns, format_values) if fmt_val
     }
 
-    print(f'Formatting options: {column_formats}')
-
     return json.dumps(column_formats)
 
 
@@ -336,6 +334,7 @@ def update_column_formatting(_, modal_children, columns):
 ###################### CHECK CELLS FORMATTING [CLEANING OPERATION] ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
+    Output('noncomplient-indices-2', 'data'),
     Output('notifications-container', 'children', allow_duplicate=True),
     Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
     [Input('btn-check-cells-formatting', 'n_clicks')],
@@ -380,8 +379,6 @@ def show_noncompliant_format_data(n_clicks, formatting_store_data, columns, data
     df_filtered = df.loc[list(non_compliant_rows)]
 
     if df_filtered.empty:
-        print("No format non-compliant data found")
-        
         notification = dmc.Notification(
             title="No format non-complient data found!",
             id="simple-notify",
@@ -391,11 +388,52 @@ def show_noncompliant_format_data(n_clicks, formatting_store_data, columns, data
             autoClose=3000,
             icon=DashIconify(icon="akar-icons:circle-alert")
         )
-        return no_update, notification, no_update
+        return no_update, no_update, notification, no_update
     
     confirm_button = dmc.Button("Confirm Changes", id="btn-confirm-changes", style={"backgroundColor": "#12B886"})
             
-    return df_filtered.to_dict('records'), [], confirm_button
+    return df_filtered.to_dict('records'), df_filtered.index.tolist(), [], confirm_button
+
+
+###################### CLEAN CELLS FORMATTING [CLEANING OPERATION] highlighting ######################
+@callback(
+    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    [Input('noncomplient-indices-2', 'data')],
+    State('editable-table', 'columns'),
+    State('editable-table', 'data'),
+    State('formatting-store', 'data'),  # State to hold formatting options
+    prevent_initial_call=True
+)
+def style_noncompliant_format_cells(cache, columns, data, formatting_store_data):
+    if not cache:
+        raise exceptions.PreventUpdate
+
+    if formatting_store_data is None:
+        return no_update
+
+    # Load the stored formatting options
+    formatting_options = json.loads(formatting_store_data)
+    df = pd.DataFrame.from_dict(data)
+    style_data_conditional = []
+
+    for col in columns:
+        col_name = col['name']
+        # Ensure the column has a formatting pattern stored
+        if col_name in formatting_options:
+            pattern = formatting_options[col_name]
+            regex = re.compile(pattern)
+
+            # Find non-compliant indices and add them to the set
+            non_compliant_indices = df[col_name].apply(lambda x: not regex.match(str(x)) if x else False)
+            non_compliant_rows = non_compliant_indices[non_compliant_indices].index.tolist()
+
+            for idx in non_compliant_rows:
+                style_data_conditional.append({
+                    'if': {'row_index': idx, 'column_id': col['name']},
+                    'backgroundColor': '#93c5fd',
+                })
+
+    return style_data_conditional
 
 
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
@@ -475,8 +513,6 @@ def show_noncomplient_dtype_data(n_clicks, columns, data):
     # print(df_filtered)
 
     if df_filtered.empty:
-        print("No datatype non-compliant data found")
-        
         notification = dmc.Notification(
             title="No datatype non-complient data found!",
             id="simple-notify",
