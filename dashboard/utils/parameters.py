@@ -112,6 +112,12 @@ data_rows = [
         html.Td("Matches 'ac' or 'bc'."), 
         html.Td([dmc.Highlight("'acxyz', ", highlight="ac"), dmc.Highlight("'bcxyz'", highlight="bc")])
     ]),
+    # \d{4}-\d{2}-\d{2}
+    html.Tr([
+        html.Td(dmc.Kbd(r"\d{4}-\d{2}-\d{2}")),
+        html.Td("Matches dates in the format YYYY-MM-DD."),
+        html.Td(dmc.Highlight("'2021-01-01'", highlight="2021-01-01"))
+    ]),
         html.Tr([
         html.Td(dmc.Kbd(r"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$")), 
         html.Td("Matches a simple email address."), 

@@ -231,6 +231,7 @@ def update_column_formatting(_, modal_children, columns):
 ###################### REMOVE DUPLICATE ROWS ######################
 @callback(
     Output('editable-table', 'data'),
+    Output('initial-table-data', 'data', allow_duplicate=True),
     Output('notifications-container', 'children', allow_duplicate=True),
     State('editable-table', 'data'),
     Input('btn-remove-duplicates', 'n_clicks'),
@@ -241,7 +242,8 @@ def remove_duplicate_rows(data, n_clicks):
         raise exceptions.PreventUpdate
 
     df = pd.DataFrame.from_dict(data)
-    df.drop_duplicates(inplace=True)
+    # Exclude the 'ID' column when dropping duplicates
+    df.drop_duplicates(subset=[col for col in df.columns if col != 'ID'], inplace=True)
 
     # Count how many rows were removed
     rows_removed = len(data) - len(df)
@@ -256,7 +258,7 @@ def remove_duplicate_rows(data, n_clicks):
             message="",
             icon=DashIconify(icon="akar-icons:circle-alert")
         )
-        return no_update, notification
+        return no_update, no_update, notification
 
     else: 
         notification = dmc.Notification(
@@ -269,7 +271,7 @@ def remove_duplicate_rows(data, n_clicks):
             icon=DashIconify(icon="akar-icons:circle-check"),
         )
 
-        return df.to_dict('records'), notification
+        return df.to_dict('records'), df.to_dict('records'), notification
 
 
 
