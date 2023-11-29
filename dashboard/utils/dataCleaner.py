@@ -274,12 +274,6 @@ def style_noncompliant_dtype_cells(columns, data):
     return style_data_conditional
 
 
-
-
-
-
-
-
 def cleanDataAuto(data, columns, preferences):
     if (data == None or columns == None):
         print("Nothing to clean")
