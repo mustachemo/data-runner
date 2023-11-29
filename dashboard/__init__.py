@@ -10,19 +10,16 @@ import dashboard.utils.handleFile as HandleFile
 import dashboard.utils.userPreferences as UserPreferences
 import dashboard.utils.dataAnalysis as DataAnalysis
 from .layout import layout
+import json
+import re
 
 cache = diskcache.Cache("./cache")
 long_callback_manager = DiskcacheManager(cache)
-
-# This is the main app object
 app = Dash(__name__, suppress_callback_exceptions=True)
-# Improves load time by not loading all callbacks at once. 5-10% improvement
-# app.config.suppress_callback_exceptions = True
-
 app.layout = layout
 
-# region handleFile
 
+# region handleFile
 
 ###################### UPLOAD FILE ######################
 @callback(
@@ -40,9 +37,39 @@ def upload_file(prevData, files, fileNames):
     if files is None:
         raise exceptions.PreventUpdate
 
-
-
     return HandleFile.importFiles(prevData, files, fileNames)
+
+###################### DOWNLOAD FILE ######################
+@callback(
+    Output("download-file", "data"),
+    Output("notifications-container", "children", allow_duplicate=True),
+    Input("btn-download", "n_clicks"),
+    State('editable-table', 'data'),
+    State('editable-table', 'columns'),
+    State('file-type-select', 'value'),
+    prevent_initial_call=True,
+)
+def download_file(_, data, columns, fileType):
+    if (data == None or columns == None):
+        print("Nothing to export")
+        raise exceptions.PreventUpdate
+
+    notification = dmc.Notification(
+        title="File Exported Successfuly!",
+        id="simple-notify",
+        color="green",
+        action="show",
+        autoClose=3000,
+        message='',
+        icon=DashIconify(icon="akar-icons:circle-alert"),
+    )
+
+    return HandleFile.exportFile(data, columns, fileType), notification
+
+# endregion
+
+
+# region dataAnalysis
 
 ###################### Data Analytics ######################
 @callback(
@@ -94,115 +121,12 @@ def highlight_cells(submit_btn, highlight_empty_cells, highlight_dtype_cells, co
 
     if submit_btn:
         return new_highlighting
-
-
-###################### REMOVE DUPLICATE ROWS ######################
-@callback(
-    Output('editable-table', 'data'),
-    Output('notifications-container', 'children', allow_duplicate=True),
-    State('editable-table', 'data'),
-    Input('btn-remove-duplicates', 'n_clicks'),
-    prevent_initial_call=True
-)
-def remove_duplicate_rows(data, n_clicks):
-    if data is None and n_clicks is None:
-        raise exceptions.PreventUpdate
-
-    df = pd.DataFrame.from_dict(data)
-    df.drop_duplicates(inplace=True)
-
-    # Count how many rows were removed
-    rows_removed = len(data) - len(df)
-
-    if rows_removed == 0:
-        notification = dmc.Notification(
-            title="No duplicate rows found!",
-            id="simple-notify",
-            color="yellow",
-            action="show",
-            autoClose=3000,
-            message="",
-            icon=DashIconify(icon="akar-icons:circle-alert")
-        )
-        return no_update, notification
-
-    else: 
-        notification = dmc.Notification(
-            title="Duplicate rows removed!",
-            id="simple-notify",
-            color="yellow",
-            action="show",
-            autoClose=3000,
-            message=f'{rows_removed} rows removed',
-            icon=DashIconify(icon="akar-icons:circle-check"),
-        )
-
-        return df.to_dict('records'), notification
-
-
-###################### DOWNLOAD FILE ######################
-@callback(
-    Output("download-file", "data"),
-    Output("notifications-container", "children", allow_duplicate=True),
-    Input("btn-download", "n_clicks"),
-    State('editable-table', 'data'),
-    State('editable-table', 'columns'),
-    State('file-type-select', 'value'),
-    prevent_initial_call=True,
-)
-def download_file(_, data, columns, fileType):
-    if (data == None or columns == None):
-        print("Nothing to export")
-        raise exceptions.PreventUpdate
-
-    notification = dmc.Notification(
-        title="File Exported Successfuly!",
-        id="simple-notify",
-        color="green",
-        action="show",
-        autoClose=3000,
-        message='',
-        icon=DashIconify(icon="akar-icons:circle-alert"),
-    )
-
-    return HandleFile.exportFile(data, columns, fileType), notification
+    
 
 # endregion
 
-# region datacleaner
 
-# @app.long_callback(
-#     Output("editable-table", "data"),
-#     Output("log-textbox", "children"),
-#     Input("clean-data-button", "n_clicks"),
-#     State("editable-table", "data"),
-#     State("editable-table", "columns"),
-#     State("auto-clean-checkbox", "checked"),
-#     running=[(Output("clean-data-button", "disabled"), True, False),
-#              (Output("cancel-button", "disabled"), False, True)
-#              ],
-#     cancel=[Input("cancel-button", "n_clicks")],
-#     manager=long_callback_manager,
-#     prevent_initial_call=True,
-# )
-# def cleanData(_, data, columns, isAutoClean):
-#     # todo manual clean
-#     # todo get and use user preferences
-#     # todo clean up logging
-#     # reconsider what to report based on frontend needs
-#     userPreferences = {"*": "int"}
-#     if (isAutoClean):
-#         data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(
-#             data, columns, userPreferences)
-#         message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
-#         print(message)
-#         return data, message
-
-#     print("Not implemented")
-#     raise exceptions.NonExistentEventException
-
-# endregion
-
+# region userPreferences
 
 ###################### ENFORCE DATATYPES (OPEN MODAL) ######################
 @callback(
@@ -252,6 +176,175 @@ def update_column_datatypes(_, modal_children, columns):
 
     return columns
 
+###################### ENFORCE FORMATTING (OPEN MODAL) ######################
+@callback(
+    Output("enforce-formatting-modal", "opened"),
+    Input("btn-enforce-format", "n_clicks"),
+    Input("formatting-modal-close-button", "n_clicks"),
+    Input("formatting-modal-submit-button", "n_clicks"),
+    State("enforce-formatting-modal", "opened"),
+    prevent_initial_call=True,
+)
+def enforce_dtypes_modal(nc1, nc2, nc3, opened):
+    return not opened
+
+###################### ENFORCE FORMATTING (FILL MODAL WITH COLUMNS) ######################
+@callback(
+    Output("column-format-selector", "children"),
+    Input("enforce-formatting-modal", "opened"),
+    State("editable-table", "columns"),
+    State('formatting-store', 'data'),
+    prevent_initial_call=True,
+)
+def populate_format_selection(opened, columns, formatting_options):
+    if not opened or not columns:
+        return dmc.Text("Upload a file to enforce formatting!", style={"color": "black", "fontWeight": "bold", "textAlign": "center"})
+
+    return UserPreferences.populate_format_selection(opened, columns, formatting_options)
+
+###################### ENFORCE FORMATTING (SUBMIT MODAL) ######################
+@callback(
+    Output('formatting-store', 'data'),
+    Input('formatting-modal-submit-button', 'n_clicks'),
+    State('column-format-selector', 'children'),
+    State('editable-table', 'columns'),
+    prevent_initial_call=True
+)
+def update_column_formatting(_, modal_children, columns):
+    if not columns:
+        raise exceptions.PreventUpdate
+
+    format_values = UserPreferences.extract_input_values(modal_children)
+
+    # Create a dictionary with column names as keys and formatting options as values
+    column_formats = {
+        col['name']: fmt_val for col, fmt_val in zip(columns, format_values) if fmt_val
+    }
+
+    return json.dumps(column_formats)
+
+
+# endregion
+
+# region dataCleaner
+
+###################### REMOVE DUPLICATE ROWS ######################
+@callback(
+    Output('editable-table', 'data'),
+    Output('initial-table-data', 'data', allow_duplicate=True),
+    Output('notifications-container', 'children', allow_duplicate=True),
+    State('editable-table', 'data'),
+    Input('btn-remove-duplicates', 'n_clicks'),
+    prevent_initial_call=True
+)
+def remove_duplicate_rows(data, n_clicks):
+    if data is None or n_clicks is None:
+        raise exceptions.PreventUpdate
+
+    df = pd.DataFrame.from_dict(data)
+    # Exclude the 'ID' column when dropping duplicates
+    df.drop_duplicates(subset=[col for col in df.columns if col != 'ID'], inplace=True)
+
+    # Count how many rows were removed
+    rows_removed = len(data) - len(df)
+
+    if rows_removed == 0:
+        notification = dmc.Notification(
+            title="No duplicate rows found!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            autoClose=3000,
+            message="",
+            icon=DashIconify(icon="akar-icons:circle-alert")
+        )
+        return no_update, no_update, notification
+
+    else: 
+        notification = dmc.Notification(
+            title="Duplicate rows removed!",
+            id="simple-notify",
+            color="yellow",
+            action="show",
+            autoClose=3000,
+            message=f'{rows_removed} rows removed',
+            icon=DashIconify(icon="akar-icons:circle-check"),
+        )
+
+        return df.to_dict('records'), df.to_dict('records'), notification
+
+
+
+###################### CHECK EMPTY/CORRUPT CELLS [CLEANING OPERATION] ######################
+@callback(
+    Output('editable-table', 'data', allow_duplicate=True),
+    Output('noncomplient-indices-3', 'data'),
+    Output('notifications-container', 'children', allow_duplicate=True),
+    Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
+    [Input('btn-check-empty-corrupt-cells', 'n_clicks')],
+    State('editable-table', 'columns'),
+    State('editable-table', 'data'),
+    prevent_initial_call=True
+)
+def show_noncomplient_empty_data(n_clicks, columns, data):
+    if columns is None or data is None or n_clicks is None:
+        raise exceptions.PreventUpdate
+    
+    return DataCleaner.show_noncomplient_empty_data(columns, data)
+
+
+
+###################### CLEAN EMPTY/CORRUPT CELLS [CLEANING OPERATION] highlighting ######################
+@callback(
+    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    [Input('noncomplient-indices-3', 'data')],
+    State('editable-table', 'columns'),
+    State('editable-table', 'data'),
+    prevent_initial_call=True
+)
+def style_noncompliant_empty_cells(cache, columns, data):
+    if not cache:
+        raise exceptions.PreventUpdate
+
+    return DataCleaner.style_noncompliant_empty_cells(columns, data)
+
+
+
+###################### CHECK CELLS FORMATTING [CLEANING OPERATION] ######################
+@callback(
+    Output('editable-table', 'data', allow_duplicate=True),
+    Output('noncomplient-indices-2', 'data'),
+    Output('notifications-container', 'children', allow_duplicate=True),
+    Output('btn-confirm-changes-container', 'children', allow_duplicate=True),
+    [Input('btn-check-cells-formatting', 'n_clicks')],
+    State('formatting-store', 'data'),  # State to hold formatting options
+    State('editable-table', 'columns'),
+    State('editable-table', 'data'),
+    prevent_initial_call=True
+)
+def show_noncompliant_format_data(n_clicks, formatting_store_data, columns, data):
+    if columns is None or data is None or n_clicks is None:
+        raise exceptions.PreventUpdate
+    
+    return DataCleaner.show_noncompliant_format_data(formatting_store_data, columns, data)
+
+
+###################### CLEAN CELLS FORMATTING [CLEANING OPERATION] highlighting ######################
+@callback(
+    Output('editable-table', 'style_data_conditional', allow_duplicate=True),
+    [Input('noncomplient-indices-2', 'data')],
+    State('editable-table', 'columns'),
+    State('editable-table', 'data'),
+    State('formatting-store', 'data'),  # State to hold formatting options
+    prevent_initial_call=True
+)
+def style_noncompliant_format_cells(cache, columns, data, formatting_store_data):
+    if not cache:
+        raise exceptions.PreventUpdate
+
+    return DataCleaner.style_noncompliant_format_cells(columns, data, formatting_store_data)
+
+
 ###################### CHECK CELLS DATATYPE [CLEANING OPERATION] ######################
 @callback(
     Output('editable-table', 'data', allow_duplicate=True),
@@ -263,89 +356,11 @@ def update_column_datatypes(_, modal_children, columns):
     State('editable-table', 'data'),
     prevent_initial_call=True
 )
-def show_noncomplient_data(n_clicks, columns, data):
+def show_noncomplient_dtype_data(n_clicks, columns, data):
     if columns is None or data is None or n_clicks is None:
         raise exceptions.PreventUpdate
     
-    df = pd.DataFrame.from_dict(data)
-    non_compliant_rows = set()  # To track rows with non-compliant data
-
-    for col in columns:
-        # Ensure the column has the 'type' key
-        if 'type' not in col:
-            continue
-
-        if col['type'] == 'text':
-            def is_convertible_to_numeric(val):
-                if val is None:
-                    return False
-                try:
-                    # Try to convert to float
-                    float(val)
-                    return True
-                except (TypeError, ValueError):
-                    return False
-            
-            # mask = df[col['name']].apply(lambda x: not isinstance(x, str) or is_convertible_to_numeric(x))
-            mask = df[col['name']].apply(lambda x: x is not None and (not isinstance(x, str) or is_convertible_to_numeric(x)))
-
-
-
-        elif col['type'] == 'numeric':
-            def is_numeric(val):
-                if val is None:
-                    return False
-
-                # If val is already numeric (float or int)
-                if isinstance(val, (float, int)):
-                    return True
-
-                # If val is a string, attempt to convert to float after removing hyphens
-                if isinstance(val, str):
-                    try:
-                        float(val.replace('-', ''))
-                        return True
-                    except (TypeError, ValueError):
-                        return False
-                return False
-
-            # mask = df[col['name']].apply(lambda x: not is_numeric(x))
-            mask = df[col['name']].apply(lambda x: x is not None and (not is_numeric(x)))
-
-    
-        elif col['type'] == 'datetime':
-            # mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
-            mask = df[col['name']].apply(lambda x: x is not None and (not isinstance(x, pd.Timestamp)))
-        else:
-            continue
-
-        # Find non-compliant indices and add them to the set
-        non_compliant_indices = mask[mask].index.tolist()
-        for idx in non_compliant_indices:
-            non_compliant_rows.add(idx)  # Add row index to the set
-
-    # Filter the dataframe to keep only rows with non-compliant data
-    df_filtered = df[df.index.isin(non_compliant_rows)]
-    # print(df_filtered)
-
-    if df_filtered.empty:
-        print("No non-compliant data found")
-        
-        notification = dmc.Notification(
-            title="No non-complient data found!",
-            id="simple-notify",
-            color="yellow",
-            action="show",
-            message="",
-            autoClose=3000,
-            icon=DashIconify(icon="akar-icons:circle-alert")
-        )
-        return no_update, no_update, notification, no_update
-    
-    confirm_button = dmc.Button("Confirm Changes", id="btn-confirm-changes", style={"backgroundColor": "#12B886"}),
-            
-    # return df_filtered.to_dict('records'), []
-    return df_filtered.to_dict('records'), df_filtered.index.tolist(), [], confirm_button
+    return DataCleaner.show_noncomplient_dtype_data(columns, data)
 
 
 ###################### CLEAN CELLS DATATYPE [CLEANING OPERATION] highlighting ######################
@@ -356,68 +371,14 @@ def show_noncomplient_data(n_clicks, columns, data):
     State('editable-table', 'data'),
     prevent_initial_call=True
 )
-def style_noncompliant_cells(cache, columns, data):
+def style_noncompliant_dtype_cells(cache, columns, data):
     if not cache:
         raise exceptions.PreventUpdate
 
-    df = pd.DataFrame.from_dict(data)
-    style_data_conditional = []
+    return DataCleaner.style_noncompliant_dtype_cells(columns, data)
 
-    for col in columns:
-        if 'type' not in col:
-            continue
 
-        if col['type'] == 'text':
-            def is_convertible_to_numeric(val):
-                if val is None:
-                    return False
-                try:
-                    # Try to convert to float
-                    float(val)
-                    return True
-                except (TypeError, ValueError):
-                    return False
-            
-            # mask = df[col['name']].apply(lambda x: not isinstance(x, str) or is_convertible_to_numeric(x))
-            mask = df[col['name']].apply(lambda x: x is not None and (not isinstance(x, str) or is_convertible_to_numeric(x)))
-            color = '#fde047'  # Adjusted color for non-string data in a text column
-
-        elif col['type'] == 'numeric':
-            def is_numeric(val):
-                if val is None:
-                    return False
-
-                if isinstance(val, (float, int)):
-                    return True
-
-                if isinstance(val, str):
-                    try:
-                        float(val.replace('-', ''))
-                        return True
-                    except (TypeError, ValueError):
-                        return False
-                return False
-
-            # mask = df[col['name']].apply(lambda x: not is_numeric(x))
-            mask = df[col['name']].apply(lambda x: x is not None and (not is_numeric(x)))
-            color = '#6ee7b7'  # Adjusted color for non-numeric data in a numeric column
-    
-        elif col['type'] == 'datetime':
-            # mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
-            mask = df[col['name']].apply(lambda x: x is not None and (not isinstance(x, pd.Timestamp)))
-            color = '#c4b5fd'  # Adjusted color for non-datetime data in a datetime column
-        else:
-            continue
-
-        non_compliant_indices = mask[mask].index.tolist()
-        for idx in non_compliant_indices:
-            style_data_conditional.append({
-                'if': {'row_index': idx, 'column_id': col['name']},
-                'backgroundColor': color,
-            })
-
-    return style_data_conditional
-
+# endregion
 
 # ###################### CLEAN CELLS DATATYPE [CONFIRM BUTTON] (persist changes) ######################
 @callback(
@@ -490,5 +451,38 @@ def reset_table(n_clicks, initial_data):
     return initial_data, [], []
 
 
+# @app.long_callback(
+#     Output("editable-table", "data"),
+#     Output("log-textbox", "children"),
+#     Input("clean-data-button", "n_clicks"),
+#     State("editable-table", "data"),
+#     State("editable-table", "columns"),
+#     State("auto-clean-checkbox", "checked"),
+#     running=[(Output("clean-data-button", "disabled"), True, False),
+#              (Output("cancel-button", "disabled"), False, True)
+#              ],
+#     cancel=[Input("cancel-button", "n_clicks")],
+#     manager=long_callback_manager,
+#     prevent_initial_call=True,
+# )
+# def cleanData(_, data, columns, isAutoClean):
+#     # todo manual clean
+#     # todo get and use user preferences
+#     # todo clean up logging
+#     # reconsider what to report based on frontend needs
+#     userPreferences = {"*": "int"}
+#     if (isAutoClean):
+#         data, message, changedCells, emptyCells, needsAttention = DataCleaner.cleanDataAuto(
+#             data, columns, userPreferences)
+#         message = f"changed{changedCells}, empty{emptyCells}, needsAttention{needsAttention}"
+#         print(message)
+#         return data, message
+
+#     print("Not implemented")
+#     raise exceptions.NonExistentEventException
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+

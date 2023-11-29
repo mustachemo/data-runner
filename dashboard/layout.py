@@ -9,8 +9,10 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
     dcc.Store(id='initial-table-data'),
     dcc.Store(id='initial-table-columns'),
     dcc.Store(id='noncomplient-indices'),
+    dcc.Store(id='noncomplient-indices-2'),
+    dcc.Store(id='noncomplient-indices-3'),
+    dcc.Store(id='formatting-store'),
 
-    # Sidebar
     # Sidebar
     html.Div([
         html.Div([
@@ -18,7 +20,7 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                 src="./assets/images/logo.jpeg", alt="USCS", width=40),
             dmc.Title(f"United States Cold Storage", order=5,),
         ], style={"display": "flex", "justifyContent": "center", "alignItems": "center", "gap": "1rem", "marginBottom": "1rem", "borderBottom": "1px solid #ccc", 'padding': "1rem"}),
-
+        html.Div(id='store-output'),
         html.Div([
             dmc.Menu([
                 dmc.MenuLabel("Data Analysis", style={"padding-left": "5px"}),
@@ -44,7 +46,7 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     label="Opens a modal for cell higlighting options",
                     children=dmc.Button("Highlight Cells", id="btn-higlight-cells", variant="subtle", leftIcon=DashIconify(icon="bx:highlight"),),
                 ),
-                dmc.Modal(  # This is the modal that will open when the enforce datatypes button is clicked
+                dmc.Modal(  # This is the modal that will open when the highlight cells button is clicked
                     title="Choose options for cell highlighting",
                     id="higlight-cells-modal",
                     zIndex=10000,
@@ -116,18 +118,30 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
                     children=dmc.Button("Enforce Formatting", id="btn-enforce-format", variant="subtle", leftIcon=DashIconify(icon="streamline:interface-edit-write-2-change-document-edit-modify-paper-pencil-write-writing"),)
                 ),
+                dmc.Modal(  # This is the modal that will open when the enforce formatting button is clicked
+                    title="Input a specified format for each column",
+                    id="enforce-formatting-modal",
+                    zIndex=10000,
+                    size="70rem",
+                    children=[
+                        html.Div(id='column-format-selector'),
+                        dmc.Space(h=20),
+                        dmc.Group(
+                            [
+                                dmc.Button("Submit", id="formatting-modal-submit-button"),
+                                dmc.Button(
+                                    "Close",
+                                    color="red",
+                                    variant="outline",
+                                    id="formatting-modal-close-button",
+                                ),
+                            ],
+                            position="right",
+                        ),
+                    ],
+                ),
                 dmc.Space(h=20),
                 dmc.MenuLabel("Cleaning Operations", style={"padding-left": "5px"}),
-                dmc.Tooltip(
-                    withArrow=True,
-                    width=200,
-                    multiline=True,
-                    position="right",
-                    transition="fade",
-                    transitionDuration=300,
-                    label="Distinguish and iterate over empty and corrupt cells",
-                    children=dmc.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", variant="subtle", leftIcon=DashIconify(icon="iconoir:info-empty"),)
-                ),
                 dmc.Tooltip(
                     withArrow=True,
                     width=200,
@@ -138,7 +152,16 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     label="Removes duplicate rows from the imported data",
                     children=dmc.Button("Remove Duplicates", id="btn-remove-duplicates", variant="subtle", leftIcon=DashIconify(icon="bx:duplicate"),)
                 ),
-
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Distinguish and iterate over empty and corrupt cells",
+                    children=dmc.Button("Check Empty/Corrupt Cells", id="btn-check-empty-corrupt-cells", variant="subtle", leftIcon=DashIconify(icon="iconoir:info-empty"),)
+                ),
                 dmc.Tooltip(
                     withArrow=True,
                     width=200,
@@ -159,17 +182,7 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     transitionDuration=300,
                     label="Distinguish cells that don't match their columns enforced formatting, set in user preferences",
                     children=dmc.Button("Check Cells Formatting", id="btn-check-cells-formatting", variant="subtle", leftIcon=DashIconify(icon="mdi:checkbox-outline"),),
-                ),
-                dmc.Tooltip(
-                    withArrow=True,
-                    width=200,
-                    multiline=True,
-                    position="right",
-                    transition="fade",
-                    transitionDuration=300,
-                    label="Check all cells for any issues",
-                    children=dmc.Button("Clean All", id="btn-clean-all", variant="subtle", color="red", leftIcon=DashIconify(icon="material-symbols:cleaning-services-outline"),),
-                ),
+                )
             ]),
         ], style={"fontSize": "26px"}),
     ], className="sidebar"),
@@ -265,6 +278,21 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                         'width': '20px',
                         'height': '20px',
                         'backgroundColor': '#c4b5fd',
+                        'margin': '0.5rem',
+                    })),
+                dmc.Tooltip(
+                    withArrow=True,
+                    width=200,
+                    multiline=True,
+                    position="right",
+                    transition="fade",
+                    transitionDuration=300,
+                    label="Cells with noncomplient formatting",
+                    children=html.Div(style={
+                        'display': 'inline-block',
+                        'width': '20px',
+                        'height': '20px',
+                        'backgroundColor': '#93c5fd',
                         'margin': '0.5rem',
                     })),
 

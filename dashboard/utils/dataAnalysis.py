@@ -8,19 +8,19 @@ def get_data_analysis(data):
 
     empty_corrupt_values = df.isna().sum()
     num_rows, num_columns = df.shape
-    num_duplicate_rows = df.duplicated().sum()
+    # Assuming 'ID' is the name of your unique identifier column
+    num_duplicate_rows = df.duplicated(subset=[col for col in df.columns if col != 'ID']).sum()
 
     if (empty_corrupt_values.sum() != 0):
         return [
             html.Li([
                 "Data: ",
-                html.Span(f'{"{:,}".format(df.size)}', style={
+                html.Span(f'{"{:,}".format(df.count().sum())}', style={
                     'color': '#007BFF',
                     'fontWeight': 'bold',
                     'padding': '0 5px',
                     'borderRadius': '5px'
                 })
-                # i want ot get rid of the bulletd points
             ], style={"listStyleType": "none"}),
             html.Li([
                 "Rows: ",

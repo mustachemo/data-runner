@@ -79,21 +79,21 @@ To set up and run the Data Clean-up Tool, follow these steps:
 
 
   - [x] Add enforcement of types. Say a column shows only numbers, let's say money. Enforce that you can't edit a text into there, only numeric values are allowed (https://dash.plotly.com/datatable/typing)
-  - [ ] Add a formatting setting that formats columns to a specified prefereance. For example, cost column will show $ sign and number type enforcement along with commas when needed (https://dash.plotly.com/datatable/typing)
+  - [x] Add a formatting setting that formats columns to a specified prefereance. For example, cost column will show $ sign and number type enforcement along with commas when needed (https://dash.plotly.com/datatable/typing)
   - [x] Adding or removing columns and rows
   - [ ] Update parse_content function to include 'xslx, xml, html" and "pdf" if we can (pdf is a bonus feature)
   - [x] Combine two or more data of the same format into one file
   - [z] After "Enforcing" dtypes or formatting, those cells are then highlighted (https://dash.plotly.com/datatable/conditional-formatting). We could also use for other use cases when highlighting is required. We should have a legend that says what each higlight color means
     - [x] dtype highlighting
     - [x] Highlighting None, NaN, or Empty String Values
-    - [ ] formatting highlighting
+    - [x] formatting highlighting
   - [z] Make legend for filtering operations/syntax (https://dash.plotly.com/datatable/filtering)
   - [ ] Testing (https://dash.plotly.com/testing)
 
 - Bonus Features:
 
   - [ ] Make a tab option for graphs (https://dash.plotly.com/dash-core-components/tab)
-  - [ ] Highlight Changes: Display changed cells in a different color for easier tracking
+  - [x] Highlight Changes: Display changed cells in a different color for easier tracking
   - [x] Add loading animation (https://dash.plotly.com/dash-core-components/loading)
   - [x] Make columns selection through a checkbox (https://dash.plotly.com/datatable/editable)
   - [ ] Displaying Errors with dash.no_update (https://dash.plotly.com/advanced-callbacks)
