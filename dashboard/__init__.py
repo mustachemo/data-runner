@@ -76,15 +76,7 @@ def show(filenames):
         message="Upload Failed!",
         icon=DashIconify(icon="ic:round-error"),
     )
-###################### FILTER SYNTAX MODAL #################
-@callback(
-    Output("filter-syntax-modal", "opened"),
-    Input("filter-syntax-btn", "n_clicks"),
-    State("filter-syntax-modal", "opened"),
-    prevent_initial_call=True,
-)
-def toggle_modal(n_clicks, opened):
-    return not opened
+
 ###################### Data Analytics ######################
 @callback(
     Output('alert-empty-and-corrupt-cells', 'children'),
@@ -96,6 +88,15 @@ def check_number_of_empty_and_corrupt_cells(data):
 
     return DataAnalysis.get_data_analysis(data)
 
+###################### FILTER SYNTAX MODAL #################
+@callback(
+    Output("filter-syntax-modal", "opened"),
+    Input("filter-syntax-btn", "n_clicks"),
+    State("filter-syntax-modal", "opened"),
+    prevent_initial_call=True,
+)
+def toggle_modal(n_clicks, opened):
+    return not opened
 
 ###################### HIGHLIGHT CELLS (OPEN MODAL) ######################
 @callback(
