@@ -72,11 +72,18 @@ def combineDf(prevDf, df):
     # todo prompt user to select specific columns to join on, may improve performance
     if (prevDf.empty):
         return df
-    newDf = pd.concat([prevDf, df], join="inner", ignore_index=True)
-    newDf = newDf.drop_duplicates()
-    # drop_duplicates sometimes works, seems to depends on the datatypes of the combined df columns
-    # todo resolve bug ^
-    return newDf
+    
+   
+    # Align the columns of both DataFrames
+    df = df.reindex(columns=prevDf.columns)
+
+    # Combine the DataFrames, prioritizing non-null values in prevDf
+    combined_df = prevDf.combine_first(df)
+
+    # Drop duplicates based on index
+    combined_df = combined_df[~combined_df.index.duplicated(keep='first')]
+
+    return combined_df
 
 
 def exportFile(data, columns, fileType="csv"):

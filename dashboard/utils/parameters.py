@@ -163,6 +163,11 @@ data_rows = [
         html.Td("Matches numbers with commas for every thousand."), 
         html.Td(dmc.Highlight("'1,234,567'", highlight="1,234,567"))
     ]),
+    html.Tr([
+        html.Td(dmc.Kbd(r"^\+\d{1,4} ?\(\d{1,4}\) \d{3}[- ]?\d{4}$")), 
+        html.Td("Matches phone numbers with country code."),
+        html.Td(dmc.Highlight("'+1 (123) 456-7890'", highlight="+1 (123) 456-7890"))
+    ]),
 ]
 
 # Create the table component
