@@ -297,7 +297,163 @@ layout = dmc.NotificationsProvider(html.Div([  # This is the main layout of the 
                     })),
 
             ], style={"display": "flex", "backgroundColor": "grey"}),
-
+            html.Div(
+                [
+                    dmc.Modal(
+                        title="Filter Syntax for Text",
+                        id="filter-syntax-modal",
+                        zIndex=10000,
+                        children=[
+                            html.Div([
+                                html.Div([
+                                    dmc.Badge("=text", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("<text", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Less than filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("<=text", variant="light", color="gray", style={"marginRight": "8px"}),
+                                    dmc.Text("Less than/equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge(">text", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Greater than filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge(">=text", variant="light", color="gray", style={"marginRight": "8px"}),
+                                    dmc.Text("Greater than/equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("'text'", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Contains filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                            ], style={"padding": "6px", "height": "auto", "width": "auto", "margin": "10px", "border": "1px solid #d4d4d4",
+                                    "borderRadius": "6px", "backgroundColor": "#f7f7f7", "display": "flex", "flexDirection": "column",
+                                    "justifyContent": "flex-start", "alignItems": "flex-start"}),
+                            dmc.Text("Filter Syntax for Numbers"),
+                            html.Div([
+                                html.Div([
+                                    dmc.Badge("=number", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("<number", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Less than filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("<=number", variant="light", color="gray", style={"marginRight": "8px"}),
+                                    dmc.Text("Less than/equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge(">number", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Greater than filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge(">=number", variant="light", color="gray", style={"marginRight": "8px"}),
+                                    dmc.Text("Greater than/equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("'number'", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Contains filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                            ], style={"padding": "6px", "height": "auto", "width": "auto", "margin": "10px", "border": "1px solid #d4d4d4",
+                                    "borderRadius": "6px", "backgroundColor": "#f7f7f7", "display": "flex", "flexDirection": "column",
+                                    "justifyContent": "flex-start", "alignItems": "flex-start"}
+                                    ),
+                            dmc.Text("Filter Syntax for Datetime"),
+                            html.Div([
+                                html.Div([
+                                    dmc.Badge("Year", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("yy-mm", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("yy-mm-dd", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("yy-mm-dd hh:mm", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("yy-mm-dd hh:mm:ss", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("datestartswith Year", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("datetime starts with"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("datestartswith yy-mm", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("datestartswith yy-mm-dd", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("datestartswith yy-mm-dd hh:mm", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("datestartswith yy-mm-dd hh:mm:ss", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    # dmc.Text("Equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                            ], style={"padding": "6px", "height": "auto", "width": "auto", "margin": "10px", "border": "1px solid #d4d4d4",
+                                    "borderRadius": "6px", "backgroundColor": "#f7f7f7", "display": "flex", "flexDirection": "column",
+                                    "justifyContent": "flex-start", "alignItems": "flex-start"}
+                                    ),
+                            html.Div([
+                                html.Div([
+                                    dmc.Badge("<yy-mm-dd", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Less than filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("<yy-mm", variant="light", color="gray", style={"marginRight": "37px"}),
+                                    dmc.Text("Less than filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("<=yy-mm-dd", variant="light", color="gray", style={"marginRight": "8px"}),
+                                    dmc.Text("Less than/equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge("<=yy-mm", variant="light", color="gray", style={"marginRight": "30px"}),
+                                    dmc.Text("Less than/equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge(">yy-mm-dd", variant="light", color="gray", style={"marginRight": "15px"}),
+                                    dmc.Text("Greater than filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge(">yy-mm", variant="light", color="gray", style={"marginRight": "38px"}),
+                                    dmc.Text("Greater than filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge(">=yy-mm-dd", variant="light", color="gray", style={"marginRight": "8px"}),
+                                    dmc.Text("Greater than/equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                html.Div([
+                                    dmc.Badge(">=yy-mm", variant="light", color="gray", style={"marginRight": "30px"}),
+                                    dmc.Text("Greater than/equal to filter"),
+                                ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                                # html.Div([
+                                #     dmc.Badge("'yy-mm-dd'", variant="light", color="gray", style={"marginRight": "13px"}),
+                                #     dmc.Text("Contains filter"),
+                                # ], style={"display": "flex", "flexDirection": "row", "alignItems": "center"}),
+                            ], style={"padding": "6px", "height": "auto", "width": "auto", "margin": "10px", "border": "1px solid #d4d4d4",
+                                    "borderRadius": "6px", "backgroundColor": "#f7f7f7", "display": "flex", "flexDirection": "column",
+                                    "justifyContent": "flex-start", "alignItems": "flex-start"}
+                                    ),
+                        ],
+                    ),
+                    dmc.Button("Filter Syntax", id="filter-syntax-btn", style={"backgroundColor": "#D04F76"}),
+                ]
+            ), 
             html.Div([  # This is the dropdown and download button
                 dmc.Select(
                     id="file-type-select",
