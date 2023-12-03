@@ -37,8 +37,6 @@ def populate_datatype_selection(opened, columns):
 
     for col_details in columns:
         col_name = col_details['name']
-        if col_name == 'ID':
-            continue
         dropdown_value = col_details.get('type', 'any')
 
         dropdown = dcc.Dropdown(
@@ -70,8 +68,6 @@ def populate_format_selection(opened, columns, formatting_options):
 
     for col_details in columns:
         col_name = col_details['name']
-        if col_name == 'ID':
-            continue
 
         # Retrieve the format from the stored formatting if it exists, otherwise set to None
         placeholder_value = formatting_options.get(col_name, None) if formatting_options else None
