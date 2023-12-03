@@ -183,7 +183,7 @@ def show_noncomplient_dtype_data(columns, data):
 
     
         elif col['type'] == 'datetime':
-            date_pattern = re.compile(r"^\d{4}-\d{1,2}-\d{1,2}$")
+            date_pattern = re.compile(r"^(?:\d{4}-\d{1,2}-\d{1,2}|\d{4}-\d{2}-\d{2})$")
 
             def is_datetime(val):
                 if pd.isnull(val):
