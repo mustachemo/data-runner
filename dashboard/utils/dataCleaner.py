@@ -183,8 +183,17 @@ def show_noncomplient_dtype_data(columns, data):
 
     
         elif col['type'] == 'datetime':
-            # mask = df[col['name']].apply(lambda x: not isinstance(x, pd.Timestamp))
-            mask = df[col['name']].apply(lambda x: x is not None and (not isinstance(x, pd.Timestamp)))
+            date_pattern = re.compile(r"^\d{4}-\d{1,2}-\d{1,2}$")
+
+            def is_datetime(val):
+                if pd.isnull(val):
+                    return False
+                if isinstance(val, str):
+                    return bool(date_pattern.match(val))
+                return False
+
+            # Apply the is_datetime check to each cell in the datetime column
+            mask = df[col['name']].apply(lambda x: x is not None and (not is_datetime(x)))
         else:
             continue
 
