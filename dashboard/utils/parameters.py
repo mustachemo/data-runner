@@ -119,7 +119,7 @@ data_rows = [
         html.Td(dmc.Highlight("'2021-01-01'", highlight="2021-01-01"))
     ]),
         html.Tr([
-        html.Td(dmc.Kbd(r"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$")), 
+        html.Td(dmc.Kbd(r"^\w+[\w.]*@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$")), 
         html.Td("Matches a simple email address."), 
         html.Td(dmc.Highlight("'user@example.com'", highlight="user@example.com"))
     ]),
