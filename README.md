@@ -1,6 +1,6 @@
 # Data Clean-up Tool
 ![Data enforcement feature](feature1.gif)
-![RegEx enforcement feature](feature1.gif)
+![RegEx enforcement feature](feature2.gif)
 
 ## Table of Contents
 
